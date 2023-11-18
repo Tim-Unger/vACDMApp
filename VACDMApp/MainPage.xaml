@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="VACDMApp.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
+    Background="Black"
+    Loaded="ContentPage_Loaded">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="10">
+            <SearchBar BackgroundColor="#232323" TextColor="#FEFEFE" />
+            <HorizontalStackLayout>
+                <Button
+                    x:Name="AirportsButton"
+                    Margin="10"
+                    Background="#232323"
+                    Clicked="AirportsButton_Clicked"
+                    FontAttributes="Bold"
+                    Text="All Airports"
+                    TextColor="#FEFEFE" />
+                <Button
+                    x:Name="DayButton"
+                    Margin="10"
+                    Background="#232323"
+                    Clicked="DayButton_Clicked"
+                    FontAttributes="Bold"
+                    Text="Today"
+                    TextColor="#FEFEFE" />
+                <TimePicker
+                    x:Name="FlightsTimePicker"
+                    Margin="10"
+                    Background="#232323"
+                    FontAttributes="Bold"
+                    IsVisible="true"
+                    TextColor="#FEFEFE" />
+                <Button
+                    x:Name="TimeFormatButton"
+                    Margin="10"
+                    Background="#232323"
+                    Clicked="TimeFormatButton_Clicked"
+                    FontAttributes="Bold"
+                    Text="UTC"
+                    TextColor="#FEFEFE" />
+            </HorizontalStackLayout>
+
+            <ScrollView x:Name="Mainview" />
+
+            <HorizontalStackLayout>
+                <Button
+                    x:Name="MyFlightButton"
+                    Margin="10"
+                    Background="#232323"
+                    Clicked="MyFlightButton_Clicked"
+                    FontAttributes="Bold"
+                    Text="My Flight"
+                    TextColor="#FEFEFE" />
+                <Button
+                    x:Name="AllFlights"
+                    Margin="10"
+                    Background="#232323"
+                    Clicked="AllFlights_Clicked"
+                    FontAttributes="Bold"
+                    Text="All Flights"
+                    TextColor="#FEFEFE" />
+            </HorizontalStackLayout>
+
+            <!--<DatePicker x:Name="FlightsDatePicker" IsVisible="false"  />-->
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
