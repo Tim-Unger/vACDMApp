@@ -1,18 +1,21 @@
-﻿namespace VACDMApp.VACDMData.Renderer
+﻿using VACDMApp.Windows.BottomSheets;
+using VACDMApp.Windows.Views;
+
+namespace VACDMApp.VACDMData.Renderer
 {
-    internal class FlightInfos
+    internal class FlightInfos : MainPage
     {
         internal static List<Grid> Render()
         {
-            var elements = MainPage.VACDMPilots.Select(RenderPilot).ToList();
+            var elements = VACDMPilots.Select(RenderPilot).ToList();
 
             return elements;
         }
 
         private static Grid RenderPilot(VACDMPilot pilot)
         {
-            var flightPlan = MainPage.VatsimPilots.First(x => x.callsign == pilot.Callsign).flight_plan ?? throw new Exception();
-            var airlines = MainPage.Airlines;
+            var flightPlan = VatsimPilots.First(x => x.callsign == pilot.Callsign).flight_plan ?? throw new Exception();
+            var airlines = Airlines;
             var grid = new Grid() { Background = new Color(23, 23, 23), Margin = 10 };
             
             grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
@@ -36,6 +39,7 @@
             flightGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
             flightGrid.RowDefinitions.Add(new RowDefinition(new GridLength(2, GridUnitType.Star)));
             flightGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
+            flightGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
 
             grid.SetColumn(flightGrid, 1);
 
@@ -50,14 +54,17 @@
             var flightNumberOnly = pilot.Callsign.Remove(0, 3);
             var flightData = $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival}, {flightPlan.aircraft_short}";
             var flightDataLabel = new Label() { Text = flightData, TextColor = Colors.White, Background = new Color(23, 23, 23), FontAttributes = FontAttributes.Bold, FontSize = 15 };
+            var statusLabel = new Label() { Text = GetFlightStatus(pilot), TextColor = Colors.White, Background = new Color(23, 23, 23), FontAttributes = FontAttributes.Bold, FontSize = 15 };
 
             flightGrid.Children.Add(airportLabel);
             flightGrid.Children.Add(callsignLabel);
             flightGrid.Children.Add(flightDataLabel);
+            flightGrid.Children.Add(statusLabel);
 
             flightGrid.SetRow(airportLabel, 0);
             flightGrid.SetRow(callsignLabel, 1);
             flightGrid.SetRow(flightDataLabel, 2);
+            flightGrid.SetRow(statusLabel, 3);
 
             grid.Children.Add(timeGrid);
             grid.Children.Add(flightGrid);
@@ -83,6 +90,42 @@
             var callsignLabel = (Label)callsignGrid.Children[1];
 
             var callsign = callsignLabel.Text;
+
+            SingleFlightBottomSheet.SelectedCallsign = callsign;
+
+            var singleFlightSheet = new SingleFlightBottomSheet();
+
+            singleFlightSheet.ShowAsync();
+            
         }
+
+        public static string GetFlightStatus(VACDMPilot pilot)
+        {
+            var vatsimPilot = MainPage.VatsimPilots.First(x => x.callsign == pilot.Callsign);
+            if (vatsimPilot.groundspeed > 50)
+            {
+                return "Departed";
+            }
+
+            var vacdm = pilot.Vacdm;
+
+            if(vacdm.Sug.Year == 1969)
+            {
+                return "Preflight/Boarding";
+            }
+
+            if (vacdm.Pbg.Year == 1969)
+            {
+                return "Startup given";
+            }
+
+            if (vacdm.Txg.Year == 1969)
+            {
+                return "Pushback";
+            }
+
+            return "Taxi Out";
+        }
+        
     }
 }

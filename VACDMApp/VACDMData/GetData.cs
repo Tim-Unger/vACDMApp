@@ -49,7 +49,7 @@ namespace VACDMApp.VACDMData
       ""current_squawk"": ""1000""
     },
     ""_id"": ""6558e5e12761e6c40dbad43d"",
-    ""callsign"": ""AAL87F"",
+    ""callsign"": ""AAL106"",
     ""hasBooking"": false,
     ""inactive"": false,
     ""measures"": [
@@ -153,7 +153,7 @@ namespace VACDMApp.VACDMData
       ""current_squawk"": ""1000""
     },
     ""_id"": ""6558e6c62761e6c40dbad7c8"",
-    ""callsign"": ""EZY238"",
+    ""callsign"": ""EZY611"",
     ""hasBooking"": false,
     ""inactive"": false,
     ""measures"": [
@@ -205,7 +205,7 @@ namespace VACDMApp.VACDMData
       ""current_squawk"": ""1000""
     },
     ""_id"": ""6558e75f2761e6c40dbada3f"",
-    ""callsign"": ""DLH47W"",
+    ""callsign"": ""DLH446"",
     ""hasBooking"": false,
     ""inactive"": false,
     ""measures"": [

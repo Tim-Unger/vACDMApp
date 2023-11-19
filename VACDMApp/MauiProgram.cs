@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using The49.Maui.BottomSheet;
+using CommunityToolkit.Maui;
 
 namespace VACDMApp
 {
@@ -13,13 +14,12 @@ namespace VACDMApp
             builder
                 .UseMauiApp<App>()
                 .UseBottomSheet()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-
-            
 
 #if DEBUG
             builder.Logging.AddDebug();

@@ -53,8 +53,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Maui" Version="6.1.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="The49.Maui.BottomSheet" Version="1.0.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Windows\Views\MyFlightView.xaml.cs">
+	    <DependentUpon>MyFlightView.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -67,9 +74,17 @@
 	  <MauiXaml Update="Windows\BottomSheets\AirportsBottomSheet.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Windows\BottomSheets\SingleFlightBottomSheet.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Windows\Views\FlightsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Windows\Views\MyFlightView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
+
+	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionVACDMAppHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarVACDMAppHideInfoBar="True" /></VisualStudio></ProjectExtensions>
 
 </Project>
