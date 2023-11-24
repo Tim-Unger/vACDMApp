@@ -17,4 +17,15 @@ public partial class SingleFlightBottomSheet : BottomSheet
         var content = SingleFlight.RenderGrid(SelectedCallsign);
         SingleFlightGrid.Children.Add(content);
     }
+
+    private void BottomSheet_Unfocused(object sender, FocusEventArgs e)
+    {
+        DismissAsync();
+    }
+
+    protected bool OnBackButtonPressed()
+    {
+        DismissAsync();
+        return true;
+    }
 }

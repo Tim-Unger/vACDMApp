@@ -5,18 +5,21 @@ namespace VACDMApp.VACDMData.Renderer
 {
     internal class FlightInfos : MainPage
     {
+        private static readonly Color DarkBlue = new Color(28, 40, 54);
         internal static List<Grid> Render()
         {
-            var elements = VACDMPilots.Select(RenderPilot).ToList();
+            var pilotsWithFP = VACDMPilots.Where(x => VatsimPilots.Any(y => y.callsign == x.Callsign));
+            var elements = pilotsWithFP.Select(RenderPilot).ToList();
 
             return elements;
         }
 
         private static Grid RenderPilot(VACDMPilot pilot)
         {
-            var flightPlan = VatsimPilots.First(x => x.callsign == pilot.Callsign).flight_plan ?? throw new Exception();
+            //TODO Error handling here when ACDM FP not found
+            var flightPlan = VatsimPilots.FirstOrDefault(x => x.callsign == pilot.Callsign).flight_plan ?? throw new Exception();
             var airlines = Airlines;
-            var grid = new Grid() { Background = new Color(23, 23, 23), Margin = 10 };
+            var grid = new Grid() { Background = DarkBlue, Margin = 10 };
             
             grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
             grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(3, GridUnitType.Star)));
@@ -27,8 +30,8 @@ namespace VACDMApp.VACDMData.Renderer
 
             grid.SetColumn(timeGrid, 0);
 
-            var eobt = new Label() { Text = pilot.Vacdm.Eobt.ToString("HH:mmZ"), TextColor = Colors.White, Background = new Color(23, 23, 23), FontAttributes = FontAttributes.Bold, FontSize = 20, HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
-            var tsat = new Label() { Text = pilot.Vacdm.Tsat.ToString("HH:mmZ"), TextColor = Colors.White, Background = new Color(23, 23, 23), FontAttributes = FontAttributes.Bold, FontSize = 20, HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+            var eobt = new Label() { Text = pilot.Vacdm.Eobt.ToString("HH:mmZ"), TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 20, HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+            var tsat = new Label() { Text = pilot.Vacdm.Tsat.ToString("HH:mmZ"), TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 20, HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
 
             timeGrid.Children.Add(eobt);
             timeGrid.Children.Add(tsat);
@@ -44,17 +47,17 @@ namespace VACDMApp.VACDMData.Renderer
             grid.SetColumn(flightGrid, 1);
 
             var airport = $"From {pilot.FlightPlan.Departure}";
-            var airportLabel = new Label() { Text = airport, TextColor = Colors.White, Background = new Color(23, 23, 23), FontAttributes = FontAttributes.Bold, FontSize = 18 };
+            var airportLabel = new Label() { Text = airport, TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 18 };
 
             var callsign = pilot.Callsign;
-            var callsignLabel = new Label() { Text = callsign, TextColor = Colors.White, Background = new Color(23, 23, 23), FontAttributes = FontAttributes.Bold, FontSize = 25 };
+            var callsignLabel = new Label() { Text = callsign, TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 25 };
 
             var icao = pilot.Callsign[..3].ToUpper();
-            var airline = airlines.First(x => x.icao == icao) ?? throw new Exception("ICAO not found");
+            var airline = airlines.FirstOrDefault(x => x.icao == icao) ?? new Airline() { callsign = "", country = "", iata = icao, icao = icao, name = "" };
             var flightNumberOnly = pilot.Callsign.Remove(0, 3);
             var flightData = $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival}, {flightPlan.aircraft_short}";
-            var flightDataLabel = new Label() { Text = flightData, TextColor = Colors.White, Background = new Color(23, 23, 23), FontAttributes = FontAttributes.Bold, FontSize = 15 };
-            var statusLabel = new Label() { Text = GetFlightStatus(pilot), TextColor = Colors.White, Background = new Color(23, 23, 23), FontAttributes = FontAttributes.Bold, FontSize = 15 };
+            var flightDataLabel = new Label() { Text = flightData, TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 15 };
+            var statusLabel = new Label() { Text = GetFlightStatus(pilot), TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 15 };
 
             flightGrid.Children.Add(airportLabel);
             flightGrid.Children.Add(callsignLabel);
@@ -121,7 +124,7 @@ namespace VACDMApp.VACDMData.Renderer
 
             if (vacdm.Txg.Year == 1969)
             {
-                return "Pushback";
+                return "Offblock";
             }
 
             return "Taxi Out";

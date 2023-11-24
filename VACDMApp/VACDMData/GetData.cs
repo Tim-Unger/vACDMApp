@@ -49,7 +49,7 @@ namespace VACDMApp.VACDMData
       ""current_squawk"": ""1000""
     },
     ""_id"": ""6558e5e12761e6c40dbad43d"",
-    ""callsign"": ""AAL106"",
+    ""callsign"": ""AAL211"",
     ""hasBooking"": false,
     ""inactive"": false,
     ""measures"": [
@@ -101,7 +101,7 @@ namespace VACDMApp.VACDMData
       ""current_squawk"": ""2033""
     },
     ""_id"": ""6558e5e62761e6c40dbad45d"",
-    ""callsign"": ""KLM104"",
+    ""callsign"": ""KLM862"",
     ""hasBooking"": false,
     ""inactive"": false,
     ""measures"": [
@@ -153,7 +153,7 @@ namespace VACDMApp.VACDMData
       ""current_squawk"": ""1000""
     },
     ""_id"": ""6558e6c62761e6c40dbad7c8"",
-    ""callsign"": ""EZY611"",
+    ""callsign"": ""DLH462"",
     ""hasBooking"": false,
     ""inactive"": false,
     ""measures"": [
@@ -205,7 +205,7 @@ namespace VACDMApp.VACDMData
       ""current_squawk"": ""1000""
     },
     ""_id"": ""6558e75f2761e6c40dbada3f"",
-    ""callsign"": ""DLH446"",
+    ""callsign"": ""DLH511"",
     ""hasBooking"": false,
     ""inactive"": false,
     ""measures"": [
@@ -245,7 +245,7 @@ namespace VACDMApp.VACDMData
             }
 
             //Remove VFR Flights
-            return dataList.Where(x => x.FlightPlan.FlightRules == "I").ToList();
+            return dataList.Where(x => x.FlightPlan.FlightRules == "I").ToList().OrderBy(x => x.Vacdm.Eobt).ToList();
         }
 
         internal static VatsimData GetVatsimData() => _client.GetFromJsonAsync<VatsimData>("https://data.vatsim.net/v3/vatsim-data.json").Result;

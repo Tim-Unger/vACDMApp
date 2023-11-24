@@ -7,24 +7,30 @@ public partial class AirportsBottomSheet : BottomSheet
 	public AirportsBottomSheet()
 	{
 		InitializeComponent();
+        GetAirports();
 	}
 
 	private static string SelectedAirport = "";
 
+	private void GetAirports()
+	{
+        var airports = MainPage.VACDMPilots
+            .Select(x => x.FlightPlan.Departure)
+            .DistinctBy(x => x.ToUpper())
+            .ToList();
+
+        if (airports.Count() == 0)
+        {
+            var noAirports = new Button() { Text = "No Airports found", TextColor = Colors.Black };
+            AirportsStackLayout.Children.Add(noAirports);
+        }
+
+        airports.ForEach(x => AirportsStackLayout.Children.Add(RenderAirport(x)));
+    }
+
     private void BottomSheet_Loaded(object sender, EventArgs e)
     {
-		var airports = MainPage.VACDMPilots
-			.Select(x => x.FlightPlan.Departure)
-			.DistinctBy(x => x.ToUpper())
-			.ToList();
-
-		if(airports.Count() == 0)
-		{
-			var noAirports = new Button() { Text = "No Airports found", TextColor = Colors.Black };
-			AirportsStackLayout.Children.Add(noAirports);
-		}
-
-		airports.ForEach(x =>  AirportsStackLayout.Children.Add(RenderAirport(x)));
+		
     }
 
 	private Button RenderAirport(string icao)
@@ -45,10 +51,4 @@ public partial class AirportsBottomSheet : BottomSheet
     }
 
 	public static string GetClickedAirport() => SelectedAirport;
-
-	//TODO
-    private void BottomSheet_Unfocused(object sender, FocusEventArgs e)
-    {
-		DismissAsync();
-    }
 }

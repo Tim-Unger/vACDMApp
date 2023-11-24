@@ -1,12 +1,43 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView
-    x:Class="VACDMApp.Windows.Views.MyFlight"
+    x:Class="VACDMApp.Windows.Views.MyFlightView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-    <VerticalStackLayout>
-        <Entry
-            x:Name="CidText"
-            Placeholder="CID"
-            TextColor="#FEFEFE" />
-    </VerticalStackLayout>
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Loaded="ContentView_Loaded">
+    <Grid x:Name="MyFlightGrid">
+        <VerticalStackLayout
+            x:Name="MyFlightStackLayout"
+            Margin="10"
+            VerticalOptions="Center">
+            <Entry
+                x:Name="CidText"
+                Margin="10,5,10,5"
+                BackgroundColor="#232323"
+                HeightRequest="50"
+                Keyboard="Numeric"
+                Placeholder="Your CID"
+                TextColor="#FEFEFE" />
+            <Button
+                x:Name="FindCidButton"
+                BackgroundColor="#232323"
+                Clicked="FindCidButton_Clicked"
+                FontAttributes="Bold"
+                HeightRequest="50"
+                HorizontalOptions="Center"
+                IsEnabled="True"
+                Text="Show Information"
+                TextColor="#FEFEFE" />
+
+            <Button
+                x:Name="ShowVdgsButton"
+                BackgroundColor="#232323"
+                Clicked="ShowVdgsButton_Clicked"
+                FontAttributes="Bold"
+                HeightRequest="50"
+                HorizontalOptions="Center"
+                IsEnabled="True"
+                Text="Show VDGS"
+                TextColor="#FEFEFE" />
+        </VerticalStackLayout>
+    </Grid>
 </ContentView>

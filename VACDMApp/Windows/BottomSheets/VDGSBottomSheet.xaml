@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <the49:BottomSheet
-    x:Class="VACDMApp.Windows.BottomSheets.SingleFlightBottomSheet"
+    x:Class="VACDMApp.Windows.BottomSheets.VDGSBottomSheet"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
     HandleColor="White"
     HasHandle="True"
-    Loaded="ContentView_Loaded"
-    Unfocused="BottomSheet_Unfocused">
-    <StackLayout x:Name="SingleFlightGrid" />
+    Loaded="BottomSheet_Loaded">
+    <VerticalStackLayout
+        Background="#212121"
+        x:Name="VDGSStackLayout"
+        Padding="0,50,0,50"
+        HorizontalOptions="Center" />
 </the49:BottomSheet>
