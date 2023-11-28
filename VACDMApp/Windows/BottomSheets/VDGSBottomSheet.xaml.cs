@@ -1,5 +1,6 @@
 using Microsoft.Maui.Controls.Shapes;
 using The49.Maui.BottomSheet;
+using static VACDMApp.VACDMData.Data;
 
 namespace VACDMApp.Windows.BottomSheets;
 
@@ -16,7 +17,7 @@ public partial class VDGSBottomSheet : BottomSheet
 
     private void BottomSheet_Loaded(object sender, EventArgs e)
     {
-        var vacdmPilot = MainPage.VACDMPilots.First(x => x.Callsign == SelectedCallsign);
+        var vacdmPilot = VACDMPilots.First(x => x.Callsign == SelectedCallsign);
 
         var callsignLabel = new Label()
         {

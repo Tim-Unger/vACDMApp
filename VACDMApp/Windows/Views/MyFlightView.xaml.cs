@@ -1,6 +1,7 @@
 namespace VACDMApp.Windows.Views;
 
 using Microsoft.Maui.Controls;
+using VACDMApp.VACDMData;
 using VACDMApp.Windows.BottomSheets;
 
 public partial class MyFlightView : ContentView
@@ -21,6 +22,11 @@ public partial class MyFlightView : ContentView
 
     private async void FindCidButton_Clicked(object sender, EventArgs e)
     {
+        if(Data.Settings.Cid is not null)
+        {
+            CidText.Text = Data.Settings.Cid.ToString();
+        }
+
         var page = Shell.Current.CurrentPage;
 
         var cidText = CidText.Text;
@@ -36,7 +42,7 @@ public partial class MyFlightView : ContentView
             await page.DisplayAlert("Invalid CID", "The provided CID does not exist", "OK");
         }
 
-        var pilot = MainPage.VatsimPilots.FirstOrDefault(x => x.cid == cid);
+        var pilot = Data.VatsimPilots.FirstOrDefault(x => x.cid == cid);
 
         if (pilot is null)
         {
@@ -49,7 +55,7 @@ public partial class MyFlightView : ContentView
             return;
         }
 
-        var vacdmPilot = MainPage.VACDMPilots.FirstOrDefault(
+        var vacdmPilot = Data.VACDMPilots.FirstOrDefault(
             x => x.Callsign.Equals(pilot.callsign, StringComparison.InvariantCultureIgnoreCase)
         );
 
@@ -77,7 +83,7 @@ public partial class MyFlightView : ContentView
     private void ShowVdgsButton_Clicked(object sender, EventArgs e)
     {
         var cid = int.Parse(CidText.Text);
-        var pilot = MainPage.VatsimPilots.First(x => x.cid == cid);
+        var pilot = Data.VatsimPilots.First(x => x.cid == cid);
 
 
         VDGSBottomSheet.SelectedCallsign = pilot.callsign;

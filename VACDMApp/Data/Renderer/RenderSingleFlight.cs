@@ -10,9 +10,9 @@ namespace VACDMApp.VACDMData.Renderer
 
         internal static Grid RenderGrid(string callsign)
         {
-            var flightPlan = VatsimPilots.First(x => x.callsign == callsign).flight_plan ?? throw new Exception();
-            var airlines = Airlines;
-            var pilot = VACDMPilots.First(x => x.Callsign == callsign);
+            var flightPlan = Data.VatsimPilots.First(x => x.callsign == callsign).flight_plan ?? throw new Exception();
+            var airlines = Data.Airlines;
+            var pilot = Data.VACDMPilots.First(x => x.Callsign == callsign);
 
             var grid = new Grid
             {
@@ -63,7 +63,7 @@ namespace VACDMApp.VACDMData.Renderer
             var callsignLabel = new Label() { Text = pilot.Callsign, TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 25, HorizontalTextAlignment = TextAlignment.End, VerticalTextAlignment = TextAlignment.Center };
 
             var icao = pilot.Callsign[..3].ToUpper();
-            var airline = airlines.FirstOrDefault(x => x.icao == icao) ?? new Airline() { callsign = "", country = "", iata = icao, icao = icao, name = "" };
+            var airline = airlines.Find(x => x.icao == icao) ?? new Airline() { callsign = "", country = "", iata = icao, icao = icao, name = "" };
             var flightNumberOnly = pilot.Callsign.Remove(0, 3);
             var flightData = $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival}, {flightPlan.aircraft_short}";
 

@@ -32,7 +32,7 @@
                         Background="#232323"
                         Clicked="MyFlightButton_Clicked"
                         HeightRequest="40"
-                        Source="plane.svg"
+                        Source="plane_outline.svg"
                         WidthRequest="40" />
                     <Label
                         FontAttributes="Bold"
@@ -43,8 +43,8 @@
 
                 <VerticalStackLayout Padding="20,0,20,0" HorizontalOptions="Center">
                     <ImageButton
-                        x:Name="AllFlights"
-                        Clicked="AllFlights_Clicked"
+                        x:Name="AllFlightsButton"
+                        Clicked="AllFlightsButton_Clicked"
                         HeightRequest="40"
                         Source="planes.svg"
                         WidthRequest="40" />
@@ -56,27 +56,12 @@
                         TextColor="#FEFEFE" />
                 </VerticalStackLayout>
 
-                <VerticalStackLayout Padding="20,0,20,0" HorizontalOptions="Center">
-                    <ImageButton
-                        x:Name="Settings"
-                        Clicked="Settings_Clicked"
-                        HeightRequest="40"
-                        Source="settings.svg"
-                        WidthRequest="40" />
-
-                    <Label
-                        FontAttributes="Bold"
-                        HorizontalOptions="Center"
-                        Text="Settings"
-                        TextColor="#FEFEFE" />
-                </VerticalStackLayout>
-
                 <VerticalStackLayout Padding="20,0,30,0" HorizontalOptions="Center">
                     <ImageButton
-                        x:Name="FlowMeasures"
-                        Clicked="FlowMeasures_Clicked"
+                        x:Name="FlowMeasuresButton"
+                        Clicked="FlowMeasuresButton_Clicked"
                         HeightRequest="40"
-                        Source="flowmeasures.svg"
+                        Source="flowmeasures_outline.svg"
                         WidthRequest="40" />
 
                     <Label
@@ -86,6 +71,20 @@
                         TextColor="#FEFEFE" />
                 </VerticalStackLayout>
 
+                <VerticalStackLayout Padding="20,0,20,0" HorizontalOptions="Center">
+                    <ImageButton
+                        x:Name="SettingsButton"
+                        Clicked="SettingsButton_Clicked"
+                        HeightRequest="40"
+                        Source="settings_outline.svg"
+                        WidthRequest="40" />
+
+                    <Label
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        Text="Settings"
+                        TextColor="#FEFEFE" />
+                </VerticalStackLayout>
             </HorizontalStackLayout>
 
             <!--<DatePicker x:Name="FlightsDatePicker" IsVisible="false"  />-->

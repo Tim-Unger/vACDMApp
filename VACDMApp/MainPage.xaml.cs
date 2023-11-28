@@ -1,26 +1,17 @@
 ﻿using VACDMApp.VACDMData;
-using VACDMApp.Windows.BottomSheets;
-using VACDMApp.Windows.Views;
+using static VACDMApp.VACDMData.Data;
 
 namespace VACDMApp
 {
     public partial class MainPage : ContentPage
     {
-        public static List<VACDMPilot> VACDMPilots = new();
+        
 
-        public static List<Pilot> VatsimPilots = new();
-
-        public static List<Airline> Airlines = new();
-
-        public static FlightsView FlightsView = new();
-
-        public static MyFlightView MyFlightView = new();
-
-        public enum ViewPage
+        public enum CurrentPage
         {
             MyFlight,
             AllFlights,
-            SingleFlight,
+            FlowMeasures,
             Settings
         }
 
@@ -32,28 +23,51 @@ namespace VACDMApp
         //OnLoad
         private void ContentPage_Loaded(object sender, EventArgs e)
         {
-            VACDMPilots = VACDMData.VACDMData.Get();
             VatsimPilots = VACDMData.VACDMData.GetVatsimData().pilots.ToList();
+            VACDMPilots = VACDMData.VACDMData.Get();
             Airlines = VACDMData.VACDMData.GetAirlines();
+            FlowMeasures = VACDMData.VACDMData.GetFlowMeasures();
+
             Mainview.Content = FlightsView;
+            //TODO
+            //Data.Settings = VACDMData.VACDMData.ReadSettings();
         }
 
         private void MyFlightButton_Clicked(object sender, EventArgs e)
         {
             Mainview.Content = MyFlightView;
+            SetButton(CurrentPage.MyFlight);
         }
 
-        private void AllFlights_Clicked(object sender, EventArgs e)
+        private void AllFlightsButton_Clicked(object sender, EventArgs e)
         {
             Mainview.Content = FlightsView;
+            SetButton(CurrentPage.AllFlights);
         }
 
-        private void Settings_Clicked(object sender, EventArgs e)
+        private void FlowMeasuresButton_Clicked(object sender, EventArgs e)
         {
-
+            Mainview.Content = FlowMeasuresView;
+            SetButton(CurrentPage.FlowMeasures);
         }
 
-        private void FlowMeasures_Clicked(object sender, EventArgs e)
+        private void SettingsButton_Clicked(object sender, EventArgs e)
+        {
+            Mainview.Content = SettingsView;
+            SetButton(CurrentPage.Settings);
+        }
+
+        private void SetButton(CurrentPage currentPage)
+        {
+            MyFlightButton.Source = currentPage == CurrentPage.MyFlight ? "plane.svg" : "plane_outline.svg";
+            AllFlightsButton.Source = currentPage == CurrentPage.AllFlights ? "planes.svg" : "planes_outline.svg";
+            FlowMeasuresButton.Source = currentPage == CurrentPage.FlowMeasures ? "flowmeasures.svg" : "flowmeasures_outline.svg";
+            SettingsButton.Source = currentPage == CurrentPage.Settings ? "settings.svg" : "settings_outline.svg";
+        }
+
+        
+
+        private static void SetSettings(Settings settings)
         {
 
         }

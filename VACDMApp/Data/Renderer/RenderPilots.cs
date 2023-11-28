@@ -6,27 +6,35 @@ namespace VACDMApp.VACDMData.Renderer
     internal class FlightInfos : MainPage
     {
         private static readonly Color DarkBlue = new Color(28, 40, 54);
-        internal static List<Grid> Render()
-        {
-            var pilotsWithFP = VACDMPilots.Where(x => VatsimPilots.Any(y => y.callsign == x.Callsign));
-            var elements = pilotsWithFP.Select(RenderPilot).ToList();
 
-            return elements;
+        private static readonly GridLength OneStar = new GridLength(3, GridUnitType.Star);
+
+        internal static List<Grid> Render(string? airport)
+        {
+            var pilotsWithFP = Data.VACDMPilots.Where(x => Data.VatsimPilots.Any(y => y.callsign == x.Callsign));
+
+            if(airport is not null)
+            {
+                var pilotsFromAirport = pilotsWithFP.Where(x => x.FlightPlan.Departure == airport);
+                return pilotsFromAirport.Select(RenderPilot).ToList();
+            }
+
+            return pilotsWithFP.Select(RenderPilot).ToList();
         }
 
         private static Grid RenderPilot(VACDMPilot pilot)
         {
             //TODO Error handling here when ACDM FP not found
-            var flightPlan = VatsimPilots.FirstOrDefault(x => x.callsign == pilot.Callsign).flight_plan ?? throw new Exception();
-            var airlines = Airlines;
+            var flightPlan = Data.VatsimPilots.FirstOrDefault(x => x.callsign == pilot.Callsign).flight_plan ?? throw new Exception();
+            var airlines = Data.Airlines;
             var grid = new Grid() { Background = DarkBlue, Margin = 10 };
             
-            grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
+            grid.ColumnDefinitions.Add(new ColumnDefinition(OneStar));
             grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(3, GridUnitType.Star)));
 
             var timeGrid = new Grid();
-            timeGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
-            timeGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
+            timeGrid.RowDefinitions.Add(new RowDefinition(OneStar));
+            timeGrid.RowDefinitions.Add(new RowDefinition(OneStar));
 
             grid.SetColumn(timeGrid, 0);
 
@@ -39,10 +47,10 @@ namespace VACDMApp.VACDMData.Renderer
             timeGrid.SetRow(tsat, 1);
 
             var flightGrid = new Grid();
-            flightGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
-            flightGrid.RowDefinitions.Add(new RowDefinition(new GridLength(2, GridUnitType.Star)));
-            flightGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
-            flightGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
+            flightGrid.RowDefinitions.Add(new RowDefinition(OneStar));
+            flightGrid.RowDefinitions.Add(new RowDefinition(OneStar));
+            flightGrid.RowDefinitions.Add(new RowDefinition(OneStar));
+            flightGrid.RowDefinitions.Add(new RowDefinition(OneStar));
 
             grid.SetColumn(flightGrid, 1);
 
@@ -104,7 +112,7 @@ namespace VACDMApp.VACDMData.Renderer
 
         public static string GetFlightStatus(VACDMPilot pilot)
         {
-            var vatsimPilot = MainPage.VatsimPilots.First(x => x.callsign == pilot.Callsign);
+            var vatsimPilot = Data.VatsimPilots.First(x => x.callsign == pilot.Callsign);
             if (vatsimPilot.groundspeed > 50)
             {
                 return "Departed";

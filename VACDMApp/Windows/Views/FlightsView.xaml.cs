@@ -1,5 +1,7 @@
+using VACDMApp.VACDMData;
 using VACDMApp.VACDMData.Renderer;
 using VACDMApp.Windows.BottomSheets;
+using static VACDMApp.VACDMData.Data;
 
 namespace VACDMApp.Windows.Views;
 
@@ -21,15 +23,17 @@ public partial class FlightsView : ContentView
 
     private static readonly Button _timeFormatButton = new() { Margin = new Thickness(10, 5, 10, 5), Background = _grey, FontAttributes = FontAttributes.Bold, Text = "Today", TextColor = _white };
 
-    private static TimePicker _flightsTimePicker = new() { Margin = new Thickness(10, 5, 10, 5), Background = _grey, FontAttributes = FontAttributes.Bold, IsVisible = true, TextColor = _white };
+    private static readonly TimePicker _flightsTimePicker = new() { Margin = new Thickness(10, 5, 10, 5), Background = _grey, FontAttributes = FontAttributes.Bold, IsVisible = true, TextColor = _white };
 
-    private static bool _isFirstLoad = true;
+    private bool _isFirstLoad = true;
+
+    private AirportsBottomSheet _airportsSheet = new();
 
     private void ContentView_Loaded(object sender, EventArgs e)
     {
         if (_isFirstLoad)
         {
-            var flights = FlightInfos.Render();
+            var flights = FlightInfos.Render(null);
             flights.ForEach(FlightsStackLayout.Children.Add);
             GetNearestTime();
 
@@ -43,6 +47,8 @@ public partial class FlightsView : ContentView
         }
 
         _isFirstLoad = false;
+
+        //FlightsSearchBar.Text = Properties.Settings.Default.Cid;
     }
 
     private void GetNearestTime()
@@ -52,12 +58,7 @@ public partial class FlightsView : ContentView
         _flightsTimePicker.Time = new TimeSpan(now.Hour, 0, 0);
     }
 
-    private void AirportsButton_Clicked(object sender, EventArgs e)
-    {
-        var airportsSheet = new AirportsBottomSheet();
-
-        airportsSheet.ShowAsync();
-    }
+    private void AirportsButton_Clicked(object sender, EventArgs e) => _airportsSheet.ShowAsync();
 
     private void DayButton_Clicked(object sender, EventArgs e)
     {
@@ -74,5 +75,21 @@ public partial class FlightsView : ContentView
     private void TimeFormatButton_Clicked(object sender, EventArgs e)
     {
 
+    }
+
+    internal void GetFlightsFromSelectedAirport()
+    {
+        var selectedAirport = AirportsBottomSheet.GetClickedAirport();
+
+        if(selectedAirport == "ALL AIRPORTS")
+        {
+            return;
+        }
+
+        var flightsData = VACDMPilots.Where(x => x.FlightPlan.Departure == selectedAirport).ToList();
+
+        var flights = FlightInfos.Render(selectedAirport);
+        FlightsStackLayout.Children.Clear();
+        flights.ForEach(FlightsStackLayout.Children.Add);
     }
 }

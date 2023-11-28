@@ -1,5 +1,6 @@
 using The49.Maui.BottomSheet;
-
+using VACDMApp.VACDMData;
+using static VACDMApp.VACDMData.Data;
 namespace VACDMApp.Windows.BottomSheets;
 
 public partial class AirportsBottomSheet : BottomSheet
@@ -14,7 +15,7 @@ public partial class AirportsBottomSheet : BottomSheet
 
 	private void GetAirports()
 	{
-        var airports = MainPage.VACDMPilots
+        var airports = VACDMPilots
             .Select(x => x.FlightPlan.Departure)
             .DistinctBy(x => x.ToUpper())
             .ToList();
@@ -25,6 +26,7 @@ public partial class AirportsBottomSheet : BottomSheet
             AirportsStackLayout.Children.Add(noAirports);
         }
 
+        airports.Add("ALL AIRPORTS");
         airports.ForEach(x => AirportsStackLayout.Children.Add(RenderAirport(x)));
     }
 
@@ -48,7 +50,8 @@ public partial class AirportsBottomSheet : BottomSheet
 		SelectedAirport = selectedAirport.Text.ToUpper();
 
 		DismissAsync();
+        FlightsView.GetFlightsFromSelectedAirport();
     }
 
-	public static string GetClickedAirport() => SelectedAirport;
+	internal static string GetClickedAirport() => SelectedAirport;
 }

@@ -6,6 +6,7 @@
     Loaded="ContentView_Loaded">
     <VerticalStackLayout x:Name="FlightsStackLayout" Margin="10">
         <SearchBar
+            x:Name="FlightsSearchBar"
             Grid.Row="0"
             Margin="5"
             BackgroundColor="#232323"

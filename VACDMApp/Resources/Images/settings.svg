@@ -1,1 +1,22 @@
-<svg id="Ebene_1" data-name="Ebene 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><defs><style>.cls-1{fill:#fff;}</style></defs><title>settings</title><path class="cls-1" d="M200,50A150,150,0,1,0,350,200,150,150,0,0,0,200,50Zm0,270A120,120,0,1,1,320,200,120,120,0,0,1,200,320Z"/><rect class="cls-1" y="177" width="75" height="30"/><rect class="cls-1" x="325" y="177" width="75" height="30"/><rect class="cls-1" x="162.5" y="22.5" width="75" height="30" transform="translate(162.5 237.5) rotate(-90)"/><rect class="cls-1" x="162.5" y="347.5" width="75" height="30" transform="translate(-162.5 562.5) rotate(-90)"/><rect class="cls-1" x="288.82664" y="292.66117" width="71.66905" height="30" transform="translate(336.68198 754.78057) rotate(-135)"/><rect class="cls-1" x="60.07233" y="59.08883" width="78.03301" height="30" transform="translate(116.7665 196.54394) rotate(-135)"/><rect class="cls-1" x="267.00557" y="64.75" width="78.48885" height="30" transform="translate(33.30678 239.90969) rotate(-45)"/><rect class="cls-1" x="40.69365" y="293.41117" width="73.79037" height="30" transform="translate(-195.35438 145.19513) rotate(-45)"/></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 400 399.9" style="enable-background:new 0 0 400 399.9;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+</style>
+<title>settings</title>
+<rect y="165.5" class="st0" width="90.5" height="45"/>
+<rect x="317.5" y="169.5" class="st0" width="82.5" height="45"/>
+<rect x="175.8" class="st0" width="45" height="93.5"/>
+<rect x="177.5" y="310" class="st0" width="45" height="89.9"/>
+<rect x="302.2" y="253.9" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -122.4583 319.682)" class="st0" width="45" height="107.5"/>
+<path class="st0" d="M41.8,48.6l31.8-31.8c26.1,26.1,52.3,52.3,78.4,78.4c-11,10.2-22,20.5-32.9,30.7
+	C93.3,100.1,67.6,74.4,41.8,48.6z"/>
+<path class="st0" d="M251.1,103.1c27-27,53.9-53.9,80.9-80.9L363.8,54c-26.4,26.4-52.8,52.8-79.3,79.3
+	C273.4,123.2,262.2,113.2,251.1,103.1z"/>
+<rect x="22.2" y="285.9" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -195.3544 145.1951)" class="st0" width="110.7" height="45"/>
+<path class="st0" d="M198.3,47.8c-83.8,0-151.7,67.9-151.7,151.7s67.9,151.7,151.7,151.7S350,283.3,350,199.5c0,0,0,0,0,0
+	C350,115.7,282.1,47.8,198.3,47.8z M198.3,305.6c-58.6,0-106.1-47.5-106.1-106.1S139.8,93.4,198.3,93.4s106.1,47.5,106.1,106.1
+	S256.9,305.6,198.3,305.6z"/>
+</svg>
