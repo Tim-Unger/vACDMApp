@@ -85,6 +85,9 @@ public partial class MyFlightView : ContentView
         var cid = int.Parse(CidText.Text);
         var pilot = Data.VatsimPilots.First(x => x.cid == cid);
 
+        //Trick to hide the onscreen keyboard
+        CidText.IsEnabled = false;
+        CidText.IsEnabled = true;
 
         VDGSBottomSheet.SelectedCallsign = pilot.callsign;
         var vdgsSheet = new VDGSBottomSheet();

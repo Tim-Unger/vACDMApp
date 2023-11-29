@@ -89,6 +89,7 @@ namespace VACDMApp.VACDMData.Renderer
             timesInfoGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
             timesInfoGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
             timesInfoGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
+            timesInfoGrid.RowDefinitions.Add(new RowDefinition(new GridLength(0.5, GridUnitType.Star)));
 
             var timesFirstColumnGrid = new Grid();
             timesFirstColumnGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
@@ -110,7 +111,6 @@ namespace VACDMApp.VACDMData.Renderer
 
             var ctotTextLabel = new Label() { Text = $"CTOT:", TextColor = Colors.White, Background = DarkBlue, FontSize = 20, VerticalTextAlignment = TextAlignment.Center };
             var ctotTimeLabel = new Label() { Text = $"{ctot:HH:mmZ}", TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 20, HorizontalTextAlignment = TextAlignment.End, VerticalTextAlignment = TextAlignment.Center, Margin = timeMargin };
-            
 
             timesFirstColumnGrid.Children.Add(eobtTextLabel);
             timesFirstColumnGrid.Children.Add(eobtTimeLabel);
@@ -145,21 +145,24 @@ namespace VACDMApp.VACDMData.Renderer
             timesSecondRowGrid.SetColumn(tsatTimeLabel, 3);
 
 
-            var timesThirdColumnGrid = new Grid();
-            timesThirdColumnGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
-            timesThirdColumnGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
-            timesThirdColumnGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(2, GridUnitType.Star)));
+            var timesThirdRowGrid = new Grid();
+            timesThirdRowGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
+            timesThirdRowGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
+            timesThirdRowGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(2, GridUnitType.Star)));
 
             var delayTextLabel = new Label() { Text = $"Delay:", TextColor = Colors.White, Background = DarkBlue, FontSize = 20, VerticalTextAlignment = TextAlignment.Center};
-            var delayDataLabel = new Label() { Text = $"{vacdm.DelayMin} min.", TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 20, HorizontalTextAlignment = TextAlignment.End, VerticalTextAlignment = TextAlignment.Center, Margin = timeMargin };
+            var delayDataLabel = new Label() { Text = $"{vacdm.DelayMin} min.", TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 20, HorizontalTextAlignment = TextAlignment.End, VerticalTextAlignment = TextAlignment.Center , Margin = timeMargin };
 
-            timesThirdColumnGrid.Children.Add(delayTextLabel);
-            timesThirdColumnGrid.Children.Add(delayDataLabel);
+            timesThirdRowGrid.Children.Add(delayTextLabel);
+            timesThirdRowGrid.Children.Add(delayDataLabel);
 
             timesFirstColumnGrid.SetColumn(delayTextLabel, 0);
             timesFirstColumnGrid.SetColumn(delayDataLabel, 1);
 
-            timesThirdColumnGrid.SetColumn(timesThirdColumnGrid, 0);
+            timesThirdRowGrid.SetColumn(timesThirdRowGrid, 0);
+
+            (var confirmationStatusText, var confirmationColor) = vacdm.TobtState == "CONFIRMED" ? ("CONFIRMED", Colors.LimeGreen) : ("UNCONFIRMED", Colors.Red);
+            var confirmationStatusLabel = new Label() { Text = confirmationStatusText, TextColor = Colors.White, Background = confirmationColor, FontSize = 20,  VerticalTextAlignment = TextAlignment.Center, HorizontalTextAlignment = TextAlignment.Center };
 
             timesInfoGrid.Children.Add(timesFirstColumnGrid);
             timesInfoGrid.SetRow(timesFirstColumnGrid, 0);
@@ -167,9 +170,11 @@ namespace VACDMApp.VACDMData.Renderer
             timesInfoGrid.Children.Add(timesSecondRowGrid);
             timesInfoGrid.SetRow(timesSecondRowGrid, 1);
 
-            timesInfoGrid.Children.Add(timesThirdColumnGrid);
-            timesInfoGrid.SetRow(timesThirdColumnGrid, 2);
+            timesInfoGrid.Children.Add(timesThirdRowGrid);
+            timesInfoGrid.SetRow(timesThirdRowGrid, 2);
 
+            timesInfoGrid.Children.Add(confirmationStatusLabel);
+            timesInfoGrid.SetRow(confirmationStatusLabel,3);
 
             var flightPositionGrid = new Grid() { Padding = 10, Margin = 10, BackgroundColor = DarkBlue };
             flightPositionGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
@@ -298,7 +303,7 @@ namespace VACDMApp.VACDMData.Renderer
             //IN the Window (+/-5)
             if(tsat.AddMinutes(-5) <= now && tsat.AddMinutes(5) >= now)
             {
-                return Colors.LightGreen;
+                return Colors.LimeGreen;
             }
 
             //Outside of the Window

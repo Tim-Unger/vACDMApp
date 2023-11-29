@@ -3,6 +3,13 @@ using VACDMApp.Windows.Views;
 
 namespace VACDMApp.VACDMData
 {
+    internal enum SenderPage
+    {
+        Default,
+        SingleFlight,
+        Vdgs
+    }
+
     internal class Data
     {
         internal static List<VACDMPilot> VACDMPilots = new();
@@ -22,5 +29,9 @@ namespace VACDMApp.VACDMData
         internal static SettingsView SettingsView = new();
 
         internal static Settings Settings = new();
+
+        internal static SenderPage SenderPage;
+
+        internal static object Sender;
     }
 }

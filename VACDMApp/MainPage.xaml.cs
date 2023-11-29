@@ -21,12 +21,19 @@ namespace VACDMApp
         }
 
         //OnLoad
-        private void ContentPage_Loaded(object sender, EventArgs e)
+        private async void ContentPage_Loaded(object sender, EventArgs e)
         {
-            VatsimPilots = VACDMData.VACDMData.GetVatsimData().pilots.ToList();
-            VACDMPilots = VACDMData.VACDMData.Get();
-            Airlines = VACDMData.VACDMData.GetAirlines();
-            FlowMeasures = VACDMData.VACDMData.GetFlowMeasures();
+            var dataTask = VACDMData.VACDMData.GetVatsimData();
+            var vacdmTask = VACDMData.VACDMData.Get();
+            var airlinesTask = VACDMData.VACDMData.GetAirlines();
+            var measuresTask = VACDMData.VACDMData.GetFlowMeasures();
+
+            await Task.WhenAll(dataTask, vacdmTask, airlinesTask, measuresTask);
+
+            VatsimPilots = dataTask.Result.pilots.ToList();
+            VACDMPilots = vacdmTask.Result;
+            Airlines = airlinesTask.Result;
+            FlowMeasures = measuresTask.Result;
 
             Mainview.Content = FlightsView;
             //TODO

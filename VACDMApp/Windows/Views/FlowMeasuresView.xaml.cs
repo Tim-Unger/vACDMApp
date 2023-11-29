@@ -17,6 +17,12 @@ public partial class FlowMeasuresView : ContentView
 		if (_isFirstLoad)
 		{
 			var measures = FlowMeasures.Render();
+            if(measures.Count == 0)
+            {
+
+                return;
+            }
+
 			measures.ForEach(FlowMeasuresStackLayout.Children.Add);
 		}
 		

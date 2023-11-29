@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Json;
+using System.Text;
 using VACDMApp.Data;
 using static VACDMApp.VACDMData.Data;
 
@@ -222,22 +223,12 @@ namespace VACDMApp.VACDMData
         //TODO
         internal static readonly string VacdmApiUrl = "https://vacdm.vatsim-germany.org/api/v1/pilots/";
 
-        internal static List<VACDMPilot> Get() => GetData().Result;
+        //internal static async Task<List<VACDMPilot>> Get() => GetData();
 
 
-        internal static async Task<List<VACDMPilot>> GetData()
+        internal static async Task<List<VACDMPilot>> Get()
         {
-            //var responseMessage = await _client.GetAsync(_vacdmApiUrl);
-
             var data = _client.GetStringAsync(VacdmApiUrl).Result;
-
-            //if (responseMessage.IsSuccessStatusCode)
-            //{
-
-            //    data = await responseMessage.Content.ReadAsStringAsync();
-
-            //}
-
 
             var dataList = JsonSerializer.Deserialize<List<VACDMPilot>>(data);
 
@@ -256,29 +247,30 @@ namespace VACDMApp.VACDMData
                     .ToList();
         }
 
-        internal static VatsimData GetVatsimData() => _client.GetFromJsonAsync<VatsimData>("https://data.vatsim.net/v3/vatsim-data.json").Result;
+        internal static async Task<VatsimData> GetVatsimData() => await _client.GetFromJsonAsync<VatsimData>("https://data.vatsim.net/v3/vatsim-data.json");
 
-        internal static List<FlowMeasure> GetFlowMeasures()
+        internal static Task<List<FlowMeasure>> GetFlowMeasures()
         {
+            //TODO
             var firs = GetFirs();
 
-            var measures = _client.GetFromJsonAsync<List<FlowMeasure>>("https://ecfmp.vatsim.net/api/v1/flow-measure").Result;
+            var measures = _client.GetFromJsonAsync<List<FlowMeasure>>("https://ecfmp.vatsim.net/api/v1/flow-measure");
 
-            measures.ForEach(x => x.NotifiedFirs = x.notifiedFirs.Select(y => firs.First(z => z.Id == y)).ToList());
+            //measures.ForEach(x => x.NotifiedFirs = x.notifiedFirs.Select(y => firs.First(z => z.Id == y)).ToList());
 
             return measures;
         }
 
         private static List<Fir> GetFirs() => _client.GetFromJsonAsync<List<Fir>>("https://ecfmp.vatsim.net/api/v1/flight-information-region").Result;
 
-        internal static List<Airline> GetAirlines() 
+        internal static async Task<List<Airline>> GetAirlines() 
         {
             var dataRaw = FileSystem.Current.OpenAppPackageFileAsync("airlines.json").Result;
 
             var reader = new StreamReader(dataRaw);
             var data = reader.ReadToEnd();
 
-            return JsonSerializer.Deserialize<List<Airline>>(data);
+            return await JsonSerializer.DeserializeAsync<List<Airline>>(new MemoryStream(Encoding.UTF8.GetBytes(data)));
         }
 
         internal static Settings ReadSettings()

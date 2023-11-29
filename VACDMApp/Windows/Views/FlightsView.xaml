@@ -4,16 +4,42 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Loaded="ContentView_Loaded">
-    <VerticalStackLayout x:Name="FlightsStackLayout" Margin="10">
-        <SearchBar
-            x:Name="FlightsSearchBar"
-            Grid.Row="0"
-            Margin="5"
-            BackgroundColor="#232323"
-            TextColor="#FEFEFE" />
-        <HorizontalStackLayout
-            x:Name="ButtonsStackLayout"
-            Grid.Row="1"
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="10*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <VerticalStackLayout Margin="10">
+                <SearchBar
+                    x:Name="FlightsSearchBar"
+                    Grid.Row="0"
+                    Margin="5"
+                    BackgroundColor="#232323"
+                    TextColor="#FEFEFE" />
+                <HorizontalStackLayout
+                    x:Name="ButtonsStackLayout"
+                    Grid.Row="1"
+                    HorizontalOptions="Center" />
+            </VerticalStackLayout>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <RefreshView
+                x:Name="FlightsRefreshView"
+                IsRefreshing="False"
+                Refreshing="RefreshView_Refreshing">
+                <ScrollView
+                    x:Name="FlightsScrollView"
+                    Margin="10"
+                    VerticalOptions="FillAndExpand"
+                    VerticalScrollBarVisibility="Always">
+                    <VerticalStackLayout x:Name="FlightsStackLayout" />
+                </ScrollView>
+            </RefreshView>
+        </Grid>
+    </Grid>
+
 </ContentView>

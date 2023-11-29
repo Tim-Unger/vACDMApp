@@ -1,50 +1,135 @@
-﻿using VACDMApp.Windows.BottomSheets;
+﻿using System.Runtime.CompilerServices;
+using VACDMApp.Windows.BottomSheets;
 using VACDMApp.Windows.Views;
 
 namespace VACDMApp.VACDMData.Renderer
 {
     internal class FlightInfos : MainPage
     {
-        private static readonly Color DarkBlue = new Color(28, 40, 54);
+        private static readonly Color DarkBlue = new(28, 40, 54);
 
-        private static readonly GridLength OneStar = new GridLength(3, GridUnitType.Star);
+        private static readonly GridLength OneStar = new(3, GridUnitType.Star);
 
         internal static List<Grid> Render(string? airport)
         {
-            var pilotsWithFP = Data.VACDMPilots.Where(x => Data.VatsimPilots.Any(y => y.callsign == x.Callsign));
+            var pilotsWithFP = Data.VACDMPilots
+                //Only Pilots that have are in the Vatsim Datafeed
+                .Where(x => Data.VatsimPilots.Exists(y => y.callsign == x.Callsign))
+                //Only Pilots that have filed a flight plan
+                .Where(
+                    x => Data.VatsimPilots.First(y => y.callsign == x.Callsign).flight_plan != null
+                )
+                //Only pilots whose Eobt and TSAT lie within the future or max 5 minutes ago
+                .Where(
+                    x =>
+                        x.Vacdm.Eobt.Hour >= DateTime.UtcNow.AddHours(-1).Hour
+                       && x.Vacdm.Tsat >= DateTime.UtcNow.AddMinutes(-6)
+                );
 
-            if(airport is not null)
+            if (airport is not null)
             {
                 var pilotsFromAirport = pilotsWithFP.Where(x => x.FlightPlan.Departure == airport);
-                return pilotsFromAirport.Select(RenderPilot).ToList();
+                return SplitAndRenderGrid(pilotsFromAirport);
             }
 
-            return pilotsWithFP.Select(RenderPilot).ToList();
+            return SplitAndRenderGrid(pilotsWithFP);
+        }
+
+        private static List<Grid> SplitAndRenderGrid(IEnumerable<VACDMPilot> pilots)
+        {
+            var sortByTime = pilots.OrderBy(x => x.Vacdm.Eobt).GroupBy(x => x.Vacdm.Eobt.Hour);
+
+            var splitGrid = new List<Grid>();
+
+            foreach (var hourWindow in sortByTime)
+            {
+                splitGrid.Add(RenderTimeSeperator(hourWindow.Key));
+
+                splitGrid.AddRange(hourWindow.Select(RenderPilot));
+            }
+
+            return splitGrid;
+        }
+
+        private static Grid RenderTimeSeperator(int hour)
+        {
+            var grid = new Grid();
+            grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(2, GridUnitType.Star)));
+            grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(10, GridUnitType.Star)));
+            grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(2, GridUnitType.Star)));
+
+            var timeLabel = new Label()
+            {
+                //TODO Local Time as well
+                Text = $"{hour}:00Z",
+                Padding = new Thickness(10, 0, 0, 0),
+                TextColor = Colors.White,
+                Background = Colors.Black,
+                FontAttributes = FontAttributes.Bold,
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center,
+                FontSize = 17
+            };
+
+            //var now = DateTime.Now;
+
+            //var dateLabel = new Label()
+            //{
+            //    Text = now.ToShortDateString(),
+            //    Padding = new Thickness(0, 0, 10, 0),
+            //    TextColor = Colors.White,
+            //    Background = Colors.Black,
+            //    FontAttributes = FontAttributes.Bold,
+            //    VerticalOptions = LayoutOptions.Center,
+            //    HorizontalOptions = LayoutOptions.Center,
+            //    FontSize = 17
+            //};
+
+            grid.Children.Add(timeLabel);
+            //grid.Children.Add(dateLabel);
+
+
+            grid.SetColumn(timeLabel, 0);
+            //grid.SetColumn(dateLabel, 2);
+
+            return grid;
         }
 
         private static Grid RenderPilot(VACDMPilot pilot)
         {
             //TODO Error handling here when ACDM FP not found
-            var flightPlan = Data.VatsimPilots.FirstOrDefault(x => x.callsign == pilot.Callsign).flight_plan ?? throw new Exception();
+            var flightPlan =
+                Data.VatsimPilots.FirstOrDefault(x => x.callsign == pilot.Callsign).flight_plan
+                ?? throw new Exception();
             var airlines = Data.Airlines;
             var grid = new Grid() { Background = DarkBlue, Margin = 10 };
-            
+
             grid.ColumnDefinitions.Add(new ColumnDefinition(OneStar));
             grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(3, GridUnitType.Star)));
 
             var timeGrid = new Grid();
-            timeGrid.RowDefinitions.Add(new RowDefinition(OneStar));
+            timeGrid.RowDefinitions.Add(new RowDefinition(new GridLength(4, GridUnitType.Star)));
             timeGrid.RowDefinitions.Add(new RowDefinition(OneStar));
 
             grid.SetColumn(timeGrid, 0);
 
-            var eobt = new Label() { Text = pilot.Vacdm.Eobt.ToString("HH:mmZ"), TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 20, HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
-            var tsat = new Label() { Text = pilot.Vacdm.Tsat.ToString("HH:mmZ"), TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 20, HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+            var eobt = new Label()
+            {
+                Text = pilot.Vacdm.Eobt.ToString("HH:mmZ"),
+                Margin = new Thickness(20, 0, 0, 0),
+                TextColor = Colors.White,
+                Background = DarkBlue,
+                FontAttributes = FontAttributes.Bold,
+                FontSize = 20,
+                HorizontalTextAlignment = TextAlignment.Start,
+                VerticalTextAlignment = TextAlignment.End
+            };
+            //var tsat = new Label() { Text = pilot.Vacdm.Tsat.ToString("HH:mmZ"), TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 20, HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
 
             timeGrid.Children.Add(eobt);
-            timeGrid.Children.Add(tsat);
+            //timeGrid.Children.Add(tsat);
             timeGrid.SetRow(eobt, 0);
-            timeGrid.SetRow(tsat, 1);
+            //timeGrid.SetRow(tsat, 1);
 
             var flightGrid = new Grid();
             flightGrid.RowDefinitions.Add(new RowDefinition(OneStar));
@@ -55,17 +140,55 @@ namespace VACDMApp.VACDMData.Renderer
             grid.SetColumn(flightGrid, 1);
 
             var airport = $"From {pilot.FlightPlan.Departure}";
-            var airportLabel = new Label() { Text = airport, TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 18 };
+            var airportLabel = new Label()
+            {
+                Text = airport,
+                TextColor = Colors.White,
+                Background = DarkBlue,
+                FontAttributes = FontAttributes.Bold,
+                FontSize = 18
+            };
 
             var callsign = pilot.Callsign;
-            var callsignLabel = new Label() { Text = callsign, TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 25 };
+            var callsignLabel = new Label()
+            {
+                Text = callsign,
+                TextColor = Colors.White,
+                Background = DarkBlue,
+                FontAttributes = FontAttributes.Bold,
+                FontSize = 25
+            };
 
             var icao = pilot.Callsign[..3].ToUpper();
-            var airline = airlines.FirstOrDefault(x => x.icao == icao) ?? new Airline() { callsign = "", country = "", iata = icao, icao = icao, name = "" };
+            var airline =
+                airlines.FirstOrDefault(x => x.icao == icao)
+                ?? new Airline()
+                {
+                    callsign = "",
+                    country = "",
+                    iata = icao,
+                    icao = icao,
+                    name = ""
+                };
             var flightNumberOnly = pilot.Callsign.Remove(0, 3);
-            var flightData = $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival}, {flightPlan.aircraft_short}";
-            var flightDataLabel = new Label() { Text = flightData, TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 15 };
-            var statusLabel = new Label() { Text = GetFlightStatus(pilot), TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 15 };
+            var flightData =
+                $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival}, {flightPlan.aircraft_short}";
+            var flightDataLabel = new Label()
+            {
+                Text = flightData,
+                TextColor = Colors.White,
+                Background = DarkBlue,
+                FontAttributes = FontAttributes.Bold,
+                FontSize = 15
+            };
+            var statusLabel = new Label()
+            {
+                Text = GetFlightStatus(pilot),
+                TextColor = Colors.White,
+                Background = DarkBlue,
+                FontAttributes = FontAttributes.Bold,
+                FontSize = 15
+            };
 
             flightGrid.Children.Add(airportLabel);
             flightGrid.Children.Add(callsignLabel);
@@ -107,7 +230,6 @@ namespace VACDMApp.VACDMData.Renderer
             var singleFlightSheet = new SingleFlightBottomSheet();
 
             singleFlightSheet.ShowAsync();
-            
         }
 
         public static string GetFlightStatus(VACDMPilot pilot)
@@ -120,7 +242,7 @@ namespace VACDMApp.VACDMData.Renderer
 
             var vacdm = pilot.Vacdm;
 
-            if(vacdm.Sug.Year == 1969)
+            if (vacdm.Sug.Year == 1969)
             {
                 return "Preflight/Boarding";
             }
@@ -137,6 +259,5 @@ namespace VACDMApp.VACDMData.Renderer
 
             return "Taxi Out";
         }
-        
     }
 }

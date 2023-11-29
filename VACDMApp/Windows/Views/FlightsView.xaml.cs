@@ -91,5 +91,13 @@ public partial class FlightsView : ContentView
         var flights = FlightInfos.Render(selectedAirport);
         FlightsStackLayout.Children.Clear();
         flights.ForEach(FlightsStackLayout.Children.Add);
+        FlightsScrollView.Content = FlightsStackLayout;
+    }
+
+    private void RefreshView_Refreshing(object sender, EventArgs e)
+    {
+        FlightsRefreshView.IsRefreshing = true;
+
+        FlightsRefreshView.IsRefreshing = false;
     }
 }

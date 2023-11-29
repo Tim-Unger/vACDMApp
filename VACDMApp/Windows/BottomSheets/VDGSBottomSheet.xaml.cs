@@ -17,6 +17,7 @@ public partial class VDGSBottomSheet : BottomSheet
 
     private void BottomSheet_Loaded(object sender, EventArgs e)
     {
+
         var vacdmPilot = VACDMPilots.First(x => x.Callsign == SelectedCallsign);
 
         var callsignLabel = new Label()

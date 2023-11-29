@@ -6,12 +6,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
     xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
+    Title=""
     Background="Black"
     Loaded="ContentPage_Loaded"
-    Shell.TabBarBackgroundColor="#1c2836">
+    NavigationPage.HasNavigationBar="False"
+    Shell.TabBarBackgroundColor="Black">
 
     <ContentPage.Behaviors>
-        <mct:StatusBarBehavior StatusBarColor="#1c2836" />
+        <mct:StatusBarBehavior StatusBarColor="Black" />
     </ContentPage.Behaviors>
     <Grid>
         <Grid>
