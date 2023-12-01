@@ -23,6 +23,12 @@ namespace VACDMApp
                 return true;
             }
 
+            if(sender == SenderPage.Vdgs)
+            {
+                ((VDGSBottomSheet)VACDMData.Data.Sender).DismissAsync();
+                return true;
+            }
+
             if(_backSwipeCount == 0)
             {
                 var toast = Toast.Make("Back again to exit", CommunityToolkit.Maui.Core.ToastDuration.Short, 14);

@@ -9,6 +9,15 @@
             x:Name="MyFlightStackLayout"
             Margin="10"
             VerticalOptions="Center">
+            <Label
+                x:Name="TimeLabel"
+                Margin="0,20,0,20"
+                FontAttributes="Bold"
+                FontSize="30"
+                HorizontalOptions="Center"
+                TextColor="#FEFEFE"
+                VerticalOptions="Center" />
+
             <Entry
                 x:Name="CidText"
                 Margin="10,5,10,5"
@@ -17,8 +26,10 @@
                 Keyboard="Numeric"
                 Placeholder="Your CID"
                 TextColor="#FEFEFE" />
+
             <Button
                 x:Name="FindCidButton"
+                Margin="0,20,0,20"
                 BackgroundColor="#232323"
                 Clicked="FindCidButton_Clicked"
                 FontAttributes="Bold"
@@ -30,6 +41,7 @@
 
             <Button
                 x:Name="ShowVdgsButton"
+                Margin="0,20,0,20"
                 BackgroundColor="#232323"
                 Clicked="ShowVdgsButton_Clicked"
                 FontAttributes="Bold"
@@ -38,6 +50,7 @@
                 IsEnabled="True"
                 Text="Show VDGS"
                 TextColor="#FEFEFE" />
+
         </VerticalStackLayout>
     </Grid>
 </ContentView>

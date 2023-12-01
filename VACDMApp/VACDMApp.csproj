@@ -15,7 +15,7 @@
 		<ApplicationTitle>VACDMApp</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.vacdmapp</ApplicationId>
+		<ApplicationId>com.timunger.vacdmapp</ApplicationId>
 		<ApplicationIdGuid>ec1596f9-448e-445a-a374-eac395a479e8</ApplicationIdGuid>
 
 		<!-- Versions -->
@@ -48,13 +48,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\Fonts\AdvancedDot-Regular.ttf" />
-	  <None Remove="Resources\Raw\airlines.json" />
-	  <None Remove="Resources\Raw\Settings.json" />
+		<None Remove="Resources\Fonts\AdvancedDot-Regular.ttf" />
+		<None Remove="Resources\Raw\airlines.json" />
+		<None Remove="Resources\Raw\Settings.json" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="..\.editorconfig" Link=".editorconfig" />
+		<None Include="..\.editorconfig" Link=".editorconfig" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -64,50 +64,57 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Windows\Views\MyFlightView.xaml.cs">
-	    <DependentUpon>MyFlightView.xaml</DependentUpon>
-	  </Compile>
+		<Compile Update="Windows\Views\MyFlightView.xaml.cs">
+			<DependentUpon>MyFlightView.xaml</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiAsset Update="Resources\Raw\airlines.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </MauiAsset>
-	  <MauiAsset Update="Resources\Raw\settings.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </MauiAsset>
+		<MauiAsset Update="Resources\Raw\airlines.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</MauiAsset>
+		<MauiAsset Update="Resources\Raw\settings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</MauiAsset>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="TestData.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
+		<None Update="TestData.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Windows\BottomSheets\AirportsBottomSheet.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Windows\BottomSheets\SingleFlightBottomSheet.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Windows\BottomSheets\VDGSBottomSheet.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Windows\Views\FlightsView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Windows\Views\FlowMeasuresView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Windows\Views\MyFlightView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Windows\Views\SettingsView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
+		<MauiXaml Update="Windows\BottomSheets\AirportsBottomSheet.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Windows\BottomSheets\SingleFlightBottomSheet.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Windows\BottomSheets\VDGSBottomSheet.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Windows\Views\FlightsView.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Windows\Views\FlowMeasuresView.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Windows\Views\MyFlightView.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Windows\Views\NewContent1.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Windows\Views\SettingsView.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 	</ItemGroup>
 
-	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionVACDMAppHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarVACDMAppHideInfoBar="True" /></VisualStudio></ProjectExtensions>
+	<ProjectExtensions>
+		<VisualStudio>
+			<UserProperties XamarinHotReloadDebuggerTimeoutExceptionVACDMAppHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarVACDMAppHideInfoBar="True" />
+		</VisualStudio>
+	</ProjectExtensions>
 
 </Project>

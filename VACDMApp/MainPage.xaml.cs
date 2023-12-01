@@ -5,8 +5,6 @@ namespace VACDMApp
 {
     public partial class MainPage : ContentPage
     {
-        
-
         public enum CurrentPage
         {
             MyFlight,
@@ -23,19 +21,9 @@ namespace VACDMApp
         //OnLoad
         private async void ContentPage_Loaded(object sender, EventArgs e)
         {
-            var dataTask = VACDMData.VACDMData.GetVatsimData();
-            var vacdmTask = VACDMData.VACDMData.Get();
-            var airlinesTask = VACDMData.VACDMData.GetAirlines();
-            var measuresTask = VACDMData.VACDMData.GetFlowMeasures();
-
-            await Task.WhenAll(dataTask, vacdmTask, airlinesTask, measuresTask);
-
-            VatsimPilots = dataTask.Result.pilots.ToList();
-            VACDMPilots = vacdmTask.Result;
-            Airlines = airlinesTask.Result;
-            FlowMeasures = measuresTask.Result;
-
+            await GetAllData();
             Mainview.Content = FlightsView;
+
             //TODO
             //Data.Settings = VACDMData.VACDMData.ReadSettings();
         }
@@ -72,11 +60,24 @@ namespace VACDMApp
             SettingsButton.Source = currentPage == CurrentPage.Settings ? "settings.svg" : "settings_outline.svg";
         }
 
-        
-
         private static void SetSettings(Settings settings)
         {
 
+        }
+
+        internal static async Task GetAllData()
+        {
+            var dataTask = GetVatsimData.GetVatsimDataAsync();
+            var vacdmTask = VACDMPilotsData.GetVACDMPilotsAsync();
+            var airlinesTask = AirlinesData.GetAirlinesAsync();
+            var measuresTask = FlowMeasuresData.GetFlowMeasuresAsync();
+
+            await Task.WhenAll(dataTask, vacdmTask, airlinesTask, measuresTask);
+
+            VatsimPilots = dataTask.Result.pilots.ToList();
+            VACDMPilots = vacdmTask.Result;
+            Airlines = airlinesTask.Result;
+            FlowMeasures = measuresTask.Result;
         }
     }
 }

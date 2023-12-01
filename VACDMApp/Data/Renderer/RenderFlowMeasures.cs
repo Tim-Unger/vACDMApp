@@ -8,8 +8,18 @@ namespace VACDMApp.Data.Renderer
 
         private static readonly GridLength OneStar = new GridLength(3, GridUnitType.Star);
 
+        internal static List<Grid> Render()
+        {
+            //TODO Update Data
+            var measures = VACDMData.Data.FlowMeasures;
 
-        internal static List<Grid> Render() => VACDMData.Data.FlowMeasures.Select(RenderMeasure).ToList();
+            if (measures.Count == 0)
+            {
+                return new() { RenderNoMeasuresFound() };
+            }
+
+            return measures.Select(RenderMeasure).ToList();
+        }
 
         private static Grid RenderMeasure(FlowMeasure measure)
         {
@@ -28,7 +38,16 @@ namespace VACDMApp.Data.Renderer
             var nameGrid = new Grid();
 
             var nameText = $@"{measure.Ident} {(status.IsActive ? "Active" : "Inactive")}";
-            var nameLabel = new Label() { Text = nameText, TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 20, HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+            var nameLabel = new Label()
+            {
+                Text = nameText,
+                TextColor = Colors.White,
+                Background = DarkBlue,
+                FontAttributes = FontAttributes.Bold,
+                FontSize = 20,
+                HorizontalTextAlignment = TextAlignment.Center,
+                VerticalTextAlignment = TextAlignment.Center
+            };
 
             nameGrid.Children.Add(nameLabel);
             nameGrid.SetRow(nameLabel, 0);
@@ -39,12 +58,50 @@ namespace VACDMApp.Data.Renderer
             grid.Children.Add(contentGrid);
             grid.SetColumn(contentGrid, 0);
 
-            var statusColorGrid = new Grid() { Background = status.Color};
+            var statusColorGrid = new Grid() { Background = status.Color };
             grid.Children.Add(statusColorGrid);
             grid.SetColumn(statusColorGrid, 1);
 
             return grid;
         }
+
+        private static Grid RenderNoMeasuresFound()
+        {
+            var grid = new Grid();
+
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(5, GridUnitType.Star)));
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(5, GridUnitType.Star)));
+            grid.RowDefinitions.Add(new RowDefinition(OneStar));
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(5, GridUnitType.Star)));
+            grid.RowDefinitions.Add(new RowDefinition(OneStar));
+
+            var noMeasuresImage = new Image() { Source = "noflights.svg", HeightRequest = 100, WidthRequest = 100 };
+
+            var noMeasuresLabel = new Label()
+            {
+                LineBreakMode = LineBreakMode.WordWrap,
+                Text = "No ECFMP Measures found\nCheck back later or refresh to try again",
+                TextColor = Colors.White,
+                Background = Colors.Black,
+                Margin = new Thickness(0, 40),
+                HeightRequest = 150,
+                HorizontalTextAlignment = TextAlignment.Center,
+                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+                FontAttributes = FontAttributes.Bold,
+                FontSize = 30
+            };
+
+            grid.Children.Add(noMeasuresImage);
+            grid.Children.Add(noMeasuresLabel);
+
+            grid.SetRow(noMeasuresImage, 1);
+            grid.SetRow(noMeasuresLabel, 4);
+
+            return grid;
+        }
+
         private static (Color Color, bool IsActive) GetStatusColor(FlowMeasure measure)
         {
             var now = DateTime.UtcNow;
@@ -52,25 +109,25 @@ namespace VACDMApp.Data.Renderer
             var endDate = measure.EndTime;
 
             //Mesure is withdrawn
-            if(measure.WithdrawnAt is not null)
+            if (measure.WithdrawnAt is not null)
             {
                 return (Colors.Red, false);
             }
 
             //Now is later than EndDate => Measure is in the past
-            if(now > endDate)
+            if (now > endDate)
             {
                 return (Colors.Red, false);
             }
 
             //Now is earlier than 24 hours before the Measure
-            if(now < startDate.AddHours(-24))
+            if (now < startDate.AddHours(-24))
             {
                 return (Colors.Red, false);
             }
 
             //Now is less than 24 hours before the measure (no AddHours needed since we have the guard clause above
-            if(now < startDate)
+            if (now < startDate)
             {
                 return (Colors.Yellow, false);
             }

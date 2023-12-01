@@ -89,7 +89,7 @@ namespace VACDMApp.VACDMData.Renderer
             timesInfoGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
             timesInfoGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
             timesInfoGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
-            timesInfoGrid.RowDefinitions.Add(new RowDefinition(new GridLength(0.5, GridUnitType.Star)));
+            //timesInfoGrid.RowDefinitions.Add(new RowDefinition(new GridLength(0.5, GridUnitType.Star)));
 
             var timesFirstColumnGrid = new Grid();
             timesFirstColumnGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
@@ -145,24 +145,24 @@ namespace VACDMApp.VACDMData.Renderer
             timesSecondRowGrid.SetColumn(tsatTimeLabel, 3);
 
 
-            var timesThirdRowGrid = new Grid();
-            timesThirdRowGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
-            timesThirdRowGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
-            timesThirdRowGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(2, GridUnitType.Star)));
+            //var timesThirdRowGrid = new Grid();
+            //timesThirdRowGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
+            //timesThirdRowGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
+            //timesThirdRowGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(2, GridUnitType.Star)));
 
-            var delayTextLabel = new Label() { Text = $"Delay:", TextColor = Colors.White, Background = DarkBlue, FontSize = 20, VerticalTextAlignment = TextAlignment.Center};
-            var delayDataLabel = new Label() { Text = $"{vacdm.DelayMin} min.", TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 20, HorizontalTextAlignment = TextAlignment.End, VerticalTextAlignment = TextAlignment.Center , Margin = timeMargin };
+            //var delayTextLabel = new Label() { Text = $"Delay:", TextColor = Colors.White, Background = DarkBlue, FontSize = 20, VerticalTextAlignment = TextAlignment.Center};
+            //var delayDataLabel = new Label() { Text = $"{vacdm.DelayMin} min.", TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 20, HorizontalTextAlignment = TextAlignment.End, VerticalTextAlignment = TextAlignment.Center , Margin = timeMargin };
 
-            timesThirdRowGrid.Children.Add(delayTextLabel);
-            timesThirdRowGrid.Children.Add(delayDataLabel);
+            //timesThirdRowGrid.Children.Add(delayTextLabel);
+            //timesThirdRowGrid.Children.Add(delayDataLabel);
 
-            timesFirstColumnGrid.SetColumn(delayTextLabel, 0);
-            timesFirstColumnGrid.SetColumn(delayDataLabel, 1);
+            //timesFirstColumnGrid.SetColumn(delayTextLabel, 0);
+            //timesFirstColumnGrid.SetColumn(delayDataLabel, 1);
 
-            timesThirdRowGrid.SetColumn(timesThirdRowGrid, 0);
+            //timesThirdRowGrid.SetColumn(timesThirdRowGrid, 0);
 
             (var confirmationStatusText, var confirmationColor) = vacdm.TobtState == "CONFIRMED" ? ("CONFIRMED", Colors.LimeGreen) : ("UNCONFIRMED", Colors.Red);
-            var confirmationStatusLabel = new Label() { Text = confirmationStatusText, TextColor = Colors.White, Background = confirmationColor, FontSize = 20,  VerticalTextAlignment = TextAlignment.Center, HorizontalTextAlignment = TextAlignment.Center };
+            var confirmationStatusLabel = new Label() { Text = confirmationStatusText, TextColor = confirmationColor, Background = Colors.Transparent, FontSize = 20,  VerticalTextAlignment = TextAlignment.Center, HorizontalTextAlignment = TextAlignment.Center };
 
             timesInfoGrid.Children.Add(timesFirstColumnGrid);
             timesInfoGrid.SetRow(timesFirstColumnGrid, 0);
@@ -170,8 +170,8 @@ namespace VACDMApp.VACDMData.Renderer
             timesInfoGrid.Children.Add(timesSecondRowGrid);
             timesInfoGrid.SetRow(timesSecondRowGrid, 1);
 
-            timesInfoGrid.Children.Add(timesThirdRowGrid);
-            timesInfoGrid.SetRow(timesThirdRowGrid, 2);
+            //timesInfoGrid.Children.Add(timesThirdRowGrid);
+            //timesInfoGrid.SetRow(timesThirdRowGrid, 2);
 
             timesInfoGrid.Children.Add(confirmationStatusLabel);
             timesInfoGrid.SetRow(confirmationStatusLabel,3);
@@ -184,26 +184,19 @@ namespace VACDMApp.VACDMData.Renderer
 
             var flightPositionFirstGrid = new Grid();
             flightPositionFirstGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
-            flightPositionFirstGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(2, GridUnitType.Star)));
-            flightPositionFirstGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
-            flightPositionFirstGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(2, GridUnitType.Star)));
+            flightPositionFirstGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(5, GridUnitType.Star)));
 
             var gateArea = vacdm.TaxiZone == "default taxitime" ? "N/A" : vacdm.TaxiZone;
 
-            var gateTextLabel = new Label() { Text = $"Gates:", TextColor = Colors.White, Background = DarkBlue,  FontSize = 20, VerticalTextAlignment = TextAlignment.Center };
+            var gateTextLabel = new Label() { Text = $"Gate-Area:", TextColor = Colors.White, Background = DarkBlue,  FontSize = 20, VerticalTextAlignment = TextAlignment.Center };
             var gateDataLabel = new Label() { Text = gateArea, TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 20, HorizontalTextAlignment = TextAlignment.End, VerticalTextAlignment = TextAlignment.Center, Margin = timeMargin };
-            var sidTextLabel = new Label() { Text = $"SID:", TextColor = Colors.White, Background = DarkBlue,  FontSize = 20, VerticalTextAlignment = TextAlignment.Center };
-            var sidDataLabel = new Label() { Text = pilot.Clearance.Sid, TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 20, HorizontalTextAlignment = TextAlignment.End, VerticalTextAlignment = TextAlignment.Center, Margin = timeMargin };
+            
 
             flightPositionFirstGrid.Children.Add(gateTextLabel);
             flightPositionFirstGrid.Children.Add(gateDataLabel);
-            flightPositionFirstGrid.Children.Add(sidTextLabel);
-            flightPositionFirstGrid.Children.Add(sidDataLabel);
 
             flightPositionFirstGrid.SetColumn(gateTextLabel, 0);
             flightPositionFirstGrid.SetColumn(gateDataLabel, 1);
-            flightPositionFirstGrid.SetColumn(sidTextLabel, 2);
-            flightPositionFirstGrid.SetColumn(sidDataLabel, 3);
 
             var flightPositionSecondGrid = new Grid();
             flightPositionSecondGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
@@ -236,16 +229,23 @@ namespace VACDMApp.VACDMData.Renderer
             var flightPositionThirdGrid = new Grid();
             flightPositionThirdGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
             flightPositionThirdGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
-            flightPositionThirdGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(2, GridUnitType.Star)));
+            flightPositionThirdGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
+            flightPositionThirdGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
 
+            var sidTextLabel = new Label() { Text = $"SID:", TextColor = Colors.White, Background = DarkBlue, FontSize = 20, VerticalTextAlignment = TextAlignment.Center };
+            var sidDataLabel = new Label() { Text = pilot.Clearance.Sid, TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 20, HorizontalTextAlignment = TextAlignment.End, VerticalTextAlignment = TextAlignment.Center, Margin = timeMargin };
             var squawkTextLabel = new Label() { Text = $"Squawk:", TextColor = Colors.White, Background = DarkBlue, FontSize = 20, VerticalTextAlignment = TextAlignment.Center };
             var squawkDataLabel = new Label() { Text = pilot.Clearance.AssignedSquawk, TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 20, HorizontalTextAlignment = TextAlignment.End, VerticalTextAlignment = TextAlignment.Center, Margin = timeMargin };
 
+            flightPositionThirdGrid.Children.Add(sidTextLabel);
+            flightPositionThirdGrid.Children.Add(sidDataLabel);
             flightPositionThirdGrid.Children.Add(squawkTextLabel);
             flightPositionThirdGrid.Children.Add(squawkDataLabel);
 
-            flightPositionThirdGrid.SetColumn(squawkTextLabel, 0);
-            flightPositionThirdGrid.SetColumn(squawkDataLabel, 1);
+            flightPositionThirdGrid.SetColumn(sidTextLabel, 0);
+            flightPositionThirdGrid.SetColumn(sidDataLabel, 1);
+            flightPositionThirdGrid.SetColumn(squawkTextLabel, 2);
+            flightPositionThirdGrid.SetColumn(squawkDataLabel, 3);
 
             //TODO?
             //var flightPositionFourthGrid = new Grid();

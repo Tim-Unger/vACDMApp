@@ -11,7 +11,7 @@ public partial class AirportsBottomSheet : BottomSheet
         GetAirports();
 	}
 
-	private static string SelectedAirport = "";
+	internal static string SelectedAirport = "";
 
 	private void GetAirports()
 	{
@@ -20,19 +20,14 @@ public partial class AirportsBottomSheet : BottomSheet
             .DistinctBy(x => x.ToUpper())
             .ToList();
 
+        airports.Add("ALL AIRPORTS");
+
         if (airports.Count() == 0)
         {
             var noAirports = new Button() { Text = "No Airports found", TextColor = Colors.Black };
             AirportsStackLayout.Children.Add(noAirports);
         }
-
-        airports.Add("ALL AIRPORTS");
         airports.ForEach(x => AirportsStackLayout.Children.Add(RenderAirport(x)));
-    }
-
-    private void BottomSheet_Loaded(object sender, EventArgs e)
-    {
-		
     }
 
 	private Button RenderAirport(string icao)
@@ -50,6 +45,7 @@ public partial class AirportsBottomSheet : BottomSheet
 		SelectedAirport = selectedAirport.Text.ToUpper();
 
 		DismissAsync();
+        FlightsView.SetAirportText(selectedAirport.Text);
         FlightsView.GetFlightsFromSelectedAirport();
     }
 

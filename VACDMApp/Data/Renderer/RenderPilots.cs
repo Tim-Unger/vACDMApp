@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using CommunityToolkit.Maui.Converters;
+using Microsoft.Maui.Controls.Shapes;
+using System.Runtime.CompilerServices;
 using VACDMApp.Windows.BottomSheets;
 using VACDMApp.Windows.Views;
 
@@ -25,6 +27,11 @@ namespace VACDMApp.VACDMData.Renderer
                         x.Vacdm.Eobt.Hour >= DateTime.UtcNow.AddHours(-1).Hour
                        && x.Vacdm.Tsat >= DateTime.UtcNow.AddMinutes(-6)
                 );
+
+            if(pilotsWithFP.Count() == 0)
+            {
+                return new(1) { RenderNoFlightsFound() };
+            }
 
             if (airport is not null)
             {
@@ -170,9 +177,11 @@ namespace VACDMApp.VACDMData.Renderer
                     icao = icao,
                     name = ""
                 };
+
             var flightNumberOnly = pilot.Callsign.Remove(0, 3);
             var flightData =
                 $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival}, {flightPlan.aircraft_short}";
+
             var flightDataLabel = new Label()
             {
                 Text = flightData,
@@ -209,6 +218,44 @@ namespace VACDMApp.VACDMData.Renderer
 
             grid.SetRowSpan(button, 5);
             grid.SetColumnSpan(button, 5);
+
+            return grid;
+        }
+
+        private static Grid RenderNoFlightsFound()
+        {
+            var grid = new Grid();
+
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(5, GridUnitType.Star)));
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(7, GridUnitType.Star)));
+            grid.RowDefinitions.Add(new RowDefinition(OneStar));
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(7, GridUnitType.Star)));
+            grid.RowDefinitions.Add(new RowDefinition(OneStar));
+
+
+            var noFlightsImage = new Image() { Source = "noflights.svg", HeightRequest = 100, WidthRequest = 100 };
+
+            var noFlightsLabel = new Label()
+            {
+                LineBreakMode = LineBreakMode.WordWrap,
+                Text = "No vACDM Flights found\nCheck back later or refresh to try again",
+                TextColor = Colors.White,
+                Background = Colors.Black,
+                Margin = new Thickness(0, 40),
+                HeightRequest = 150,
+                HorizontalTextAlignment = TextAlignment.Center,
+                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+                FontAttributes = FontAttributes.Bold,
+                FontSize = 30
+            };
+
+            grid.Children.Add(noFlightsLabel);
+            grid.Children.Add(noFlightsImage);
+
+            grid.SetRow(noFlightsImage, 1);
+            grid.SetRow(noFlightsLabel, 4);
 
             return grid;
         }

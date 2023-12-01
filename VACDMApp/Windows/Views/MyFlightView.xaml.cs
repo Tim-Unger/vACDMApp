@@ -15,9 +15,12 @@ public partial class MyFlightView : ContentView
 
     private void ContentView_Loaded(object sender, EventArgs e)
     {
-        //if (_isFirstLoad) { }
+        if (_isFirstLoad) 
+        {
+            GetCurrentTime();
+        }
 
-        //_isFirstLoad = false;
+        _isFirstLoad = false;
     }
 
     private async void FindCidButton_Clicked(object sender, EventArgs e)
@@ -123,4 +126,15 @@ public partial class MyFlightView : ContentView
         return true;
     }
 
+    private async Task GetCurrentTime()
+    {
+        while (true)
+        {
+            var now = DateTime.UtcNow;
+
+            TimeLabel.Text = $"{now.ToString("T")}Z";
+
+            await Task.Delay(200);
+        }
+    }
 }

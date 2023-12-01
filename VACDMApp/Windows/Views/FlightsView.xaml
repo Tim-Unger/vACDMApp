@@ -13,16 +13,30 @@
 
         <Grid Grid.Row="0">
             <VerticalStackLayout Margin="10">
+                <!--<Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>-->
+
                 <SearchBar
                     x:Name="FlightsSearchBar"
-                    Grid.Row="0"
+                    Grid.Column="0"
                     Margin="5"
                     BackgroundColor="#232323"
                     TextColor="#FEFEFE" />
-                <HorizontalStackLayout
-                    x:Name="ButtonsStackLayout"
-                    Grid.Row="1"
-                    HorizontalOptions="Center" />
+
+                <!--<Label
+                        x:Name="TimeLabel"
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        Text="00:00"
+                        TextColor="White"
+                        VerticalOptions="Center" />
+                </Grid>-->
+
+                <HorizontalStackLayout x:Name="ButtonsStackLayout" HorizontalOptions="Center" />
             </VerticalStackLayout>
         </Grid>
 

@@ -28,7 +28,7 @@
                 Grid.Row="3"
                 Padding="0,10,0,0"
                 Background="#232323">
-                <VerticalStackLayout Padding="30,0,20,0" HorizontalOptions="End">
+                <VerticalStackLayout Padding="20,0,20,0" HorizontalOptions="Center">
                     <ImageButton
                         x:Name="MyFlightButton"
                         Background="#232323"
@@ -58,7 +58,7 @@
                         TextColor="#FEFEFE" />
                 </VerticalStackLayout>
 
-                <VerticalStackLayout Padding="20,0,30,0" HorizontalOptions="Center">
+                <VerticalStackLayout Padding="20,0,20,0" HorizontalOptions="Center">
                     <ImageButton
                         x:Name="FlowMeasuresButton"
                         Clicked="FlowMeasuresButton_Clicked"

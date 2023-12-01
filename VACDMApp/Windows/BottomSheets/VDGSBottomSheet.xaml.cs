@@ -15,9 +15,12 @@ public partial class VDGSBottomSheet : BottomSheet
 
     public static Color Orange = Color.FromArgb("ae7237");
 
+    private static DateTime _tsat;
+
     private void BottomSheet_Loaded(object sender, EventArgs e)
     {
-
+        Sender = this;
+        SenderPage = VACDMData.SenderPage.Vdgs;
         var vacdmPilot = VACDMPilots.First(x => x.Callsign == SelectedCallsign);
 
         var callsignLabel = new Label()
@@ -50,7 +53,8 @@ public partial class VDGSBottomSheet : BottomSheet
             HorizontalTextAlignment = TextAlignment.Center
         };
 
-        var timeToGo = Math.Round((vacdmPilot.Vacdm.Tsat - DateTime.UtcNow).TotalMinutes, 0);
+        _tsat = vacdmPilot.Vacdm.Tsat;
+        var timeToGo = Math.Round((_tsat - DateTime.UtcNow).TotalMinutes, 0);
         var timeToGoLabel = new Label()
         {
             Text = timeToGo.ToString(),
@@ -89,5 +93,19 @@ public partial class VDGSBottomSheet : BottomSheet
         VDGSStackLayout.Children.Add(runwayLabel);
         VDGSStackLayout.Children.Add(sidLabel);
         VDGSStackLayout.Children.Add(new Rectangle() { HeightRequest = 200 });
+
+        UpdateTimeToGo();
+    }
+
+    private async void UpdateTimeToGo()
+    {
+        while (true)
+        {
+            var timeToGoLabel = (Label)VDGSStackLayout.Children[4];
+
+            timeToGoLabel.Text = Math.Round((_tsat - DateTime.UtcNow).TotalMinutes, 0).ToString();
+
+            await Task.Delay(30_000);
+        }
     }
 }

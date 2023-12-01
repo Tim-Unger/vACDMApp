@@ -17,15 +17,19 @@ public partial class FlowMeasuresView : ContentView
 		if (_isFirstLoad)
 		{
 			var measures = FlowMeasures.Render();
-            if(measures.Count == 0)
-            {
-
-                return;
-            }
 
 			measures.ForEach(FlowMeasuresStackLayout.Children.Add);
 		}
 		
 		_isFirstLoad = false;
+    }
+
+    private async void RefreshView_Refreshing(object sender, EventArgs e)
+    {
+        FlowMeasuresRefreshView.IsRefreshing = true;
+
+        await Task.Delay(1000);
+
+        FlowMeasuresRefreshView.IsRefreshing = false;
     }
 }
