@@ -1,4 +1,5 @@
-﻿using VACDMApp.VACDMData;
+﻿using System.Runtime.CompilerServices;
+using VACDMApp.VACDMData;
 using static VACDMApp.VACDMData.Data;
 
 namespace VACDMApp
@@ -54,10 +55,10 @@ namespace VACDMApp
 
         private void SetButton(CurrentPage currentPage)
         {
-            MyFlightButton.Source = currentPage == CurrentPage.MyFlight ? "plane.svg" : "plane_outline.svg";
-            AllFlightsButton.Source = currentPage == CurrentPage.AllFlights ? "planes.svg" : "planes_outline.svg";
-            FlowMeasuresButton.Source = currentPage == CurrentPage.FlowMeasures ? "flowmeasures.svg" : "flowmeasures_outline.svg";
-            SettingsButton.Source = currentPage == CurrentPage.Settings ? "settings.svg" : "settings_outline.svg";
+            MyFlightImage.Source = currentPage == CurrentPage.MyFlight ? "plane.svg" : "plane_outline.svg";
+            AllFlightsImage.Source = currentPage == CurrentPage.AllFlights ? "planes.svg" : "planes_outline.svg";
+            FlowmeasuresImage.Source = currentPage == CurrentPage.FlowMeasures ? "flowmeasures.svg" : "flowmeasures_outline.svg";
+            SettingsImage.Source = currentPage == CurrentPage.Settings ? "settings.svg" : "settings_outline.svg";
         }
 
         private static void SetSettings(Settings settings)

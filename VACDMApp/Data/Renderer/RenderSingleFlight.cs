@@ -178,13 +178,13 @@ namespace VACDMApp.VACDMData.Renderer
 
             var flightPositionGrid = new Grid() { Padding = 10, Margin = 10, BackgroundColor = DarkBlue };
             flightPositionGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
-            flightPositionGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
+            flightPositionGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star))); 
             flightPositionGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
             flightPositionGrid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
 
             var flightPositionFirstGrid = new Grid();
-            flightPositionFirstGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
-            flightPositionFirstGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(5, GridUnitType.Star)));
+            flightPositionFirstGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(2, GridUnitType.Star)));
+            flightPositionFirstGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(2, GridUnitType.Star)));
 
             var gateArea = vacdm.TaxiZone == "default taxitime" ? "N/A" : vacdm.TaxiZone;
 

@@ -289,7 +289,7 @@ namespace VACDMApp.VACDMData.Renderer
 
             var vacdm = pilot.Vacdm;
 
-            if (vacdm.Sug.Year == 1969)
+            if (vacdm.Asrt.Year == 1969)
             {
                 return "Preflight/Boarding";
             }

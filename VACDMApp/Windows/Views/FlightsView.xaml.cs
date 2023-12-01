@@ -64,6 +64,8 @@ public partial class FlightsView : ContentView
     {
         if (_isFirstLoad)
         {
+            Routing.RegisterRoute("AboutPage", typeof(AboutPage));
+
             var flights = FlightInfos.Render(null);
             flights.ForEach(FlightsStackLayout.Children.Add);
             GetNearestTime();
@@ -212,5 +214,10 @@ public partial class FlightsView : ContentView
         var allFlights = FlightInfos.Render(selectedAirport);
         allFlights.ForEach(FlightsStackLayout.Children.Add);
         FlightsScrollView.Content = FlightsStackLayout;
+    }
+
+    private async void AboutButton_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("AboutPage");
     }
 }

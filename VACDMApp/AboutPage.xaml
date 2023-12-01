@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="VACDMApp.AboutPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title=""
+    Loaded="ContentPage_Loaded">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False" />
+    </Shell.BackButtonBehavior>
+
+    <VerticalStackLayout>
+        <Button
+            x:Name="CloseButton"
+            Margin="20"
+            BackgroundColor="Transparent"
+            Clicked="CloseButton_Clicked"
+            FontFamily="OpenSans-Bold"
+            FontSize="30"
+            HorizontalOptions="Start"
+            Text="X"
+            TextColor="White" />
+        <Label
+            x:Name="TitleLabel"
+            Margin="20"
+            FontAttributes="Bold"
+            FontFamily="OpenSans-Bold"
+            FontSize="60"
+            HorizontalOptions="Start"
+            LineHeight="0.85"
+            TextColor="White"
+            VerticalOptions="Start" />
+
+        <Button
+            x:Name="GithubButton"
+            Margin="20,20,0,0"
+            BackgroundColor="#1C2836"
+            Clicked="GithubButton_Clicked"
+            FontFamily="OpenSans-Bold"
+            FontSize="30"
+            HorizontalOptions="Start"
+            Text="GitHub"
+            TextColor="White" />
+
+        <Button
+            x:Name="PilotguideButton"
+            Margin="20,10,0,0"
+            BackgroundColor="#1C2836"
+            Clicked="PilotguideButton_Clicked"
+            FontFamily="OpenSans-Bold"
+            FontSize="30"
+            HorizontalOptions="Start"
+            Text="vACDM Pilot-Guide"
+            TextColor="White" />
+
+        <Button
+            x:Name="VacdmGithubButton"
+            Margin="20,10,0,0"
+            BackgroundColor="#1C2836"
+            Clicked="VacdmGithubButton_Clicked"
+            FontFamily="OpenSans-Bold"
+            FontSize="30"
+            HorizontalOptions="Start"
+            Text="vACDM-GitHub"
+            TextColor="White" />
+
+        <Label
+            x:Name="VersionLabel"
+            Margin="20"
+            FontSize="20"
+            HorizontalOptions="End"
+            TextColor="White"
+            VerticalOptions="Start" />
+    </VerticalStackLayout>
+</ContentPage>

@@ -29,63 +29,97 @@
                 Padding="0,10,0,0"
                 Background="#232323">
                 <VerticalStackLayout Padding="20,0,20,0" HorizontalOptions="Center">
-                    <ImageButton
-                        x:Name="MyFlightButton"
-                        Background="#232323"
-                        Clicked="MyFlightButton_Clicked"
-                        HeightRequest="40"
-                        Source="plane_outline.svg"
-                        WidthRequest="40" />
-                    <Label
-                        FontAttributes="Bold"
-                        HorizontalOptions="Center"
-                        Text="My Flight"
-                        TextColor="#FEFEFE" />
+                    <Grid>
+                        <VerticalStackLayout>
+                            <Image
+                                x:Name="MyFlightImage"
+                                HeightRequest="40"
+                                Source="plane_outline.svg"
+                                WidthRequest="40" />
+                            <Label
+                                FontAttributes="Bold"
+                                HorizontalOptions="Center"
+                                Text="My Flight"
+                                TextColor="#FEFEFE" />
+                        </VerticalStackLayout>
+                        <Button
+                            x:Name="MyFlightButton"
+                            Background="Transparent"
+                            Clicked="MyFlightButton_Clicked" />
+                    </Grid>
+
                 </VerticalStackLayout>
 
                 <VerticalStackLayout Padding="20,0,20,0" HorizontalOptions="Center">
-                    <ImageButton
-                        x:Name="AllFlightsButton"
-                        Clicked="AllFlightsButton_Clicked"
-                        HeightRequest="40"
-                        Source="planes.svg"
-                        WidthRequest="40" />
+                    <Grid>
+                        <VerticalStackLayout>
+                            <Image
+                                x:Name="AllFlightsImage"
+                                HeightRequest="40"
+                                Source="planes.svg"
+                                WidthRequest="40" />
 
-                    <Label
-                        FontAttributes="Bold"
-                        HorizontalOptions="Center"
-                        Text="All Flights"
-                        TextColor="#FEFEFE" />
+                            <Label
+                                FontAttributes="Bold"
+                                HorizontalOptions="Center"
+                                Text="All Flights"
+                                TextColor="#FEFEFE" />
+                        </VerticalStackLayout>
+
+                        <Button
+                            x:Name="AllFlightsButton"
+                            BackgroundColor="Transparent"
+                            Clicked="AllFlightsButton_Clicked" />
+                    </Grid>
+
                 </VerticalStackLayout>
 
                 <VerticalStackLayout Padding="20,0,20,0" HorizontalOptions="Center">
-                    <ImageButton
-                        x:Name="FlowMeasuresButton"
-                        Clicked="FlowMeasuresButton_Clicked"
-                        HeightRequest="40"
-                        Source="flowmeasures_outline.svg"
-                        WidthRequest="40" />
+                    <Grid>
+                        <VerticalStackLayout>
+                            <ImageButton
+                                x:Name="FlowmeasuresImage"
+                                HeightRequest="40"
+                                Source="flowmeasures_outline.svg"
+                                WidthRequest="40" />
 
-                    <Label
-                        FontAttributes="Bold"
-                        HorizontalOptions="Center"
-                        Text="Flow Measures"
-                        TextColor="#FEFEFE" />
+                            <Label
+                                FontAttributes="Bold"
+                                HorizontalOptions="Center"
+                                Text="Flow Measures"
+                                TextColor="#FEFEFE" />
+                        </VerticalStackLayout>
+
+                        <Button
+                            x:Name="FlowMeasuresButton"
+                            BackgroundColor="Transparent"
+                            Clicked="FlowMeasuresButton_Clicked" />
+                    </Grid>
+
                 </VerticalStackLayout>
 
                 <VerticalStackLayout Padding="20,0,20,0" HorizontalOptions="Center">
-                    <ImageButton
-                        x:Name="SettingsButton"
-                        Clicked="SettingsButton_Clicked"
-                        HeightRequest="40"
-                        Source="settings_outline.svg"
-                        WidthRequest="40" />
+                    <Grid>
+                        <VerticalStackLayout>
+                            <ImageButton
+                                x:Name="SettingsImage"
+                                HeightRequest="40"
+                                Source="settings_outline.svg"
+                                WidthRequest="40" />
 
-                    <Label
-                        FontAttributes="Bold"
-                        HorizontalOptions="Center"
-                        Text="Settings"
-                        TextColor="#FEFEFE" />
+                            <Label
+                                FontAttributes="Bold"
+                                HorizontalOptions="Center"
+                                Text="Settings"
+                                TextColor="#FEFEFE" />
+                        </VerticalStackLayout>
+
+                        <Button
+                            x:Name="SettingsButton"
+                            BackgroundColor="Transparent"
+                            Clicked="SettingsButton_Clicked" />
+                    </Grid>
+
                 </VerticalStackLayout>
             </HorizontalStackLayout>
 

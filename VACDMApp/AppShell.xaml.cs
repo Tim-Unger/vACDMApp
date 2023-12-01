@@ -29,6 +29,12 @@ namespace VACDMApp
                 return true;
             }
 
+            if(sender == SenderPage.About)
+            {
+                Shell.Current.GoToAsync("..", true);
+                return true;
+            }
+
             if(_backSwipeCount == 0)
             {
                 var toast = Toast.Make("Back again to exit", CommunityToolkit.Maui.Core.ToastDuration.Short, 14);

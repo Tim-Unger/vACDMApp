@@ -1,53 +1,95 @@
+using Microsoft.Maui.Controls.Shapes;
 using The49.Maui.BottomSheet;
 using VACDMApp.VACDMData;
 using static VACDMApp.VACDMData.Data;
+
 namespace VACDMApp.Windows.BottomSheets;
 
 public partial class AirportsBottomSheet : BottomSheet
 {
-	public AirportsBottomSheet()
-	{
-		InitializeComponent();
+    public AirportsBottomSheet()
+    {
+        InitializeComponent();
         GetAirports();
-	}
+    }
 
-	internal static string SelectedAirport = "";
+    internal static string SelectedAirport = "";
 
-	private void GetAirports()
-	{
+    private static readonly double _width = Shell.Current.CurrentPage.Width;
+
+    private void GetAirports()
+    {
         var airports = VACDMPilots
             .Select(x => x.FlightPlan.Departure)
             .DistinctBy(x => x.ToUpper())
             .ToList();
 
-        airports.Add("ALL AIRPORTS");
+        var titleLabel = new Label()
+        {
+            Text = "Please choose an Airport",
+            Padding = 20,
+            TextColor = Colors.White,
+            Background = Colors.Transparent,
+            FontSize = 20,
+            FontAttributes = FontAttributes.Bold,
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center
+        };
+
+        AirportsStackLayout.Children.Add(titleLabel);
+        AirportsStackLayout.Children.Add(RenderAirport("ALL AIRPORTS"));
 
         if (airports.Count() == 0)
         {
-            var noAirports = new Button() { Text = "No Airports found", TextColor = Colors.Black };
-            AirportsStackLayout.Children.Add(noAirports);
+            AirportsStackLayout.Children.Add(
+                new Rectangle() { Background = Colors.Transparent, HeightRequest = 50 }
+            );
+            return;
         }
+
         airports.ForEach(x => AirportsStackLayout.Children.Add(RenderAirport(x)));
     }
 
-	private Button RenderAirport(string icao)
-	{
-		var airport = new Button() { Text = icao.ToUpperInvariant(), TextColor = Colors.White, Background = new Color(23, 23, 23), FontAttributes = FontAttributes.Bold, Padding = 20, Margin = 10 };
+    private Grid RenderAirport(string icao)
+    {
+        var grid = new Grid() { Padding = 20 };
+
+        var airport = new Button() { BackgroundColor = Colors.Transparent, WidthRequest = _width };
+        var text = new Label()
+        {
+            Text = icao.ToUpperInvariant(),
+            TextColor = Colors.White,
+            Background = Colors.Transparent,
+            FontSize = 17,
+            FontAttributes = FontAttributes.Bold,
+            HorizontalOptions = LayoutOptions.Start,
+            VerticalOptions = LayoutOptions.Center
+        };
+
+        grid.Children.Add(airport);
+        grid.Children.Add(text);
+
         airport.Clicked += Airport_Clicked;
 
-		return airport;
-	}
+        return grid;
+    }
 
     private void Airport_Clicked(object sender, EventArgs e)
     {
-		var selectedAirport = sender as Button;
+        var selectedAirport = (Button)sender;
+        var selectedParent = selectedAirport.Parent;
+        var childLabel = ((Grid)selectedParent).Children[1];
 
-		SelectedAirport = selectedAirport.Text.ToUpper();
+        var childText = ((Label)childLabel).Text;
 
-		DismissAsync();
+        SelectedAirport = childText.ToUpper();
+
+        DismissAsync();
         FlightsView.SetAirportText(selectedAirport.Text);
         FlightsView.GetFlightsFromSelectedAirport();
     }
 
-	internal static string GetClickedAirport() => SelectedAirport;
+    internal static string GetClickedAirport() => SelectedAirport;
+
+    private void BottomSheet_Unfocused(object sender, FocusEventArgs e) { }
 }

@@ -2,15 +2,19 @@ namespace VACDMApp.Windows.Views;
 
 using Microsoft.Maui.Controls;
 using VACDMApp.VACDMData;
+using VACDMApp.VACDMData.Renderer;
 using VACDMApp.Windows.BottomSheets;
 
 public partial class MyFlightView : ContentView
 {
     private static bool _isFirstLoad = true;
 
+    private static Page _page;
+
     public MyFlightView()
     {
         InitializeComponent();
+        _page = Shell.Current.CurrentPage;
     }
 
     private void ContentView_Loaded(object sender, EventArgs e)
@@ -30,26 +34,32 @@ public partial class MyFlightView : ContentView
             CidText.Text = Data.Settings.Cid.ToString();
         }
 
-        var page = Shell.Current.CurrentPage;
-
         var cidText = CidText.Text;
+
+        if (cidText is null)
+        {
+            await _page.DisplayAlert("No CID", "Please enter a CID", "Ok");
+            return;
+        }
 
         if (!int.TryParse(cidText, out var cid))
         {
             //Should not be possible since we only allow numeric input, but just in case
-            await page.DisplayAlert("Invalid CID", "The provided CID was not a number", "OK");
+            await _page.DisplayAlert("Invalid CID", "The provided CID was not a number", "OK");
+            return;
         }
 
         if (!IsValidCid(cid))
         {
-            await page.DisplayAlert("Invalid CID", "The provided CID does not exist", "OK");
+            await _page.DisplayAlert("Invalid CID", "The provided CID does not exist", "OK");
+            return;
         }
 
         var pilot = Data.VatsimPilots.FirstOrDefault(x => x.cid == cid);
 
         if (pilot is null)
         {
-            await page.DisplayAlert(
+            await _page.DisplayAlert(
                 "CID not found",
                 "Looks like you don't have an active flight at the moment",
                 "OK"
@@ -64,7 +74,7 @@ public partial class MyFlightView : ContentView
 
         if (vacdmPilot is null)
         {
-            await page.DisplayAlert("No vACDM Times", "There are no vACDM Times available for your flight", "OK");
+            await _page.DisplayAlert("No vACDM Times", "There are no vACDM Times available for your flight", "OK");
 
             return;
         }
@@ -83,8 +93,16 @@ public partial class MyFlightView : ContentView
         await singleFlightSheet.ShowAsync();
     }
 
-    private void ShowVdgsButton_Clicked(object sender, EventArgs e)
+    private async void ShowVdgsButton_Clicked(object sender, EventArgs e)
     {
+        var cidText = CidText.Text;
+
+        if(cidText is null)
+        {
+            await _page.DisplayAlert("No CID", "Please enter a CID", "Ok");
+            return;
+        }
+
         var cid = int.Parse(CidText.Text);
         var pilot = Data.VatsimPilots.First(x => x.cid == cid);
 
@@ -132,7 +150,7 @@ public partial class MyFlightView : ContentView
         {
             var now = DateTime.UtcNow;
 
-            TimeLabel.Text = $"{now.ToString("T")}Z";
+            TimeLabel.Text = $"{now:T}Z";
 
             await Task.Delay(200);
         }

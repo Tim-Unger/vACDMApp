@@ -1,4 +1,5 @@
 ﻿using VACDMApp.Data;
+using VACDMApp.Windows;
 using VACDMApp.Windows.Views;
 
 namespace VACDMApp.VACDMData
@@ -7,7 +8,8 @@ namespace VACDMApp.VACDMData
     {
         Default,
         SingleFlight,
-        Vdgs
+        Vdgs,
+        About
     }
 
     internal class Data
@@ -29,6 +31,8 @@ namespace VACDMApp.VACDMData
         internal static SettingsView SettingsView = new();
 
         internal static Settings Settings = new();
+
+        internal static AboutPage AboutPage = new();
 
         internal static SenderPage SenderPage;
 
