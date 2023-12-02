@@ -81,7 +81,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<MauiXaml Update="AboutPage.xaml">
+		<MauiXaml Update="Windows\AboutPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Windows\BottomSheets\AirportsBottomSheet.xaml">

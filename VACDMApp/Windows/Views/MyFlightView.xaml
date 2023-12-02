@@ -3,6 +3,7 @@
     x:Class="VACDMApp.Windows.Views.MyFlightView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Focused="ContentView_Focused"
     Loaded="ContentView_Loaded">
     <Grid x:Name="MyFlightGrid">
         <Grid>
@@ -69,7 +70,11 @@
                 </VerticalStackLayout>
             </Grid>
 
-            <Grid Grid.Row="1" />
+            <Grid Grid.Row="1">
+                <ScrollView VerticalOptions="FillAndExpand">
+                    <VerticalStackLayout x:Name="BookmarksStackLayout" Margin="10" />
+                </ScrollView>
+            </Grid>
 
         </Grid>
     </Grid>

@@ -1,8 +1,10 @@
-﻿namespace VACDMApp.Data.Renderer
+﻿using CommunityToolkit.Maui.Alerts;
+
+namespace VACDMApp.Data.Renderer
 {
     internal partial class Pilots
     {
-        private static void BookmarkButton_Clicked(object sender, EventArgs e)
+        private static async void BookmarkButton_Clicked(object sender, EventArgs e)
         {
             var button = (ImageButton)sender;
             var parentGrid = (Grid)((Grid)button.Parent).Parent;
@@ -16,11 +18,17 @@
             {
                 button.Source = "bookmark_outline.svg";
                 VACDMData.Data.BookmarkedPilots.Remove(pilot);
+
+                var removedToast = Toast.Make($"Removed Flight {callsign} from your Bookmarks", CommunityToolkit.Maui.Core.ToastDuration.Short, 14);
+                await removedToast.Show();
                 return;
             }
 
             button.Source = "bookmark.svg";
             VACDMData.Data.BookmarkedPilots.Add(pilot);
+
+            var savedToast = Toast.Make($"Saved Flight {callsign} to your Bookmarks", CommunityToolkit.Maui.Core.ToastDuration.Short, 14);
+            await savedToast.Show();
         }
     }
 }

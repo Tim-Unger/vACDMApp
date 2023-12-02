@@ -3,23 +3,22 @@ using VACDMApp.VACDMData;
 
 namespace VACDMApp.Data.Renderer
 {
-    internal partial class Pilots
+    internal partial class Bookmarks
     {
         private static readonly Color _darkBlue = new(28, 40, 54);
 
         private static readonly GridLength _oneStar = new(3, GridUnitType.Star);
 
-        private static Border RenderPilot(VACDMPilot pilot)
+        private static Grid RenderBookmark(VACDMPilot pilot)
         {
-            //TODO Error handling here when ACDM FP not found
-            var flightPlan =
-                VACDMData.Data.VatsimPilots.FirstOrDefault(x => x.callsign == pilot.Callsign).flight_plan
-                ?? throw new Exception();
+            var grid = new Grid();
+            
+            var flightPlan = VACDMData.Data.VatsimPilots.First(x => x.callsign == pilot.Callsign).flight_plan;
             var airlines = VACDMData.Data.Airlines;
 
-            var border = new Border() { StrokeThickness = 0, Stroke = Color.FromArgb("#454545") };
-            var parentGridContainer = new Grid() { Background = _darkBlue };
-            var grid = new Grid() { Margin = new Thickness(10) };
+            grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
+            grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(5, GridUnitType.Star)));
+            grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(10, GridUnitType.Star)));
 
             grid.ColumnDefinitions.Add(new ColumnDefinition(_oneStar));
             grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(3, GridUnitType.Star)));
@@ -111,7 +110,7 @@ namespace VACDMApp.Data.Renderer
             };
             var statusLabel = new Label()
             {
-                Text = GetFlightStatus(pilot),
+                Text = Pilots.GetFlightStatus(pilot),
                 TextColor = Colors.White,
                 Background = _darkBlue,
                 FontAttributes = FontAttributes.Bold,
@@ -128,44 +127,9 @@ namespace VACDMApp.Data.Renderer
             flightGrid.SetRow(flightDataLabel, 2);
             flightGrid.SetRow(statusLabel, 3);
 
-            grid.Children.Add(timeGrid);
             grid.Children.Add(flightGrid);
 
-            var button = new Button() { BackgroundColor = Colors.Transparent };
-            button.Clicked += Button_Clicked;
-            grid.Children.Add(button);
-
-            grid.SetRowSpan(button, 5);
-            grid.SetColumnSpan(button, 5);
-
-
-            //TODO Padding is fucked up
-            var bookmarkGrid = new Grid
-            {
-                Padding = new Thickness(5),
-            };
-
-            var bookmarkButton = new ImageButton()
-            {
-
-                VerticalOptions = LayoutOptions.Start,
-                HorizontalOptions = LayoutOptions.Center,
-                Source = "bookmark_outline.svg",
-                HeightRequest = 25,
-                WidthRequest = 25
-            };
-
-            bookmarkButton.Clicked += BookmarkButton_Clicked;
-
-            bookmarkGrid.Children.Add(bookmarkButton);
-
-            grid.Children.Add(bookmarkGrid);
-            grid.SetColumn(bookmarkGrid, 2);
-
-            parentGridContainer.Children.Add(grid);
-
-            border.Content = parentGridContainer;
-            return border;
+            return grid;
         }
     }
 }

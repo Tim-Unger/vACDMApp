@@ -24,6 +24,10 @@ public partial class MyFlightView : ContentView
             GetCurrentTime();
         }
 
+        BookmarksStackLayout.Children.Clear();
+        var bookmarks = Bookmarks.Render(Data.BookmarkedPilots);
+        bookmarks.ForEach(BookmarksStackLayout.Children.Add);
+
         _isFirstLoad = false;
     }
 
@@ -154,5 +158,13 @@ public partial class MyFlightView : ContentView
 
             await Task.Delay(200);
         }
+    }
+
+    private void ContentView_Focused(object sender, FocusEventArgs e)
+    {
+        //TODO better loading/unloading
+        BookmarksStackLayout.Children.Clear();
+        var bookmarks = Bookmarks.Render(Data.BookmarkedPilots);
+        bookmarks.ForEach(BookmarksStackLayout.Children.Add);
     }
 }

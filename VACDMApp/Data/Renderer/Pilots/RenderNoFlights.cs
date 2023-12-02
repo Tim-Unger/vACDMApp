@@ -9,9 +9,9 @@
 
             grid.RowDefinitions.Add(new RowDefinition(new GridLength(5, GridUnitType.Star)));
             grid.RowDefinitions.Add(new RowDefinition(new GridLength(7, GridUnitType.Star)));
-            grid.RowDefinitions.Add(new RowDefinition(OneStar));
+            grid.RowDefinitions.Add(new RowDefinition(_oneStar));
             grid.RowDefinitions.Add(new RowDefinition(new GridLength(7, GridUnitType.Star)));
-            grid.RowDefinitions.Add(new RowDefinition(OneStar));
+            grid.RowDefinitions.Add(new RowDefinition(_oneStar));
 
             var noFlightsImage = new Image()
             {

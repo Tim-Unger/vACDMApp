@@ -49,10 +49,7 @@
                 x:Name="FlightsRefreshView"
                 IsRefreshing="False"
                 Refreshing="RefreshView_Refreshing">
-                <ScrollView
-                    x:Name="FlightsScrollView"
-                    VerticalOptions="FillAndExpand"
-                    VerticalScrollBarVisibility="Always">
+                <ScrollView x:Name="FlightsScrollView" VerticalOptions="FillAndExpand">
                     <VerticalStackLayout x:Name="FlightsStackLayout" />
                 </ScrollView>
             </RefreshView>
