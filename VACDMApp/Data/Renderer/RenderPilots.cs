@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Converters;
 using Microsoft.Maui.Controls.Shapes;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using VACDMApp.Windows.BottomSheets;
 using VACDMApp.Windows.Views;
 
@@ -12,7 +13,7 @@ namespace VACDMApp.VACDMData.Renderer
 
         private static readonly GridLength OneStar = new(3, GridUnitType.Star);
 
-        internal static List<Grid> Render(string? airport)
+        internal static List<Border> Render(string? airport)
         {
             var pilotsWithFP = Data.VACDMPilots
                 //Only Pilots that have are in the Vatsim Datafeed
@@ -25,10 +26,10 @@ namespace VACDMApp.VACDMData.Renderer
                 .Where(
                     x =>
                         x.Vacdm.Eobt.Hour >= DateTime.UtcNow.AddHours(-1).Hour
-                       && x.Vacdm.Tsat >= DateTime.UtcNow.AddMinutes(-6)
+                        && x.Vacdm.Tsat >= DateTime.UtcNow.AddMinutes(-6)
                 );
 
-            if(pilotsWithFP.Count() == 0)
+            if (pilotsWithFP.Count() == 0)
             {
                 return new(1) { RenderNoFlightsFound() };
             }
@@ -42,11 +43,11 @@ namespace VACDMApp.VACDMData.Renderer
             return SplitAndRenderGrid(pilotsWithFP);
         }
 
-        private static List<Grid> SplitAndRenderGrid(IEnumerable<VACDMPilot> pilots)
+        private static List<Border> SplitAndRenderGrid(IEnumerable<VACDMPilot> pilots)
         {
             var sortByTime = pilots.OrderBy(x => x.Vacdm.Eobt).GroupBy(x => x.Vacdm.Eobt.Hour);
 
-            var splitGrid = new List<Grid>();
+            var splitGrid = new List<Border>();
 
             foreach (var hourWindow in sortByTime)
             {
@@ -58,8 +59,9 @@ namespace VACDMApp.VACDMData.Renderer
             return splitGrid;
         }
 
-        private static Grid RenderTimeSeperator(int hour)
+        private static Border RenderTimeSeperator(int hour)
         {
+            var border = new Border() { Stroke = Colors.Transparent, BackgroundColor = Colors.Transparent };
             var grid = new Grid();
             grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(2, GridUnitType.Star)));
             grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(10, GridUnitType.Star)));
@@ -99,20 +101,28 @@ namespace VACDMApp.VACDMData.Renderer
             grid.SetColumn(timeLabel, 0);
             //grid.SetColumn(dateLabel, 2);
 
-            return grid;
+            border.Content = grid;
+
+            return border;
         }
 
-        private static Grid RenderPilot(VACDMPilot pilot)
+        private static Border RenderPilot(VACDMPilot pilot)
         {
             //TODO Error handling here when ACDM FP not found
             var flightPlan =
                 Data.VatsimPilots.FirstOrDefault(x => x.callsign == pilot.Callsign).flight_plan
                 ?? throw new Exception();
             var airlines = Data.Airlines;
-            var grid = new Grid() { Background = DarkBlue, Margin = 10 };
+
+            var border = new Border() { StrokeThickness = 0, Stroke = Color.FromArgb("#454545")};
+            var parentGridContainer = new Grid() { Background = DarkBlue};
+            var grid = new Grid() { Margin = new Thickness(10) };
 
             grid.ColumnDefinitions.Add(new ColumnDefinition(OneStar));
             grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(3, GridUnitType.Star)));
+            grid.ColumnDefinitions.Add(
+                new ColumnDefinition(new GridLength(0.5, GridUnitType.Star))
+            );
 
             var timeGrid = new Grid();
             timeGrid.RowDefinitions.Add(new RowDefinition(new GridLength(4, GridUnitType.Star)));
@@ -131,12 +141,9 @@ namespace VACDMApp.VACDMData.Renderer
                 HorizontalTextAlignment = TextAlignment.Start,
                 VerticalTextAlignment = TextAlignment.End
             };
-            //var tsat = new Label() { Text = pilot.Vacdm.Tsat.ToString("HH:mmZ"), TextColor = Colors.White, Background = DarkBlue, FontAttributes = FontAttributes.Bold, FontSize = 20, HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
 
             timeGrid.Children.Add(eobt);
-            //timeGrid.Children.Add(tsat);
             timeGrid.SetRow(eobt, 0);
-            //timeGrid.SetRow(tsat, 1);
 
             var flightGrid = new Grid();
             flightGrid.RowDefinitions.Add(new RowDefinition(OneStar));
@@ -182,6 +189,15 @@ namespace VACDMApp.VACDMData.Renderer
             var flightData =
                 $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival}, {flightPlan.aircraft_short}";
 
+            var regRegex = new Regex(@"REG/([A-Z0-9-]{3,6})");
+            var hasRegFiled = regRegex.IsMatch(flightPlan.remarks);
+
+            if (hasRegFiled)
+            {
+                var reg = regRegex.Match(flightPlan.remarks).Groups[0].Value;
+                flightData += $", {reg}";
+            }
+
             var flightDataLabel = new Label()
             {
                 Text = flightData,
@@ -219,11 +235,39 @@ namespace VACDMApp.VACDMData.Renderer
             grid.SetRowSpan(button, 5);
             grid.SetColumnSpan(button, 5);
 
-            return grid;
+
+            //TODO Padding is fucked up
+            var bookmarkGrid = new Grid
+            {
+                Padding = new Thickness(5),
+            };
+
+            var bookmarkButton = new ImageButton()
+            {
+                
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalOptions = LayoutOptions.Center,
+                Source = "bookmark_outline.svg",
+                HeightRequest = 25,
+                WidthRequest = 25
+            };
+
+            bookmarkButton.Clicked += BookmarkButton_Clicked;
+
+            bookmarkGrid.Children.Add(bookmarkButton);
+
+            grid.Children.Add(bookmarkGrid);
+            grid.SetColumn(bookmarkGrid, 2);
+
+            parentGridContainer.Children.Add(grid);
+
+            border.Content = parentGridContainer;
+            return border;
         }
 
-        private static Grid RenderNoFlightsFound()
+        private static Border RenderNoFlightsFound()
         {
+            var border = new Border() { Background = Colors.Transparent, StrokeThickness = 0};
             var grid = new Grid();
 
             grid.RowDefinitions.Add(new RowDefinition(new GridLength(5, GridUnitType.Star)));
@@ -232,8 +276,12 @@ namespace VACDMApp.VACDMData.Renderer
             grid.RowDefinitions.Add(new RowDefinition(new GridLength(7, GridUnitType.Star)));
             grid.RowDefinitions.Add(new RowDefinition(OneStar));
 
-
-            var noFlightsImage = new Image() { Source = "noflights.svg", HeightRequest = 100, WidthRequest = 100 };
+            var noFlightsImage = new Image()
+            {
+                Source = "noflights.svg",
+                HeightRequest = 100,
+                WidthRequest = 100
+            };
 
             var noFlightsLabel = new Label()
             {
@@ -257,19 +305,37 @@ namespace VACDMApp.VACDMData.Renderer
             grid.SetRow(noFlightsImage, 1);
             grid.SetRow(noFlightsLabel, 4);
 
-            return grid;
+            border.Content = grid;
+            return border;
+        }
+
+        private static void BookmarkButton_Clicked(object sender, EventArgs e)
+        {
+            var button = (ImageButton)sender;
+            var parentGrid = (Grid)((Grid)button.Parent).Parent;
+            var callsignGrid = (Grid)parentGrid.Children[1];
+            var callsignLabel = (Label)callsignGrid.Children[1];
+            var callsign = callsignLabel.Text;
+
+            var pilot = Data.VACDMPilots.First(x => x.Callsign == callsign);
+
+            if (Data.BookmarkedPilots.Contains(pilot))
+            {
+                button.Source = "bookmark_outline.svg";
+                Data.BookmarkedPilots.Remove(pilot);
+                return;
+            }
+
+            button.Source = "bookmark.svg";
+            Data.BookmarkedPilots.Add(pilot);
         }
 
         private static void Button_Clicked(object sender, EventArgs e)
         {
             var button = (Button)sender;
-
             var parentGrid = (Grid)button.Parent;
-
             var callsignGrid = (Grid)parentGrid.Children[1];
-
             var callsignLabel = (Label)callsignGrid.Children[1];
-
             var callsign = callsignLabel.Text;
 
             SingleFlightBottomSheet.SelectedCallsign = callsign;

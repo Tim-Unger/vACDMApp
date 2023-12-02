@@ -12,7 +12,7 @@
         public string TobtState { get; set; }
 
         [JsonPropertyName("exot")]
-        public int exot { get; set; }
+        public int Exot { get; set; }
 
         [JsonPropertyName("manual_exot")]
         public bool IsManualExot { get; set; }

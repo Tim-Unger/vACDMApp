@@ -39,7 +39,7 @@
                             <Label
                                 FontAttributes="Bold"
                                 HorizontalOptions="Center"
-                                Text="My Flight"
+                                Text="My Flights"
                                 TextColor="#FEFEFE" />
                         </VerticalStackLayout>
                         <Button

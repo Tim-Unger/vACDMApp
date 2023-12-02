@@ -34,6 +34,8 @@ namespace VACDMApp.VACDMData
 
         internal static AboutPage AboutPage = new();
 
+        internal static List<VACDMPilot> BookmarkedPilots = new();
+
         internal static SenderPage SenderPage;
 
         internal static object Sender;
