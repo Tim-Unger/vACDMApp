@@ -1,7 +1,7 @@
 using CommunityToolkit.Maui.Alerts;
 //using FluentScheduler;
 using VACDMApp.VACDMData;
-using VACDMApp.VACDMData.Renderer;
+using VACDMApp.Data.Renderer;
 using VACDMApp.Windows.BottomSheets;
 using static VACDMApp.VACDMData.Data;
 
@@ -66,7 +66,7 @@ public partial class FlightsView : ContentView
         {
             Routing.RegisterRoute("AboutPage", typeof(AboutPage));
 
-            var flights = FlightInfos.Render(null);
+            var flights = Pilots.Render(null);
             flights.ForEach(FlightsStackLayout.Children.Add);
             GetNearestTime();
 
@@ -126,7 +126,7 @@ public partial class FlightsView : ContentView
             }
 
             FlightsStackLayout.Children.Clear();
-            var allFlights = FlightInfos.Render(selectedAirport);
+            var allFlights = Pilots.Render(selectedAirport);
             allFlights.ForEach(FlightsStackLayout.Children.Add);
             FlightsScrollView.Content = FlightsStackLayout;
 
@@ -158,7 +158,7 @@ public partial class FlightsView : ContentView
 
         if (selectedAirport == "ALL AIRPORTS")
         {
-            var allFlights = FlightInfos.Render(null);
+            var allFlights = Pilots.Render(null);
             FlightsStackLayout.Children.Clear();
             allFlights.ForEach(FlightsStackLayout.Children.Add);
             FlightsScrollView.Content = FlightsStackLayout;
@@ -166,7 +166,7 @@ public partial class FlightsView : ContentView
             return;
         }
 
-        var flights = FlightInfos.Render(selectedAirport);
+        var flights = Pilots.Render(selectedAirport);
         FlightsStackLayout.Children.Clear();
         flights.ForEach(FlightsStackLayout.Children.Add);
         FlightsScrollView.Content = FlightsStackLayout;
@@ -211,7 +211,7 @@ public partial class FlightsView : ContentView
             selectedAirport = null;
         }
 
-        var allFlights = FlightInfos.Render(selectedAirport);
+        var allFlights = Pilots.Render(selectedAirport);
         allFlights.ForEach(FlightsStackLayout.Children.Add);
         FlightsScrollView.Content = FlightsStackLayout;
     }
