@@ -4,6 +4,8 @@ using VACDMApp.VACDMData;
 using VACDMApp.Data.Renderer;
 using VACDMApp.Windows.BottomSheets;
 using static VACDMApp.VACDMData.Data;
+using Plugin.LocalNotification;
+using Java.Nio.Channels;
 
 namespace VACDMApp.Windows.Views;
 
@@ -113,7 +115,6 @@ public partial class FlightsView : ContentView
 
     private async Task UpdateDataContinuously()
     {
-
         //TODO Pause on lost focus
         while (true)
         {
@@ -149,9 +150,15 @@ public partial class FlightsView : ContentView
     }
 
     //TODO
-    private void TimeButton_Clicked(object sender, EventArgs e) { throw new NotImplementedException(); }
+    private void TimeButton_Clicked(object sender, EventArgs e)
+    {
+        throw new NotImplementedException();
+    }
 
-    private void TimeFormatButton_Clicked(object sender, EventArgs e) { throw new NotImplementedException(); }
+    private async void TimeFormatButton_Clicked(object sender, EventArgs e)
+    {
+        
+    }
 
     internal void GetFlightsFromSelectedAirport()
     {

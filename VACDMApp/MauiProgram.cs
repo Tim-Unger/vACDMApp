@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using The49.Maui.BottomSheet;
 using CommunityToolkit.Maui;
+using Plugin.LocalNotification;
 
 namespace VACDMApp
 {
@@ -14,6 +15,7 @@ namespace VACDMApp
             builder
                 .UseMauiApp<App>()
                 .UseBottomSheet()
+                .UseLocalNotification()
                 .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {

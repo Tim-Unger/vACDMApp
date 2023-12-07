@@ -1,4 +1,5 @@
 ﻿using Microsoft.Maui.Controls.Shapes;
+using VACDMApp.DataFaker;
 using VACDMApp.VACDMData;
 
 namespace VACDMApp.Data.Renderer
@@ -17,6 +18,7 @@ namespace VACDMApp.Data.Renderer
                 VACDMData.Data.VatsimPilots.FirstOrDefault(x => x.callsign == callsign).flight_plan
                 ?? throw new Exception();
             var airlines = VACDMData.Data.Airlines;
+
             var pilot = VACDMData.Data.VACDMPilots.First(x => x.Callsign == callsign);
 
             var grid = new Grid { BackgroundColor = _darkGrey };

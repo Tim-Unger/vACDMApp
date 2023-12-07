@@ -5,7 +5,7 @@ using static VACDMApp.VACDMData.Data;
 
 namespace VACDMApp.DataFaker
 {
-    public class VACDMFaker
+    public partial class VACDMFaker
     {
         public static List<VACDMPilot> FakePilots()
         {

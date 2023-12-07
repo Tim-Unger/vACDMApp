@@ -1,20 +1,13 @@
-﻿namespace VACDMApp.Data.Renderer
+﻿using VACDMApp.DataFaker;
+
+namespace VACDMApp.Data.Renderer
 {
     internal partial class Pilots
     {
+        internal static bool IsTestData = false;
+
         internal static List<Border> Render(string? airport)
         {
-
-//#if DEBUG
-//            var random = new Random();
-
-//            var vatsimPilots = VACDMData.Data.VatsimPilots;
-
-//            foreach(var pilot in VACDMData.Data.VACDMPilots)
-//            {
-//                pilot.Callsign = vatsimPilots[random.Next(vatsimPilots.Count)].callsign;
-//            }
-//#endif
             var pilotsWithFP = VACDMData.Data.VACDMPilots
                 //Only Pilots that have are in the Vatsim Datafeed
                 .Where(x => VACDMData.Data.VatsimPilots.Exists(y => y.callsign == x.Callsign))
