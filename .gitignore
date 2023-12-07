@@ -4,6 +4,8 @@
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
 google-services.json
+commands.txt
+log.txt
 
 # User-specific files
 *.rsuser

@@ -115,14 +115,15 @@ namespace VACDMApp.Data.Renderer
             var flightData =
                 $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival}, {flightPlan.aircraft_short}";
 
-            var regRegex = new Regex(@"REG/([A-Z0-9-]{3,6})");
-            var hasRegFiled = regRegex.IsMatch(flightPlan.remarks);
+            //TODO Fix
+            //var regRegex = new Regex(@"REG/([A-Z0-9-]{3,6})");
+            //var hasRegFiled = regRegex.IsMatch(flightPlan.remarks);
 
-            if (hasRegFiled)
-            {
-                var reg = regRegex.Match(flightPlan.remarks).Groups[1].Value;
-                flightData += $", {reg}";
-            }
+            //if (hasRegFiled)
+            //{
+            //    var reg = regRegex.Match(flightPlan.remarks).Groups[1].Value;
+            //    flightData += $", {reg}";
+            //}
 
             var flightDataLabel = new Label()
             {
@@ -168,7 +169,7 @@ namespace VACDMApp.Data.Renderer
             return grid;
         }
 
-        private static void Button_Clicked(object sender, EventArgs e)
+        private static async void Button_Clicked(object sender, EventArgs e)
         {
             var button = (Button)sender;
             var parentGrid = (Grid)button.Parent;
@@ -176,10 +177,9 @@ namespace VACDMApp.Data.Renderer
             var callsignLabel = (Label)callsignGrid.Children[1];
             var callsign = callsignLabel.Text;
 
-            var singleFlightSheet = new SingleFlightBottomSheet
-            {
-                SelectedCallsign = callsign
-            };
+            var singleFlightSheet = new SingleFlightBottomSheet();
+
+            SingleFlightBottomSheet.SelectedCallsign = callsign;
 
             singleFlightSheet.ShowAsync();
         }

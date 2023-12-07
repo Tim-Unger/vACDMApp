@@ -1,5 +1,6 @@
 ﻿using static VACDMApp.VACDMData.VACDMData;
 using static VACDMApp.VACDMData.Data;
+using VACDMApp.DataFaker;
 
 namespace VACDMApp.VACDMData
 {
@@ -218,12 +219,15 @@ namespace VACDMApp.VACDMData
 
         internal static async Task<List<VACDMPilot>> GetVACDMPilotsAsync()
         {
-            var data = Client.GetStringAsync(VacdmApiUrl).Result;
+            var data = await Client.GetStringAsync(VacdmApiUrl);
 
             var dataList = JsonSerializer.Deserialize<List<VACDMPilot>>(data);
 
             if (dataList.Count == 0)
             {
+//#if DEBUG
+//                return VACDMFaker.FakePilots();
+//#endif
                 return Enumerable.Empty<VACDMPilot>().ToList();
                 ////TODO
                 //dataList = JsonSerializer.Deserialize<List<VACDMPilot>>(TestData);

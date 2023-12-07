@@ -32,6 +32,7 @@ namespace VACDMApp
         private void MyFlightButton_Clicked(object sender, EventArgs e)
         {
             Mainview.Content = MyFlightView;
+            MyFlightView.RenderBookmarks();
             SetButton(CurrentPage.MyFlight);
         }
 

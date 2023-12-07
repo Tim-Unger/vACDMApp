@@ -4,18 +4,29 @@
     {
         internal static List<Border> Render(string? airport)
         {
-            var pilotsWithFP = VACDMApp.VACDMData.Data.VACDMPilots
+
+//#if DEBUG
+//            var random = new Random();
+
+//            var vatsimPilots = VACDMData.Data.VatsimPilots;
+
+//            foreach(var pilot in VACDMData.Data.VACDMPilots)
+//            {
+//                pilot.Callsign = vatsimPilots[random.Next(vatsimPilots.Count)].callsign;
+//            }
+//#endif
+            var pilotsWithFP = VACDMData.Data.VACDMPilots
                 //Only Pilots that have are in the Vatsim Datafeed
-                .Where(x => VACDMApp.VACDMData.Data.VatsimPilots.Exists(y => y.callsign == x.Callsign))
+                .Where(x => VACDMData.Data.VatsimPilots.Exists(y => y.callsign == x.Callsign))
                 //Only Pilots that have filed a flight plan
                 .Where(
-                    x => VACDMApp.VACDMData.Data.VatsimPilots.First(y => y.callsign == x.Callsign).flight_plan != null
+                    x => VACDMData.Data.VatsimPilots.First(y => y.callsign == x.Callsign).flight_plan != null
                 )
                 //Only pilots whose Eobt and TSAT lie within the future or max 5 minutes ago
                 .Where(
                     x =>
                         x.Vacdm.Eobt.Hour >= DateTime.UtcNow.AddHours(-1).Hour
-                        && x.Vacdm.Tsat >= DateTime.UtcNow.AddMinutes(-6)
+                        //&& x.Vacdm.Tsat >= DateTime.UtcNow.AddMinutes(-6)
                 );
 
             if (pilotsWithFP.Count() == 0)

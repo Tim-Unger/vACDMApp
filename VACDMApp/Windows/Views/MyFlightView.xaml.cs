@@ -24,10 +24,7 @@ public partial class MyFlightView : ContentView
             await GetCurrentTime();
         }
 
-        BookmarksStackLayout.Children.Clear();
-        var bookmarks = Bookmarks.Render(Data.BookmarkedPilots);
-        bookmarks.ForEach(BookmarksStackLayout.Children.Add);
-        //BookmarksScrollview.Content = BookmarksStackLayout;
+        RenderBookmarks();
 
         _isFirstLoad = false;
     }
@@ -97,8 +94,8 @@ public partial class MyFlightView : ContentView
 
         var singleFlightSheet = new SingleFlightBottomSheet();
 
-        singleFlightSheet.SelectedCallsign = vacdmPilot.Callsign;
-
+        SingleFlightBottomSheet.SelectedCallsign = vacdmPilot.Callsign;
+        
         await singleFlightSheet.ShowAsync();
     }
 
@@ -168,9 +165,14 @@ public partial class MyFlightView : ContentView
     private void ContentView_Focused(object sender, FocusEventArgs e)
     {
         //TODO better loading/unloading
-        BookmarksStackLayout.Children.Clear();
+        RenderBookmarks();
+    }
+
+    internal void RenderBookmarks()
+    {
+        //BookmarksStackLayout.Children.Clear();
         var bookmarks = Bookmarks.Render(Data.BookmarkedPilots);
         bookmarks.ForEach(BookmarksStackLayout.Children.Add);
-        //BookmarksScrollview.Content = BookmarksStackLayout;
+        BookmarksScrollView.Content = BookmarksStackLayout;
     }
 }

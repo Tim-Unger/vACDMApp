@@ -13,11 +13,13 @@ namespace VACDMApp.Data.Renderer
             var callsign = callsignLabel.Text;
 
             var pilot = VACDMData.Data.VACDMPilots.First(x => x.Callsign == callsign);
+            var bookmarks = VACDMData.Data.BookmarkedPilots;
 
-            if (VACDMData.Data.BookmarkedPilots.Contains(pilot))
+            if (bookmarks.Exists(x => x.Callsign == pilot.Callsign))
             {
                 button.Source = "bookmark_outline.svg";
-                VACDMData.Data.BookmarkedPilots.Remove(pilot);
+                var removeIndex = bookmarks.FindIndex(x => x.Callsign == pilot.Callsign);
+                VACDMData.Data.BookmarkedPilots.RemoveAt(removeIndex);
 
                 var removedToast = Toast.Make($"Removed Flight {callsign} from your Bookmarks", CommunityToolkit.Maui.Core.ToastDuration.Short, 14);
                 await removedToast.Show();

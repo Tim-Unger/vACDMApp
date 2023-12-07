@@ -8,9 +8,16 @@ namespace VACDMApp.VACDMData
     {
         internal static async Task<List<Airline>> GetAirlinesAsync()
         {
-            var client = new HttpClient();
+            var dataRaw = await FileSystem.Current.OpenAppPackageFileAsync("airlines.json");
 
-            return await client.GetFromJsonAsync<List<Airline>>("https://api.tim-u.me/airlines");
+            var reader = new StreamReader(dataRaw);
+            var data = reader.ReadToEnd();
+
+            return await JsonSerializer.DeserializeAsync<List<Airline>>(new MemoryStream(Encoding.UTF8.GetBytes(data)));
+
+            //var client = new HttpClient();
+
+            //return await client.GetFromJsonAsync<List<Airline>>("https://api.tim-u.me/airlines");
         }
     }
 }

@@ -6,7 +6,7 @@ namespace VACDMApp.Windows.BottomSheets;
 
 public partial class SingleFlightBottomSheet : BottomSheet
 {
-    public string SelectedCallsign = "";
+    public static string SelectedCallsign = "";
 
 	public SingleFlightBottomSheet()
 	{
@@ -15,7 +15,7 @@ public partial class SingleFlightBottomSheet : BottomSheet
 
     private async void ContentView_Loaded(object sender, EventArgs e)
     {
-        await UpdateDataContinuously();
+        UpdateDataContinuously();
 
         var content = SingleFlight.RenderGrid(SelectedCallsign);
         SenderPage = VACDMData.SenderPage.SingleFlight;

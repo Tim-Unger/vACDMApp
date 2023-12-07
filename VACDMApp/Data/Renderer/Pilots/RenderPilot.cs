@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using Kotlin.Jvm.Internal;
+using System.Text.RegularExpressions;
 using VACDMApp.VACDMData;
 
 namespace VACDMApp.Data.Renderer
@@ -28,8 +29,8 @@ namespace VACDMApp.Data.Renderer
             );
 
             var timeGrid = new Grid();
-            timeGrid.RowDefinitions.Add(new RowDefinition(new GridLength(4, GridUnitType.Star)));
-            timeGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
+            //timeGrid.RowDefinitions.Add(new RowDefinition(new GridLength(4, GridUnitType.Star)));
+            //timeGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
 
             grid.SetColumn(timeGrid, 0);
 
@@ -42,13 +43,13 @@ namespace VACDMApp.Data.Renderer
                 FontAttributes = FontAttributes.Bold,
                 FontSize = 20,
                 HorizontalTextAlignment = TextAlignment.Start,
-                VerticalTextAlignment = TextAlignment.End
+                VerticalTextAlignment = TextAlignment.Center
             };
 
             timeGrid.Children.Add(eobt);
             timeGrid.SetRow(eobt, 0);
 
-            var flightGrid = new Grid();
+            var flightGrid = new Grid() { HorizontalOptions = LayoutOptions.Start};
             flightGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
             flightGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
             flightGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
@@ -63,7 +64,10 @@ namespace VACDMApp.Data.Renderer
                 TextColor = Colors.White,
                 Background = _darkBlue,
                 FontAttributes = FontAttributes.Bold,
-                FontSize = 18
+                FontSize = 18,
+                HorizontalTextAlignment = TextAlignment.Start,
+                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalOptions = LayoutOptions.Start
             };
 
             var callsign = pilot.Callsign;
@@ -73,7 +77,10 @@ namespace VACDMApp.Data.Renderer
                 TextColor = Colors.White,
                 Background = _darkBlue,
                 FontAttributes = FontAttributes.Bold,
-                FontSize = 25
+                FontSize = 25,
+                HorizontalTextAlignment = TextAlignment.Start,
+                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalOptions = LayoutOptions.Start
             };
 
             var icao = pilot.Callsign[..3].ToUpper();
@@ -95,11 +102,14 @@ namespace VACDMApp.Data.Renderer
             var regRegex = new Regex(@"REG/([A-Z0-9-]{3,6})");
             var hasRegFiled = regRegex.IsMatch(flightPlan.remarks);
 
-            if (hasRegFiled)
-            {
-                var reg = regRegex.Match(flightPlan.remarks).Groups[1].Value;
-                flightData += $", {reg}";
-            }
+            //TODO fix bug with text alignment breaking when adding reg
+            //if (hasRegFiled)
+            //{
+            //    var reg = regRegex.Match(flightPlan.remarks).Groups[1].Value;
+            //    flightData += $", {reg}";
+            //}
+
+            //flightData = hasRegFiled ? $"{flightData}, {regRegex.Match(flightPlan.remarks).Groups[1].Value}" : $"{flightData} ";
 
             var flightDataLabel = new Label()
             {
@@ -107,7 +117,8 @@ namespace VACDMApp.Data.Renderer
                 TextColor = Colors.White,
                 Background = _darkBlue,
                 FontAttributes = FontAttributes.Bold,
-                FontSize = 15
+                FontSize = 15,
+                HorizontalOptions = LayoutOptions.Start
             };
             var statusLabel = new Label()
             {
@@ -115,7 +126,10 @@ namespace VACDMApp.Data.Renderer
                 TextColor = Colors.White,
                 Background = _darkBlue,
                 FontAttributes = FontAttributes.Bold,
-                FontSize = 15
+                FontSize = 15,
+                HorizontalTextAlignment = TextAlignment.Start,
+                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalOptions = LayoutOptions.Start
             };
 
             flightGrid.Children.Add(airportLabel);
@@ -138,12 +152,8 @@ namespace VACDMApp.Data.Renderer
             grid.SetRowSpan(button, 5);
             grid.SetColumnSpan(button, 5);
 
-
             //TODO Padding is fucked up
-            var bookmarkGrid = new Grid
-            {
-                Padding = new Thickness(5),
-            };
+            var bookmarkGrid = new Grid { Padding = new Thickness(5), };
 
             //TODO not woking
             var isPilotBookmarked = VACDMData.Data.BookmarkedPilots.Contains(pilot);
@@ -151,7 +161,6 @@ namespace VACDMApp.Data.Renderer
 
             var bookmarkButton = new ImageButton()
             {
-
                 VerticalOptions = LayoutOptions.Start,
                 HorizontalOptions = LayoutOptions.End,
                 Source = bookmarkImageSource,
