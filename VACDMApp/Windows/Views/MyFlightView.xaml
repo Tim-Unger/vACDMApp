@@ -71,9 +71,9 @@
             </Grid>
 
             <Grid Grid.Row="1">
-                <ScrollView VerticalOptions="FillAndExpand">
-                    <VerticalStackLayout x:Name="BookmarksStackLayout" Margin="10" />
-                </ScrollView>
+                <VerticalStackLayout x:Name="BookmarksStackLayout" Margin="10" />
+
+                <!-- <ScrollView x:Name="BookmarksScrollview" VerticalOptions="FillAndExpand" />-->
             </Grid>
 
         </Grid>

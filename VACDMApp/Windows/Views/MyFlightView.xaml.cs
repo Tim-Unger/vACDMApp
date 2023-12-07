@@ -17,23 +17,24 @@ public partial class MyFlightView : ContentView
         _page = Shell.Current.CurrentPage;
     }
 
-    private void ContentView_Loaded(object sender, EventArgs e)
+    private async void ContentView_Loaded(object sender, EventArgs e)
     {
-        if (_isFirstLoad) 
+        if (_isFirstLoad)
         {
-            GetCurrentTime();
+            await GetCurrentTime();
         }
 
         BookmarksStackLayout.Children.Clear();
         var bookmarks = Bookmarks.Render(Data.BookmarkedPilots);
         bookmarks.ForEach(BookmarksStackLayout.Children.Add);
+        //BookmarksScrollview.Content = BookmarksStackLayout;
 
         _isFirstLoad = false;
     }
 
     private async void FindCidButton_Clicked(object sender, EventArgs e)
     {
-        if(Data.Settings.Cid is not null)
+        if (Data.Settings.Cid is not null)
         {
             CidText.Text = Data.Settings.Cid.ToString();
         }
@@ -59,7 +60,7 @@ public partial class MyFlightView : ContentView
             return;
         }
 
-        var pilot = Data.VatsimPilots.FirstOrDefault(x => x.cid == cid);
+        var pilot = Data.VatsimPilots.Find(x => x.cid == cid);
 
         if (pilot is null)
         {
@@ -72,13 +73,17 @@ public partial class MyFlightView : ContentView
             return;
         }
 
-        var vacdmPilot = Data.VACDMPilots.FirstOrDefault(
+        var vacdmPilot = Data.VACDMPilots.Find(
             x => x.Callsign.Equals(pilot.callsign, StringComparison.InvariantCultureIgnoreCase)
         );
 
         if (vacdmPilot is null)
         {
-            await _page.DisplayAlert("No vACDM Times", "There are no vACDM Times available for your flight", "OK");
+            await _page.DisplayAlert(
+                "No vACDM Times",
+                "There are no vACDM Times available for your flight",
+                "OK"
+            );
 
             return;
         }
@@ -92,7 +97,7 @@ public partial class MyFlightView : ContentView
 
         var singleFlightSheet = new SingleFlightBottomSheet();
 
-        SingleFlightBottomSheet.SelectedCallsign = vacdmPilot.Callsign;
+        singleFlightSheet.SelectedCallsign = vacdmPilot.Callsign;
 
         await singleFlightSheet.ShowAsync();
     }
@@ -101,7 +106,7 @@ public partial class MyFlightView : ContentView
     {
         var cidText = CidText.Text;
 
-        if(cidText is null)
+        if (cidText is null)
         {
             await _page.DisplayAlert("No CID", "Please enter a CID", "Ok");
             return;
@@ -166,5 +171,6 @@ public partial class MyFlightView : ContentView
         BookmarksStackLayout.Children.Clear();
         var bookmarks = Bookmarks.Render(Data.BookmarkedPilots);
         bookmarks.ForEach(BookmarksStackLayout.Children.Add);
+        //BookmarksScrollview.Content = BookmarksStackLayout;
     }
 }

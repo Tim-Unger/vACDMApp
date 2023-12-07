@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using VACDMApp.VACDMData;
+using VACDMApp.Windows.BottomSheets;
 
 namespace VACDMApp.Data.Renderer
 {
@@ -11,41 +12,61 @@ namespace VACDMApp.Data.Renderer
 
         private static Grid RenderBookmark(VACDMPilot pilot)
         {
-            var grid = new Grid();
-            
-            var flightPlan = VACDMData.Data.VatsimPilots.First(x => x.callsign == pilot.Callsign).flight_plan;
-            var airlines = VACDMData.Data.Airlines;
-
-            grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
-            grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(5, GridUnitType.Star)));
-            grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(10, GridUnitType.Star)));
+            var grid = new Grid() { Background = _darkBlue, Margin = new Thickness(10) };
 
             grid.ColumnDefinitions.Add(new ColumnDefinition(_oneStar));
-            grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(3, GridUnitType.Star)));
-            grid.ColumnDefinitions.Add(
-                new ColumnDefinition(new GridLength(0.5, GridUnitType.Star))
-            );
+            grid.ColumnDefinitions.Add(new ColumnDefinition(_oneStar));
+            grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(0.3, GridUnitType.Star)));
 
             var timeGrid = new Grid();
-            timeGrid.RowDefinitions.Add(new RowDefinition(new GridLength(4, GridUnitType.Star)));
+
+            timeGrid.RowDefinitions.Add(new RowDefinition(new GridLength(2, GridUnitType.Star)));
+            timeGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
             timeGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
 
-            grid.SetColumn(timeGrid, 0);
-
-            var eobt = new Label()
+            var eobtLabel = new Label()
             {
                 Text = pilot.Vacdm.Eobt.ToString("HH:mmZ"),
                 Margin = new Thickness(20, 0, 0, 0),
                 TextColor = Colors.White,
-                Background = _darkBlue,
+                FontAttributes = FontAttributes.Bold,
+                FontSize = 25,
+                HorizontalTextAlignment = TextAlignment.Start,
+                VerticalTextAlignment = TextAlignment.End
+            };
+
+            timeGrid.Children.Add(eobtLabel);
+            timeGrid.SetRow(eobtLabel, 0);
+
+            var tobtLabel = new Label()
+            {
+                Text = pilot.Vacdm.Tobt.ToString("HH:mmZ"),
+                Margin = new Thickness(20, 0, 0, 0),
+                TextColor = Colors.White,
                 FontAttributes = FontAttributes.Bold,
                 FontSize = 20,
                 HorizontalTextAlignment = TextAlignment.Start,
                 VerticalTextAlignment = TextAlignment.End
             };
 
-            timeGrid.Children.Add(eobt);
-            timeGrid.SetRow(eobt, 0);
+            timeGrid.Children.Add(tobtLabel);
+            timeGrid.SetRow(tobtLabel, 1);
+
+            var tsatColor = SingleFlight.GetTsatBackgroundColor(pilot.Vacdm.Tsat, pilot.Vacdm.Tobt);
+
+            var tsatLabel = new Label()
+            {
+                Text = pilot.Vacdm.Tsat.ToString("HH:mmZ"),
+                Margin = new Thickness(20, 0, 0, 0),
+                TextColor = tsatColor,
+                FontAttributes = FontAttributes.Bold,
+                FontSize = 20,
+                HorizontalTextAlignment = TextAlignment.Start,
+                VerticalTextAlignment = TextAlignment.Center
+            };
+
+            timeGrid.Children.Add(tsatLabel);
+            timeGrid.SetRow(tsatLabel, 2);
 
             var flightGrid = new Grid();
             flightGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
@@ -74,6 +95,9 @@ namespace VACDMApp.Data.Renderer
                 FontAttributes = FontAttributes.Bold,
                 FontSize = 25
             };
+
+            var airlines = VACDMData.Data.Airlines;
+            var flightPlan = VACDMData.Data.VatsimPilots.First(x => x.callsign == pilot.Callsign).flight_plan;
 
             var icao = pilot.Callsign[..3].ToUpper();
             var airline =
@@ -117,6 +141,14 @@ namespace VACDMApp.Data.Renderer
                 FontSize = 15
             };
 
+            var button = new Button() { BackgroundColor = Colors.Transparent };
+            button.Clicked += Button_Clicked;
+            grid.Children.Add(button);
+
+            grid.SetRowSpan(button, 5);
+            grid.SetColumnSpan(button, 5);
+
+
             flightGrid.Children.Add(airportLabel);
             flightGrid.Children.Add(callsignLabel);
             flightGrid.Children.Add(flightDataLabel);
@@ -127,9 +159,29 @@ namespace VACDMApp.Data.Renderer
             flightGrid.SetRow(flightDataLabel, 2);
             flightGrid.SetRow(statusLabel, 3);
 
+            grid.Children.Add(timeGrid);
             grid.Children.Add(flightGrid);
 
+            grid.SetColumn(timeGrid, 0);
+            grid.SetColumn(flightGrid, 1);
+
             return grid;
+        }
+
+        private static void Button_Clicked(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var parentGrid = (Grid)button.Parent;
+            var callsignGrid = (Grid)parentGrid.Children[2];
+            var callsignLabel = (Label)callsignGrid.Children[1];
+            var callsign = callsignLabel.Text;
+
+            var singleFlightSheet = new SingleFlightBottomSheet
+            {
+                SelectedCallsign = callsign
+            };
+
+            singleFlightSheet.ShowAsync();
         }
     }
 }

@@ -12,9 +12,11 @@ namespace VACDMApp.Data.Renderer
             var callsignLabel = (Label)callsignGrid.Children[1];
             var callsign = callsignLabel.Text;
 
-            SingleFlightBottomSheet.SelectedCallsign = callsign;
+            var singleFlightSheet = new SingleFlightBottomSheet
+            {
+                SelectedCallsign = callsign
+            };
 
-            var singleFlightSheet = new SingleFlightBottomSheet();
 
             singleFlightSheet.ShowAsync();
         }

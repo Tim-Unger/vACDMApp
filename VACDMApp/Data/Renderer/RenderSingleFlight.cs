@@ -14,7 +14,7 @@ namespace VACDMApp.Data.Renderer
         internal static Grid RenderGrid(string callsign)
         {
             var flightPlan =
-                VACDMData.Data.VatsimPilots.First(x => x.callsign == callsign).flight_plan
+                VACDMData.Data.VatsimPilots.FirstOrDefault(x => x.callsign == callsign).flight_plan
                 ?? throw new Exception();
             var airlines = VACDMData.Data.Airlines;
             var pilot = VACDMData.Data.VACDMPilots.First(x => x.Callsign == callsign);

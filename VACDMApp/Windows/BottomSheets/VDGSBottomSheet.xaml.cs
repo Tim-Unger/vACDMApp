@@ -24,7 +24,7 @@ public partial class VDGSBottomSheet : BottomSheet
 
     private static Label _timeToGoLabel;
 
-    private void BottomSheet_Loaded(object sender, EventArgs e)
+    private async void BottomSheet_Loaded(object sender, EventArgs e)
     {
         
         Sender = this;
@@ -102,11 +102,11 @@ public partial class VDGSBottomSheet : BottomSheet
         VDGSStackLayout.Children.Add(sidLabel);
         VDGSStackLayout.Children.Add(new Rectangle() { HeightRequest = 200 });
 
-        UpdateTimeToGo();
-        UpdateDataContinuously();
+        await UpdateTimeToGo();
+        await UpdateDataContinuously();
     }
 
-    private async void UpdateTimeToGo()
+    private async Task UpdateTimeToGo()
     {
         while (true)
         {
@@ -114,7 +114,7 @@ public partial class VDGSBottomSheet : BottomSheet
 
             timeToGoLabel.Text = Math.Round((DateTime.UtcNow - _tsat).TotalMinutes, 0).ToString();
 
-            await Task.Delay(30_000);
+            await Task.Delay(TimeSpan.FromSeconds(30));
         }
     }
 
@@ -135,7 +135,7 @@ public partial class VDGSBottomSheet : BottomSheet
             var timeToGo = Math.Round((DateTime.UtcNow - _tsat).TotalMinutes, 0);
             _timeToGoLabel.Text = timeToGo.ToString();
 
-            await Task.Delay(60_000);
+            await Task.Delay(TimeSpan.FromMinutes(1));
         }
     }
 }

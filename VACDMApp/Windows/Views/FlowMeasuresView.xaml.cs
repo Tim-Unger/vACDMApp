@@ -28,6 +28,7 @@ public partial class FlowMeasuresView : ContentView
     {
         FlowMeasuresRefreshView.IsRefreshing = true;
 
+        //TODO implement
         await Task.Delay(1000);
 
         FlowMeasuresRefreshView.IsRefreshing = false;

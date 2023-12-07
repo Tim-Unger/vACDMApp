@@ -31,7 +31,7 @@ namespace VACDMApp
 
             if(sender == SenderPage.About)
             {
-                Shell.Current.GoToAsync("..", true);
+                Current.GoToAsync("..", true);
                 return true;
             }
 

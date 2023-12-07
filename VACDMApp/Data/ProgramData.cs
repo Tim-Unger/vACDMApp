@@ -22,6 +22,8 @@ namespace VACDMApp.VACDMData
 
         internal static List<Airline> Airlines = new();
 
+        internal static List<DataSource> DataSources = new();
+
         internal static MyFlightView MyFlightView = new();
 
         internal static FlightsView FlightsView = new();

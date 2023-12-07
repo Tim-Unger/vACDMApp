@@ -60,7 +60,7 @@ public partial class FlightsView : ContentView
 
     private bool _isFirstLoad = true;
 
-    private void ContentView_Loaded(object sender, EventArgs e)
+    private async void ContentView_Loaded(object sender, EventArgs e)
     {
         if (_isFirstLoad)
         {
@@ -79,7 +79,8 @@ public partial class FlightsView : ContentView
             _timeFormatButton.Clicked += TimeFormatButton_Clicked;
 
             //GetCurrentTime();
-            UpdateDataContinuously();
+            _isFirstLoad = false;
+            await UpdateDataContinuously();
         }
 
         _isFirstLoad = false;
@@ -130,7 +131,7 @@ public partial class FlightsView : ContentView
             allFlights.ForEach(FlightsStackLayout.Children.Add);
             FlightsScrollView.Content = FlightsStackLayout;
 
-            await Task.Delay(120_000);
+            await Task.Delay(TimeSpan.FromMinutes(1));
         }
     }
 
@@ -148,9 +149,9 @@ public partial class FlightsView : ContentView
     }
 
     //TODO
-    private void TimeButton_Clicked(object sender, EventArgs e) { }
+    private void TimeButton_Clicked(object sender, EventArgs e) { throw new NotImplementedException(); }
 
-    private void TimeFormatButton_Clicked(object sender, EventArgs e) { }
+    private void TimeFormatButton_Clicked(object sender, EventArgs e) { throw new NotImplementedException(); }
 
     internal void GetFlightsFromSelectedAirport()
     {

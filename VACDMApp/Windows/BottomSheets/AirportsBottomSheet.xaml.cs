@@ -85,7 +85,7 @@ public partial class AirportsBottomSheet : BottomSheet
         SelectedAirport = childText.ToUpper();
 
         DismissAsync();
-        FlightsView.SetAirportText(selectedAirport.Text);
+        FlightsView.SetAirportText(SelectedAirport);
         FlightsView.GetFlightsFromSelectedAirport();
     }
 

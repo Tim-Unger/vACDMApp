@@ -2,7 +2,7 @@
 {
     internal partial class SingleFlight
     {
-        private static Color GetTsatBackgroundColor(DateTime tsat, DateTime tobt)
+        internal static Color GetTsatBackgroundColor(DateTime tsat, DateTime tobt)
         {
             var now = DateTime.UtcNow;
 

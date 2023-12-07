@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+﻿using VACDMApp.Data;
 using VACDMApp.VACDMData;
 using static VACDMApp.VACDMData.Data;
 
@@ -63,7 +63,7 @@ namespace VACDMApp
 
         private static void SetSettings(Settings settings)
         {
-
+            throw new NotImplementedException();
         }
 
         internal static async Task GetAllData()
@@ -72,13 +72,15 @@ namespace VACDMApp
             var vacdmTask = VACDMPilotsData.GetVACDMPilotsAsync();
             var airlinesTask = AirlinesData.GetAirlinesAsync();
             var measuresTask = FlowMeasuresData.GetFlowMeasuresAsync();
+            var dataSourcesTask = VaccDataSources.GetDataSourcesAsync();
 
-            await Task.WhenAll(dataTask, vacdmTask, airlinesTask, measuresTask);
+            await Task.WhenAll(dataTask, vacdmTask, airlinesTask, measuresTask, dataSourcesTask);
 
             VatsimPilots = dataTask.Result.pilots.ToList();
             VACDMPilots = vacdmTask.Result;
             Airlines = airlinesTask.Result;
             FlowMeasures = measuresTask.Result;
+            DataSources = dataSourcesTask.Result;
         }
     }
 }

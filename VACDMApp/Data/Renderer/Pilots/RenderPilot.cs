@@ -13,8 +13,8 @@ namespace VACDMApp.Data.Renderer
         {
             //TODO Error handling here when ACDM FP not found
             var flightPlan =
-                VACDMData.Data.VatsimPilots.FirstOrDefault(x => x.callsign == pilot.Callsign).flight_plan
-                ?? throw new Exception();
+                VACDMData.Data.VatsimPilots.Find(x => x.callsign == pilot.Callsign).flight_plan
+                ?? throw new InvalidDataException("");
             var airlines = VACDMData.Data.Airlines;
 
             var border = new Border() { StrokeThickness = 0, Stroke = Color.FromArgb("#454545") };
@@ -78,7 +78,7 @@ namespace VACDMApp.Data.Renderer
 
             var icao = pilot.Callsign[..3].ToUpper();
             var airline =
-                airlines.FirstOrDefault(x => x.icao == icao)
+                airlines.Find(x => x.icao == icao)
                 ?? new Airline()
                 {
                     callsign = "",
@@ -145,12 +145,16 @@ namespace VACDMApp.Data.Renderer
                 Padding = new Thickness(5),
             };
 
+            //TODO not woking
+            var isPilotBookmarked = VACDMData.Data.BookmarkedPilots.Contains(pilot);
+            var bookmarkImageSource = isPilotBookmarked ? "bookmark.svg" : "bookmark_outline.svg";
+
             var bookmarkButton = new ImageButton()
             {
 
                 VerticalOptions = LayoutOptions.Start,
-                HorizontalOptions = LayoutOptions.Center,
-                Source = "bookmark_outline.svg",
+                HorizontalOptions = LayoutOptions.End,
+                Source = bookmarkImageSource,
                 HeightRequest = 25,
                 WidthRequest = 25
             };

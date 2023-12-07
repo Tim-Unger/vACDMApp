@@ -6,16 +6,16 @@ namespace VACDMApp.Windows.BottomSheets;
 
 public partial class SingleFlightBottomSheet : BottomSheet
 {
-    public static string SelectedCallsign = "";
+    public string SelectedCallsign = "";
 
 	public SingleFlightBottomSheet()
 	{
 		InitializeComponent();
     }
 
-    private void ContentView_Loaded(object sender, EventArgs e)
+    private async void ContentView_Loaded(object sender, EventArgs e)
     {
-        UpdateDataContinuously();
+        await UpdateDataContinuously();
 
         var content = SingleFlight.RenderGrid(SelectedCallsign);
         SenderPage = VACDMData.SenderPage.SingleFlight;
@@ -43,7 +43,7 @@ public partial class SingleFlightBottomSheet : BottomSheet
             Sender = this;
             SingleFlightGrid.Children.Add(content);
 
-            await Task.Delay(60_000);
+            await Task.Delay(TimeSpan.FromMinutes(1));
         }
     }
 }

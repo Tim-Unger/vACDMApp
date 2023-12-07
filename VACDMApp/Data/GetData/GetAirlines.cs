@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net.Http.Json;
+using System.Text;
 using VACDMApp.VACDMData;
 
 namespace VACDMApp.VACDMData
@@ -7,12 +8,9 @@ namespace VACDMApp.VACDMData
     {
         internal static async Task<List<Airline>> GetAirlinesAsync()
         {
-            var dataRaw = FileSystem.Current.OpenAppPackageFileAsync("airlines.json").Result;
+            var client = new HttpClient();
 
-            var reader = new StreamReader(dataRaw);
-            var data = reader.ReadToEnd();
-
-            return await JsonSerializer.DeserializeAsync<List<Airline>>(new MemoryStream(Encoding.UTF8.GetBytes(data)));
+            return await client.GetFromJsonAsync<List<Airline>>("https://api.tim-u.me/airlines");
         }
     }
 }
