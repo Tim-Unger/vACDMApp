@@ -11,13 +11,13 @@ namespace VACDMApp.Data.Renderer
                 new ColumnDefinition(new GridLength(1, GridUnitType.Star))
             );
             flightPositionThirdGrid.ColumnDefinitions.Add(
-                new ColumnDefinition(new GridLength(1, GridUnitType.Star))
+                new ColumnDefinition(new GridLength(2, GridUnitType.Star))
             );
             flightPositionThirdGrid.ColumnDefinitions.Add(
                 new ColumnDefinition(new GridLength(1, GridUnitType.Star))
             );
             flightPositionThirdGrid.ColumnDefinitions.Add(
-                new ColumnDefinition(new GridLength(1, GridUnitType.Star))
+                new ColumnDefinition(new GridLength(2, GridUnitType.Star))
             );
 
             var sidTextLabel = new Label()

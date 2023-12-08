@@ -25,6 +25,7 @@
                         Grid.ColumnSpan="2"
                         Margin="5"
                         BackgroundColor="#232323"
+                        TextChanged="FlightsSearchBar_TextChanged"
                         TextColor="#FEFEFE" />
 
                     <ImageButton

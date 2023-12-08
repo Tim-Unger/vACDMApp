@@ -11,7 +11,18 @@ public partial class SettingsView : ContentView
 
     private void ContentView_Loaded(object sender, EventArgs e)
     {
+        if(Settings.Cid is not null)
+        {
+            CidEntry.Text = Settings.Cid!.ToString();
+        }
+
         DataSources.ForEach(x => DataSourcePicker.Items.Add(x.Name));
+
+        if(Settings.DataSource is not null)
+        {
+            var selectedSourceIndex = DataSources.FindIndex(x => x.ShortName == Settings.DataSource);
+            DataSourcePicker.SelectedIndex = selectedSourceIndex;
+        }
     }
 
     private void ContentView_Unfocused(object sender, FocusEventArgs e)

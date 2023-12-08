@@ -1,4 +1,5 @@
-﻿using VACDMApp.Data;
+﻿using Plugin.LocalNotification;
+using VACDMApp.Data;
 using VACDMApp.Data.PushNotifications;
 using VACDMApp.VACDMData;
 using static VACDMApp.VACDMData.Data;
@@ -18,6 +19,7 @@ namespace VACDMApp
         public MainPage()
         {
             InitializeComponent();
+            PushNotificationHandler.InitializeNotificationEvents(LocalNotificationCenter.Current);
         }
 
         //OnLoad
@@ -27,7 +29,6 @@ namespace VACDMApp
             Mainview.Content = FlightsView;
 
             //TODO
-            //Data.Settings = VACDMData.VACDMData.ReadSettings();
         }
 
         private void MyFlightButton_Clicked(object sender, EventArgs e)
@@ -75,14 +76,16 @@ namespace VACDMApp
             var airlinesTask = AirlinesData.GetAirlinesAsync();
             var measuresTask = FlowMeasuresData.GetFlowMeasuresAsync();
             var dataSourcesTask = VaccDataSources.GetDataSourcesAsync();
+            var settingsTask = SettingsData.ReadSettingsAsync();
 
-            await Task.WhenAll(dataTask, vacdmTask, airlinesTask, measuresTask, dataSourcesTask);
+            await Task.WhenAll(dataTask, vacdmTask, airlinesTask, measuresTask, dataSourcesTask, settingsTask);
 
             VatsimPilots = dataTask.Result.pilots.ToList();
             VACDMPilots = vacdmTask.Result;
             Airlines = airlinesTask.Result;
             FlowMeasures = measuresTask.Result;
             DataSources = dataSourcesTask.Result;
+            VACDMData.Data.Settings = settingsTask.Result;
         }
     }
 }

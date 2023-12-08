@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Alerts;
+using VACDMApp.Data.PushNotifications;
 
 namespace VACDMApp.Data.Renderer
 {
@@ -31,6 +32,7 @@ namespace VACDMApp.Data.Renderer
 
             var savedToast = Toast.Make($"Saved Flight {callsign} to your Bookmarks", CommunityToolkit.Maui.Core.ToastDuration.Short, 14);
             await savedToast.Show();
+            await PushNotificationHandler.CheckTimeWindowAndPushMessage(new(1) { pilot });
         }
     }
 }

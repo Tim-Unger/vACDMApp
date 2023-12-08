@@ -1,20 +1,18 @@
 ﻿using VACDMApp.VACDMData;
 
-namespace VACDMApp.Data.GetData
+namespace VACDMApp.Data
 {
-    internal class GetSettings
+    internal class SettingsData
     {
         //TODO
-        //internal static Settings ReadSettings()
-        //{
-        //    var dataRaw = FileSystem.Current.OpenAppPackageFileAsync("settings.json").Result;
+        internal static async Task<Settings> ReadSettingsAsync()
+        {
+            var dataRaw = await FileSystem.Current.OpenAppPackageFileAsync("settings.json");
 
-        //    var reader = new StreamReader(dataRaw);
-        //    var data = reader.ReadToEnd();
+            var reader = new StreamReader(dataRaw);
+            var data = reader.ReadToEnd();
 
-        //    Settings settings = JsonSerializer.Deserialize<Settings>(data);
-
-        //    return settings;
-        //}
+            return JsonSerializer.Deserialize<Settings>(data);
+        }
     }
 }

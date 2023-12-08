@@ -6,6 +6,7 @@ using VACDMApp.Windows.BottomSheets;
 using static VACDMApp.VACDMData.Data;
 using Plugin.LocalNotification;
 using Java.Nio.Channels;
+using VACDMApp.Data.PushNotifications;
 
 namespace VACDMApp.Windows.Views;
 
@@ -50,7 +51,7 @@ public partial class FlightsView : ContentView
             TextColor = _white
         };
 
-    private static readonly TimePicker _flightsTimePicker =
+    private static readonly Button _flightsTimePicker =
         new()
         {
             Margin = new Thickness(10, 5, 10, 5),
@@ -77,6 +78,7 @@ public partial class FlightsView : ContentView
             ButtonsStackLayout.Children.Add(_dayButton);
             _dayButton.Clicked += DayButton_Clicked;
             ButtonsStackLayout.Children.Add(_flightsTimePicker);
+            _flightsTimePicker.Clicked += TimeButton_Clicked;
             ButtonsStackLayout.Children.Add(_timeFormatButton);
             _timeFormatButton.Clicked += TimeFormatButton_Clicked;
 
@@ -94,7 +96,7 @@ public partial class FlightsView : ContentView
     {
         var now = DateTime.UtcNow;
 
-        _flightsTimePicker.Time = new TimeSpan(now.Hour, 0, 0);
+        _flightsTimePicker.Text = $"{now.Hour}:00Z";
     }
 
     //private async Task GetCurrentTime()
@@ -132,6 +134,8 @@ public partial class FlightsView : ContentView
             allFlights.ForEach(FlightsStackLayout.Children.Add);
             FlightsScrollView.Content = FlightsStackLayout;
 
+            await PushNotificationHandler.CheckTimeWindowAndPushMessage(BookmarkedPilots);
+
             await Task.Delay(TimeSpan.FromMinutes(1));
         }
     }
@@ -149,16 +153,21 @@ public partial class FlightsView : ContentView
         //FlightsDatePicker.
     }
 
-    //TODO
     private void TimeButton_Clicked(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        //TODO BottomSheet
+        var possibleTimes = VACDMPilots
+            .Where(x => VatsimPilots.Exists(y => y.callsign == x.Callsign)) //Only Pilots that are connected to Vatsim
+            .Where(x => VatsimPilots.First(y => y.callsign == x.Callsign).flight_plan != null) //Only Pilots that have a flight plan
+            .Where(x => x.Vacdm.Eobt.Hour >= DateTime.UtcNow.AddHours(-1).Hour) //Only Pilots whose EOBT is earliest 1 hour in the past (removes weird filed EOBTs)
+            .Select(x => x.Vacdm.Eobt) //Only get the EOBT
+            .DistinctBy(x => x.Hour) //Only get each value once
+            .Select(x => x.Hour) //Only get the hour
+            .Order()//Order by time
+            .ToList();
     }
 
-    private async void TimeFormatButton_Clicked(object sender, EventArgs e)
-    {
-        
-    }
+    private async void TimeFormatButton_Clicked(object sender, EventArgs e) { throw new NotImplementedException(); }
 
     internal void GetFlightsFromSelectedAirport()
     {
@@ -227,5 +236,53 @@ public partial class FlightsView : ContentView
     private async void AboutButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("AboutPage");
+    }
+
+    private void FlightsSearchBar_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var searchText = ((SearchBar)sender).Text.ToUpperInvariant();
+
+        if (string.IsNullOrWhiteSpace(searchText))
+        {
+            return;
+        }
+
+        if (searchText.Length <= 4)
+        {
+            //Check if search is an airport
+            var depAirports = VACDMPilots
+                .Select(x => x.FlightPlan.Departure)
+                .DistinctBy(x => x.ToUpper())
+                .ToList();
+
+            var arrAirports = VACDMPilots
+                .Select(x => x.FlightPlan.Arrival)
+                .DistinctBy(x => x.ToUpper())
+                .ToList();
+
+            var airports = depAirports.Concat(arrAirports).Distinct();
+
+            if (airports.Any(searchText.StartsWith)) 
+            {
+                var children = FlightsStackLayout.Children;
+
+                var searchedChildren = new List<Border>();
+
+                foreach(var child in children)
+                {
+                    var castChild = (Border)child;
+                    var borderGrid = (Grid)castChild.Content;
+
+                    //TODO not working
+
+                    var callsignGrid = (Grid)borderGrid.Children[2];
+                    var callsignLabel = (Label)callsignGrid.Children[1];
+                    var callsign = callsignLabel.Text;
+                }
+
+                FlightsScrollView.Content = FlightsStackLayout;
+                return;
+            }
+        }
     }
 }

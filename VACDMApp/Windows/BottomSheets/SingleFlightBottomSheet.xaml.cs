@@ -17,16 +17,7 @@ public partial class SingleFlightBottomSheet : BottomSheet
 
     private async void ContentView_Loaded(object sender, EventArgs e)
     {
-        await UpdateDataContinuously();
-
-        var content = SingleFlight.RenderGrid(SelectedCallsign);
-        SenderPage = VACDMData.SenderPage.SingleFlight;
-        Sender = this;
-        SingleFlightGrid.Children.Add(content);
-
-        //TODO remove
-        var pilot = VACDMPilots.First(x => x.Callsign == SelectedCallsign);
-        await PushNotificationHandler.SendPushNotificationAsync(pilot, PushNotificationHandler.NotificationType.SlotNow);
+        LoadContent();
     }
 
     private void BottomSheet_Unfocused(object sender, FocusEventArgs e)
@@ -52,4 +43,17 @@ public partial class SingleFlightBottomSheet : BottomSheet
             await Task.Delay(TimeSpan.FromMinutes(1));
         }
     }
+
+    private async void LoadContent()
+    {
+        var content = SingleFlight.RenderGrid(SelectedCallsign);
+        SenderPage = VACDMData.SenderPage.SingleFlight;
+        Sender = this;
+        SingleFlightGrid.Children.Add(content);
+
+        //TODO remove
+        var pilot = VACDMPilots.First(x => x.Callsign == SelectedCallsign);
+        await UpdateDataContinuously();
+    }
+
 }

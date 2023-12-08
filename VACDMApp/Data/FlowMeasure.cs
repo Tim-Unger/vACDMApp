@@ -9,7 +9,7 @@
         public string Ident { get; set; }
 
         [JsonPropertyName("event_id")]
-        public string? EventId { get; set; }
+        public int? EventId { get; set; }
 
         [JsonPropertyName("reason")]
         public string Reason { get; set; }
@@ -41,7 +41,7 @@
         public string Type { get; set; }
 
         [JsonPropertyName("value")]
-        public int Value { get; set; }
+        public object Value { get; set; }
     }
 
     internal class Filter
@@ -50,7 +50,7 @@
         public string Type { get; set; }
 
         [JsonPropertyName("value")]
-        public List<string> Value { get; set; }
+        public object? Value { get; set; }
     }
 
     internal class Fir

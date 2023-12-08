@@ -1,16 +1,30 @@
 ﻿using Plugin.LocalNotification;
+using Plugin.LocalNotification.EventArgs;
 using VACDMApp.VACDMData;
 
 namespace VACDMApp.Data.PushNotifications
 {
     internal class PushNotificationHandler
-    { 
+    {
+        private static List<(string callsign, DateTime pushedTime)> PushedPilots = new();
+
         internal enum NotificationType
         {
             SlotNow,
             SlotChanged,
             StartupGiven,
             SlotSoonUnconfirmed
+        }
+
+        //TODO implement
+        internal static void InitializeNotificationEvents(INotificationService notificationService)
+        {
+            notificationService.NotificationActionTapped += NotificationTapped;
+        }
+
+        private static void NotificationTapped(NotificationActionEventArgs e)
+        {
+            var title = e.Request.Title;
         }
 
         internal static async Task SendPushNotificationAsync(
@@ -21,7 +35,7 @@ namespace VACDMApp.Data.PushNotifications
             var notificationMessageString = notificationType switch
             {
                 NotificationType.SlotNow
-                  => $"Your Flight {pilot.Callsign} is now in the Startup-Window.\rTSAT {pilot.Vacdm.Tsat.ToShortTimeString()}Z\rYour Slot will have expired when this message is 10 min. old",
+                  => $"{pilot.Callsign} is now in the Startup-Window. Your Slot will have expired when this message is {TimeToExpire(pilot)} min. old",
                 NotificationType.SlotChanged
                   => $"TSAT changed for your Flight {pilot.Callsign}\r New TSAT {pilot.Vacdm.Tsat.ToShortTimeString()}Z",
                 NotificationType.StartupGiven
@@ -40,14 +54,59 @@ namespace VACDMApp.Data.PushNotifications
                 _ => throw new ArgumentOutOfRangeException()
             };
 
-             var request = new NotificationRequest()
-             {
-                 Title = notificationMessageTitle,
-                 Subtitle = "vACDM",
-                 Description = notificationMessageString,
-             };
+            var request = new NotificationRequest()
+            {
+                Title = notificationMessageTitle,
+                Subtitle = "vACDM",
+                Description = notificationMessageString,
+            };
 
             await LocalNotificationCenter.Current.Show(request);
+        }
+
+        internal static async Task CheckTimeWindowAndPushMessage(List<VACDMPilot> pilots)
+        {
+            foreach (var pilot in pilots)
+            {
+                var vacdm = pilot.Vacdm;
+
+                if (!vacdm.Tsat.IsTsatInTheWindow())
+                {
+                    return;
+                }
+
+                if (vacdm.Tsat.IsTsatInTheWindow() && !PushedPilots.Exists(x => x.callsign == pilot.Callsign))
+                {
+                    await SendPushNotificationAsync(pilot, NotificationType.SlotNow);
+
+                    PushedPilots.Add(new(pilot.Callsign, vacdm.Tsat));
+
+                    return;
+                }
+
+                var pushedPilot = PushedPilots.First(x => x.callsign == pilot.Callsign);
+
+                if (pushedPilot.pushedTime != vacdm.Tsat)
+                {
+                    await SendPushNotificationAsync(pilot, NotificationType.SlotChanged);
+
+                    var pushIndex = PushedPilots.FindIndex(x => x.callsign == pilot.Callsign);
+                    PushedPilots[pushIndex] = new(pushedPilot.callsign, vacdm.Tsat);
+                }
+
+                //TODO Startup Given
+            }
+        }
+
+        private static int TimeToExpire(VACDMPilot pilot) 
+        {
+            var timeDifference = pilot.Vacdm.Tsat.AddMinutes(5) - DateTime.UtcNow;
+
+            var totalMinutes = timeDifference.TotalMinutes;
+
+            var roundMinutes = Math.Round(totalMinutes, 0);
+
+            return int.Parse(roundMinutes.ToString());
         }
     }
 }

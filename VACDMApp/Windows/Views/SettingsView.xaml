@@ -29,6 +29,7 @@
                 VerticalOptions="Center" />
 
             <Entry
+                x:Name="CidEntry"
                 Grid.Column="1"
                 Margin="10"
                 BackgroundColor="#232323"
