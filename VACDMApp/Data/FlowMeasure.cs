@@ -1,6 +1,21 @@
 ﻿namespace VACDMApp.Data
 {
-    internal class FlowMeasure
+    public enum MeasureType
+    {
+        MDI,
+        ADI,
+        FlightsPerHour,
+        MIT,
+        MaxIas,
+        MaxMach,
+        IasReduction,
+        MachReduction,
+        Prohibit,
+        GroundStop,
+        MandatoryRoute
+    }
+
+    public class FlowMeasure
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
@@ -35,16 +50,20 @@
         public DateTime? WithdrawnAt { get; set; }
     }
 
-    internal class Measure
+    public class Measure
     {
         [JsonPropertyName("type")]
-        public string Type { get; set; }
+        public string TypeRaw { get; set; }
+
+        public MeasureType MeasureType { get; set; }
+
+        public string MeasureTypeString { get; set; }
 
         [JsonPropertyName("value")]
         public object Value { get; set; }
     }
 
-    internal class Filter
+    public class Filter
     {
         [JsonPropertyName("type")]
         public string Type { get; set; }
@@ -53,7 +72,7 @@
         public object? Value { get; set; }
     }
 
-    internal class Fir
+    public class Fir
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }

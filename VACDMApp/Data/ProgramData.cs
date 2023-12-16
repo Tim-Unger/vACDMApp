@@ -9,7 +9,8 @@ namespace VACDMApp.VACDMData
         Default,
         SingleFlight,
         Vdgs,
-        About
+        About,
+        Airport
     }
 
     internal class Data

@@ -1,7 +1,4 @@
-﻿using System.Net.Http.Json;
-using System.Text;
-using VACDMApp.Data;
-using static VACDMApp.VACDMData.Data;
+﻿using static VACDMApp.VACDMData.Data;
 
 namespace VACDMApp.VACDMData
 {
@@ -9,6 +6,15 @@ namespace VACDMApp.VACDMData
     {
         internal static readonly HttpClient Client = new();
 
-        internal static readonly string VacdmApiUrl = "https://vacdm.vatsim-germany.org/api/v1/pilots/";
+        internal static string VacdmApiUrl = "";
+
+        internal static void SetApiUrl() 
+        {
+            var selectedDataSourceName = Data.Settings.DataSource;
+
+            var dataSourceUrl = DataSources.First(x => x.ShortName == selectedDataSourceName).Url;
+
+            VacdmApiUrl = dataSourceUrl;
+        }
     }
 }

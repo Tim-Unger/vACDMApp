@@ -29,6 +29,12 @@ namespace VACDMApp
                 return true;
             }
 
+            if(sender == SenderPage.Airport)
+            {
+                ((AirportsBottomSheet)VACDMData.Data.Sender).DismissAsync();
+                return true;
+            }
+
             if(sender == SenderPage.About)
             {
                 Current.GoToAsync("..", true);

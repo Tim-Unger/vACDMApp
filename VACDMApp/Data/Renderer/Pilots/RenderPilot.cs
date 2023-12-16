@@ -1,5 +1,4 @@
-﻿using Kotlin.Jvm.Internal;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using VACDMApp.VACDMData;
 
 namespace VACDMApp.Data.Renderer
@@ -168,7 +167,7 @@ namespace VACDMApp.Data.Renderer
                 WidthRequest = 25
             };
 
-            bookmarkButton.Clicked += BookmarkButton_Clicked;
+            bookmarkButton.Clicked += async (sender, e) => await BookmarkButton_Clicked(sender, e);
 
             bookmarkGrid.Children.Add(bookmarkButton);
 

@@ -4,21 +4,71 @@ using static VACDMApp.VACDMData.VACDMData;
 
 namespace VACDMApp.VACDMData
 {
-    internal class FlowMeasuresData
+    public class FlowMeasuresData
     {
-        internal static Task<List<FlowMeasure>> GetFlowMeasuresAsync()
+        public static async Task<List<FlowMeasure>> GetFlowMeasuresAsync()
         {
             //TODO
-           //var firs = GetFirs();
+            var firs = await GetFirsAsync();
 
-            var measures = Client.GetFromJsonAsync<List<FlowMeasure>>("https://ecfmp.vatsim.net/api/v1/flow-measure");
+            var measures = await Client.GetFromJsonAsync<List<FlowMeasure>>(
+                "https://ecfmp.vatsim.net/api/v1/flow-measure"
+            );
 
-            //measures.ForEach(x => x.NotifiedFirs = x.notifiedFirs.Select(y => firs.First(z => z.Id == y)).ToList());
+            measures.ForEach(
+                x =>
+                    x.NotifiedFirs = x.notifiedFirs.Select(y => firs.First(z => z.Id == y)).ToList()
+            );
+
+            measures.ForEach(
+                x =>
+                {
+                    x.Measure.MeasureType = GetMeasureType(x.Measure.TypeRaw);
+                    x.Measure.MeasureTypeString = GetMeasureTypeString(x.Measure.TypeRaw);
+                }
+            );
 
             return measures;
         }
 
         //TODO
-        private static async Task<List<Fir>> GetFirs() => await Client.GetFromJsonAsync<List<Fir>>("https://ecfmp.vatsim.net/api/v1/flight-information-region");
+        private static async Task<List<Fir>> GetFirsAsync() =>
+            await Client.GetFromJsonAsync<List<Fir>>(
+                "https://ecfmp.vatsim.net/api/v1/flight-information-region"
+            );
+
+        private static MeasureType GetMeasureType(string measureTypeRaw) =>
+            measureTypeRaw switch
+            {
+                "minimum_departure_interval" => MeasureType.MDI,
+                "average_departure_interval" => MeasureType.ADI,
+                "per_hour" => MeasureType.FlightsPerHour,
+                "miles_in_trail" => MeasureType.MIT,
+                "max_ias" => MeasureType.MaxIas,
+                "max_mach" => MeasureType.MaxMach,
+                "ias_reduction" => MeasureType.IasReduction,
+                "mach_reduction" => MeasureType.MachReduction,
+                "prohibit" => MeasureType.Prohibit,
+                "ground_stop" => MeasureType.GroundStop,
+                "mandatory_route" => MeasureType.MandatoryRoute,
+                _ => throw new ArgumentOutOfRangeException(nameof(measureTypeRaw))
+            };
+
+        private static string GetMeasureTypeString(string measureTypeRaw) =>
+            measureTypeRaw switch
+            {
+                "minimum_departure_interval" => "MDI",
+                "average_departure_interval" => "ADI",
+                "per_hour" => "Flights per Hour",
+                "miles_in_trail" => "Miles in Trail",
+                "max_ias" => "Max Indicated Airspeed",
+                "max_mach" => "Max Mach Number",
+                "ias_reduction" => "Reduce IAS by",
+                "mach_reduction" => "Reduce Mach Number by",
+                "prohibit" => "Prohibit",
+                "ground_stop" => "Ground Stop",
+                "mandatory_route" => "Mandatory Route",
+                _ => throw new ArgumentOutOfRangeException(nameof(measureTypeRaw))
+            };
     }
 }

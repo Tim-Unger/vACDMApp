@@ -4,8 +4,6 @@ using VACDMApp.VACDMData;
 using VACDMApp.Data.Renderer;
 using VACDMApp.Windows.BottomSheets;
 using static VACDMApp.VACDMData.Data;
-using Plugin.LocalNotification;
-using Java.Nio.Channels;
 using VACDMApp.Data.PushNotifications;
 
 namespace VACDMApp.Windows.Views;
@@ -74,13 +72,13 @@ public partial class FlightsView : ContentView
             GetNearestTime();
 
             ButtonsStackLayout.Children.Add(_airportsButton);
-            _airportsButton.Clicked += AirportsButton_Clicked;
+            _airportsButton.Clicked += async (sender, e) => await AirportsButton_Clicked(sender, e);
             ButtonsStackLayout.Children.Add(_dayButton);
             _dayButton.Clicked += DayButton_Clicked;
             ButtonsStackLayout.Children.Add(_flightsTimePicker);
             _flightsTimePicker.Clicked += TimeButton_Clicked;
             ButtonsStackLayout.Children.Add(_timeFormatButton);
-            _timeFormatButton.Clicked += TimeFormatButton_Clicked;
+            _timeFormatButton.Clicked += async (sender, e)  => await TimeFormatButton_Clicked(sender, e);
 
             //GetCurrentTime();
             _isFirstLoad = false;
@@ -98,22 +96,6 @@ public partial class FlightsView : ContentView
 
         _flightsTimePicker.Text = $"{now.Hour}:00Z";
     }
-
-    //private async Task GetCurrentTime()
-    //{
-    //    while (true)
-    //    {
-    //        var now = DateTime.UtcNow;
-
-    //        var hasColon = now.Second % 2 == 0;
-
-    //        var time = $"{now.Hour}{(hasColon ? ":" : " ")}{now.Minute}Z";
-
-    //        TimeLabel.Text = time;
-
-    //        await Task.Delay(200);
-    //    }
-    //}
 
     private async Task UpdateDataContinuously()
     {
@@ -140,11 +122,14 @@ public partial class FlightsView : ContentView
         }
     }
 
-    private async void AirportsButton_Clicked(object sender, EventArgs e)
+    private async Task AirportsButton_Clicked(object sender, EventArgs e)
     {
         var airportsSheet = new AirportsBottomSheet();
 
         await airportsSheet.ShowAsync();
+
+        VACDMData.Data.SenderPage = VACDMData.SenderPage.Airport;
+        VACDMData.Data.Sender = airportsSheet;
     }
 
     private void DayButton_Clicked(object sender, EventArgs e)
@@ -167,7 +152,7 @@ public partial class FlightsView : ContentView
             .ToList();
     }
 
-    private async void TimeFormatButton_Clicked(object sender, EventArgs e) { throw new NotImplementedException(); }
+    private async Task TimeFormatButton_Clicked(object sender, EventArgs e) { throw new NotImplementedException(); }
 
     internal void GetFlightsFromSelectedAirport()
     {
@@ -210,16 +195,22 @@ public partial class FlightsView : ContentView
     {
         FlightsRefreshView.IsRefreshing = true;
 
-        FlightsStackLayout.Children.Clear();
-
         await RefreshDataAndView();
 
         FlightsRefreshView.IsRefreshing = false;
     }
 
-    private async Task RefreshDataAndView()
+    internal async Task RefreshDataAndView()
     {
-        await MainPage.GetAllData();
+        FlightsStackLayout.Children.Clear();
+
+        var dataTask = GetVatsimData.GetVatsimDataAsync();
+        var vacdmTask = VACDMPilotsData.GetVACDMPilotsAsync();
+
+        await Task.WhenAll(dataTask, vacdmTask);
+
+        VatsimPilots = dataTask.Result.pilots.ToList();
+        VACDMPilots = vacdmTask.Result;
 
         var selectedAirport = AirportsBottomSheet.GetClickedAirport();
 
@@ -244,6 +235,11 @@ public partial class FlightsView : ContentView
 
         if (string.IsNullOrWhiteSpace(searchText))
         {
+            FlightsStackLayout.Children.Clear();
+            var pilots = Pilots.Render(null);
+
+            pilots.ForEach(FlightsStackLayout.Children.Add);
+
             return;
         }
 
@@ -264,21 +260,11 @@ public partial class FlightsView : ContentView
 
             if (airports.Any(searchText.StartsWith)) 
             {
-                var children = FlightsStackLayout.Children;
+                FlightsStackLayout.Children.Clear();
 
-                var searchedChildren = new List<Border>();
+                var pilots = Pilots.Render(searchText.ToUpper());
 
-                foreach(var child in children)
-                {
-                    var castChild = (Border)child;
-                    var borderGrid = (Grid)castChild.Content;
-
-                    //TODO not working
-
-                    var callsignGrid = (Grid)borderGrid.Children[2];
-                    var callsignLabel = (Label)callsignGrid.Children[1];
-                    var callsign = callsignLabel.Text;
-                }
+                pilots.ForEach(FlightsStackLayout.Children.Add);
 
                 FlightsScrollView.Content = FlightsStackLayout;
                 return;

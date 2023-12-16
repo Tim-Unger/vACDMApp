@@ -44,7 +44,7 @@ public partial class SingleFlightBottomSheet : BottomSheet
         }
     }
 
-    private async void LoadContent()
+    private async Task LoadContent()
     {
         var content = SingleFlight.RenderGrid(SelectedCallsign);
         SenderPage = VACDMData.SenderPage.SingleFlight;

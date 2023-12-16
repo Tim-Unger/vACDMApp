@@ -4,9 +4,9 @@ using VACDMApp.VACDMData;
 
 namespace VACDMApp.VACDMData
 {
-    internal class AirlinesData
+    public class AirlinesData
     {
-        internal static async Task<List<Airline>> GetAirlinesAsync()
+        public static async Task<List<Airline>> GetAirlinesAsync()
         {
             var dataRaw = await FileSystem.Current.OpenAppPackageFileAsync("airlines.json");
 

@@ -1,3 +1,4 @@
+using VACDMApp.Data;
 using static VACDMApp.VACDMData.Data;
 
 namespace VACDMApp.Windows.Views;
@@ -21,6 +22,8 @@ public partial class SettingsView : ContentView
         if(Settings.DataSource is not null)
         {
             var selectedSourceIndex = DataSources.FindIndex(x => x.ShortName == Settings.DataSource);
+            var dataSources = DataSources;
+            var source = Settings.DataSource;
             DataSourcePicker.SelectedIndex = selectedSourceIndex;
         }
     }
@@ -30,9 +33,19 @@ public partial class SettingsView : ContentView
 
     }
 
-    private void DataSourcePicker_SelectedIndexChanged(object sender, EventArgs e)
+    private async void DataSourcePicker_SelectedIndexChanged(object sender, EventArgs e)
     {
+        var selectedDataSourceName = DataSourcePicker.SelectedItem.ToString();
 
+        var shortName = DataSources.First(x => x.Name == selectedDataSourceName).ShortName;
+
+        Settings.DataSource = shortName;
+
+        await SettingsData.SetSettingsAsync();
+
+        VACDMData.VACDMData.SetApiUrl();
+
+        await VACDMData.Data.FlightsView.RefreshDataAndView();
     }
-    
+
 }

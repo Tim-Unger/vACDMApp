@@ -5,7 +5,10 @@
       "nativeDebugging": false
     },
     "Profile 1": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "remoteDebugEnabled": false,
+      "remoteDebugMachine": "172.27.199.182:40099",
+      "authenticationMode": "None"
     }
   }
 }

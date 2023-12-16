@@ -1,4 +1,5 @@
-﻿using Plugin.LocalNotification;
+﻿using Android.Telephony;
+using Plugin.LocalNotification;
 using VACDMApp.Data;
 using VACDMApp.Data.PushNotifications;
 using VACDMApp.VACDMData;
@@ -16,6 +17,8 @@ namespace VACDMApp
             Settings
         }
 
+        private static bool _isLoadFinished = false;
+
         public MainPage()
         {
             InitializeComponent();
@@ -26,8 +29,20 @@ namespace VACDMApp
         private async void ContentPage_Loaded(object sender, EventArgs e)
         {
             await GetAllData();
+            
             Mainview.Content = FlightsView;
 
+            //var imageHeight = NavbarGrid.Height - (AllFlightsLabel.Height * 4);
+            //MyFlightImage.WidthRequest = imageHeight;
+
+            //AllFlightsImage.HeightRequest = imageHeight;
+            //AllFlightsImage.WidthRequest = imageHeight;
+
+            //FlowmeasuresImage.HeightRequest = imageHeight;
+            //FlowmeasuresImage.WidthRequest = imageHeight;
+
+            //SettingsImage.HeightRequest = imageHeight;
+            //SettingsImage.WidthRequest = imageHeight;
             //TODO
         }
 
@@ -64,28 +79,29 @@ namespace VACDMApp
             SettingsImage.Source = currentPage == CurrentPage.Settings ? "settings.svg" : "settings_outline.svg";
         }
 
-        private static void SetSettings(Settings settings)
-        {
-            throw new NotImplementedException();
-        }
-
         internal static async Task GetAllData()
         {
+            //TODO Accessibility Modifiers
+            var dataSourcesTask = VaccDataSources.GetDataSourcesAsync();
+            var settingsTask = SettingsData.ReadSettingsAsync();
+
+            await Task.WhenAll(dataSourcesTask, settingsTask);
+            DataSources = dataSourcesTask.Result;
+            VACDMData.Data.Settings = settingsTask.Result;
+            VACDMData.VACDMData.SetApiUrl();
+
+
             var dataTask = GetVatsimData.GetVatsimDataAsync();
             var vacdmTask = VACDMPilotsData.GetVACDMPilotsAsync();
             var airlinesTask = AirlinesData.GetAirlinesAsync();
             var measuresTask = FlowMeasuresData.GetFlowMeasuresAsync();
-            var dataSourcesTask = VaccDataSources.GetDataSourcesAsync();
-            var settingsTask = SettingsData.ReadSettingsAsync();
 
-            await Task.WhenAll(dataTask, vacdmTask, airlinesTask, measuresTask, dataSourcesTask, settingsTask);
+            await Task.WhenAll(dataTask, vacdmTask, airlinesTask, measuresTask);
 
             VatsimPilots = dataTask.Result.pilots.ToList();
             VACDMPilots = vacdmTask.Result;
             Airlines = airlinesTask.Result;
             FlowMeasures = measuresTask.Result;
-            DataSources = dataSourcesTask.Result;
-            VACDMData.Data.Settings = settingsTask.Result;
         }
     }
 }

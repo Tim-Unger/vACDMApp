@@ -1,6 +1,6 @@
 ﻿namespace VACDMApp.VACDMData
 {
-    internal class Settings
+    public class Settings
     {
         [JsonPropertyName("cid")]
         public int? Cid { get; set; }

@@ -100,6 +100,9 @@
 		<MauiXaml Update="Windows\BottomSheets\AirportsBottomSheet.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Windows\BottomSheets\NotificationBottomSheet.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Windows\BottomSheets\SingleFlightBottomSheet.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

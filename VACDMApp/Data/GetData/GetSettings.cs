@@ -2,10 +2,10 @@
 
 namespace VACDMApp.Data
 {
-    internal class SettingsData
+    public partial class SettingsData
     {
         //TODO
-        internal static async Task<Settings> ReadSettingsAsync()
+        public static async Task<Settings> ReadSettingsAsync()
         {
             var dataRaw = await FileSystem.Current.OpenAppPackageFileAsync("settings.json");
 

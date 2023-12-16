@@ -6,7 +6,7 @@ namespace VACDMApp.Data.Renderer
     {
         internal static bool IsTestData = false;
 
-        internal static List<Border> Render(string? airport)
+        public static List<Border> Render(string? airport)
         {
             var pilotsWithFP = VACDMData.Data.VACDMPilots
                 //Only Pilots that have are in the Vatsim Datafeed
@@ -36,4 +36,10 @@ namespace VACDMApp.Data.Renderer
             return SplitAndRenderGrid(pilotsWithFP);
         }
     }
+
+    public class BenchmarkPilots
+    {
+        //We return since since we cannot return a Control Element to a Console App
+        public static void Render() => Pilots.Render(null);
+     }
 }

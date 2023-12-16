@@ -8,9 +8,9 @@
 
             grid.RowDefinitions.Add(new RowDefinition(new GridLength(5, GridUnitType.Star)));
             grid.RowDefinitions.Add(new RowDefinition(new GridLength(5, GridUnitType.Star)));
-            grid.RowDefinitions.Add(new RowDefinition(OneStar));
+            grid.RowDefinitions.Add(new RowDefinition(_oneStar));
             grid.RowDefinitions.Add(new RowDefinition(new GridLength(5, GridUnitType.Star)));
-            grid.RowDefinitions.Add(new RowDefinition(OneStar));
+            grid.RowDefinitions.Add(new RowDefinition(_oneStar));
 
             var noMeasuresImage = new Image() { Source = "noflights.svg", HeightRequest = 100, WidthRequest = 100 };
 

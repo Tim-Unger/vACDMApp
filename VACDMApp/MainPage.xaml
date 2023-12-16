@@ -20,109 +20,169 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="15*" />
-                <RowDefinition Height="2*" />
+                <RowDefinition Height="1.5*" />
             </Grid.RowDefinitions>
 
             <ScrollView x:Name="Mainview" Grid.Row="0" />
 
-            <HorizontalStackLayout
-                Grid.Row="3"
+            <Grid
+                Grid.Row="1"
                 Padding="0,10,0,0"
                 Background="#232323">
-                <VerticalStackLayout Padding="20,0,20,0" HorizontalOptions="Center">
-                    <Grid>
-                        <VerticalStackLayout>
-                            <Image
-                                x:Name="MyFlightImage"
-                                HeightRequest="40"
-                                Source="plane_outline.svg"
-                                WidthRequest="40" />
-                            <Label
-                                FontAttributes="Bold"
-                                HorizontalOptions="Center"
-                                Text="My Flights"
-                                TextColor="#FEFEFE" />
-                        </VerticalStackLayout>
-                        <Button
-                            x:Name="MyFlightButton"
-                            Background="Transparent"
-                            Clicked="MyFlightButton_Clicked" />
-                    </Grid>
 
-                </VerticalStackLayout>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
 
-                <VerticalStackLayout Padding="20,0,20,0" HorizontalOptions="Center">
-                    <Grid>
-                        <VerticalStackLayout>
-                            <Image
-                                x:Name="AllFlightsImage"
-                                HeightRequest="40"
-                                Source="planes.svg"
-                                WidthRequest="40" />
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="4*" />
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
 
-                            <Label
-                                FontAttributes="Bold"
-                                HorizontalOptions="Center"
-                                Text="All Flights"
-                                TextColor="#FEFEFE" />
-                        </VerticalStackLayout>
+                    <!--<VerticalStackLayout Padding="20,0,20,0" HorizontalOptions="Center">
+                    <VerticalStackLayout>-->
 
-                        <Button
-                            x:Name="AllFlightsButton"
-                            BackgroundColor="Transparent"
-                            Clicked="AllFlightsButton_Clicked" />
-                    </Grid>
+                    <Image
+                        x:Name="MyFlightImage"
+                        Grid.Row="0"
+                        Aspect="AspectFit"
+                        Background="Transparent"
+                        HorizontalOptions="Center"
+                        Source="plane_outline.svg"
+                        VerticalOptions="Center" />
+                    <Label
+                        Grid.Row="1"
+                        Background="Transparent"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        Text="My Flights"
+                        TextColor="#FEFEFE"
+                        VerticalOptions="Center" />
+                    <!--</VerticalStackLayout>-->
+                    <Button
+                        x:Name="MyFlightButton"
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Background="Transparent"
+                        Clicked="MyFlightButton_Clicked" />
+                </Grid>
 
-                </VerticalStackLayout>
+                <!--</VerticalStackLayout>-->
 
-                <VerticalStackLayout Padding="20,0,20,0" HorizontalOptions="Center">
-                    <Grid>
-                        <VerticalStackLayout>
-                            <ImageButton
-                                x:Name="FlowmeasuresImage"
-                                HeightRequest="40"
-                                Source="flowmeasures_outline.svg"
-                                WidthRequest="40" />
+                <!--<VerticalStackLayout Padding="20,0,20,0" HorizontalOptions="Center">-->
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="4*" />
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
 
-                            <Label
-                                FontAttributes="Bold"
-                                HorizontalOptions="Center"
-                                Text="Flow Measures"
-                                TextColor="#FEFEFE" />
-                        </VerticalStackLayout>
+                    <!--<VerticalStackLayout x:Name="AllFlightsStacklayout">-->
+                    <Image
+                        x:Name="AllFlightsImage"
+                        Grid.Row="0"
+                        Aspect="AspectFill"
+                        HorizontalOptions="Center"
+                        Source="planes.svg"
+                        VerticalOptions="Center" />
 
-                        <Button
-                            x:Name="FlowMeasuresButton"
-                            BackgroundColor="Transparent"
-                            Clicked="FlowMeasuresButton_Clicked" />
-                    </Grid>
+                    <Label
+                        x:Name="AllFlightsLabel"
+                        Grid.Row="1"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        Text="All Flights"
+                        TextColor="#FEFEFE"
+                        VerticalOptions="Center" />
+                    <!--</VerticalStackLayout>-->
 
-                </VerticalStackLayout>
+                    <Button
+                        x:Name="AllFlightsButton"
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        BackgroundColor="Transparent"
+                        Clicked="AllFlightsButton_Clicked" />
+                </Grid>
 
-                <VerticalStackLayout Padding="20,0,20,0" HorizontalOptions="Center">
-                    <Grid>
-                        <VerticalStackLayout>
-                            <ImageButton
-                                x:Name="SettingsImage"
-                                HeightRequest="40"
-                                Source="settings_outline.svg"
-                                WidthRequest="40" />
+                <!--</VerticalStackLayout>-->
 
-                            <Label
-                                FontAttributes="Bold"
-                                HorizontalOptions="Center"
-                                Text="Settings"
-                                TextColor="#FEFEFE" />
-                        </VerticalStackLayout>
+                <!--<VerticalStackLayout Padding="20,0,20,0" HorizontalOptions="Center">-->
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="4*" />
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
 
-                        <Button
-                            x:Name="SettingsButton"
-                            BackgroundColor="Transparent"
-                            Clicked="SettingsButton_Clicked" />
-                    </Grid>
+                    <!--<VerticalStackLayout>-->
+                    <ImageButton
+                        x:Name="FlowmeasuresImage"
+                        Grid.Row="0"
+                        Aspect="AspectFit"
+                        HorizontalOptions="Center"
+                        Source="flowmeasures_outline.svg"
+                        VerticalOptions="Center" />
 
-                </VerticalStackLayout>
-            </HorizontalStackLayout>
+                    <Label
+                        Grid.Row="1"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        Text="Flow Measures"
+                        TextColor="#FEFEFE"
+                        VerticalOptions="Center" />
+                    <!--</VerticalStackLayout>-->
+
+                    <Button
+                        x:Name="FlowMeasuresButton"
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        BackgroundColor="Transparent"
+                        Clicked="FlowMeasuresButton_Clicked" />
+                </Grid>
+
+                <!--</VerticalStackLayout>-->
+
+                <!--<VerticalStackLayout Padding="20,0,20,0" HorizontalOptions="Center">-->
+                <Grid Grid.Column="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="4*" />
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+
+                    <!--<VerticalStackLayout>-->
+                    <Image
+                        x:Name="SettingsImage"
+                        Grid.Row="0"
+                        Aspect="AspectFill"
+                        HorizontalOptions="Center"
+                        Source="settings_outline.svg"
+                        VerticalOptions="Center" />
+
+                    <Label
+                        Grid.Row="1"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        Text="Settings"
+                        TextColor="#FEFEFE"
+                        VerticalOptions="Center" />
+                    <!--</VerticalStackLayout>-->
+
+                    <Button
+                        x:Name="SettingsButton"
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        BackgroundColor="Transparent"
+                        Clicked="SettingsButton_Clicked" />
+                </Grid>
+
+                <!--</VerticalStackLayout>-->
+            </Grid>
 
             <!--<DatePicker x:Name="FlightsDatePicker" IsVisible="false"  />-->
         </Grid>

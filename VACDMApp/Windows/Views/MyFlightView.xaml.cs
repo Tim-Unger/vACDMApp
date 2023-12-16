@@ -31,10 +31,11 @@ public partial class MyFlightView : ContentView
 
     private async void FindCidButton_Clicked(object sender, EventArgs e)
     {
-        if (Data.Settings.Cid is not null)
+        if (Data.Settings.Cid is not null && string.IsNullOrWhiteSpace(CidText.Text))
         {
             CidText.Text = Data.Settings.Cid.ToString();
         }
+
 
         var cidText = CidText.Text;
 

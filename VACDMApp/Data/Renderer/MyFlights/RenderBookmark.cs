@@ -143,7 +143,7 @@ namespace VACDMApp.Data.Renderer
             };
 
             var button = new Button() { BackgroundColor = Colors.Transparent };
-            button.Clicked += Button_Clicked;
+            button.Clicked += async (sender, e) => await Button_Clicked(sender, e);
             grid.Children.Add(button);
 
             grid.SetRowSpan(button, 5);
@@ -169,7 +169,7 @@ namespace VACDMApp.Data.Renderer
             return grid;
         }
 
-        private static async void Button_Clicked(object sender, EventArgs e)
+        private static async Task Button_Clicked(object sender, EventArgs e)
         {
             var button = (Button)sender;
             var parentGrid = (Grid)button.Parent;

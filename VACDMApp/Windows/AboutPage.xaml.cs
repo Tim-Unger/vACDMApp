@@ -13,7 +13,8 @@ public partial class AboutPage : ContentPage
     {
         TitleLabel.Text = "Virtual\nAirport\nCollaborative\nDecision\nMaking";
         VACDMData.Data.SenderPage = SenderPage.About;
-        VersionLabel.Text = $"V {AppInfo.Current.VersionString}";
+        var now = DateTime.UtcNow;
+        VersionLabel.Text = $"Tim Unger (1468997) -- V {AppInfo.Current.VersionString}";
     }
 
     private async void CloseButton_Clicked(object sender, EventArgs e)

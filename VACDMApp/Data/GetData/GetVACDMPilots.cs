@@ -3,9 +3,9 @@ using VACDMApp.DataFaker;
 
 namespace VACDMApp.VACDMData
 {
-    internal class VACDMPilotsData
+    public class VACDMPilotsData
     {
-        internal static async Task<List<VACDMPilot>> GetVACDMPilotsAsync()
+        public static async Task<List<VACDMPilot>> GetVACDMPilotsAsync()
         {
             var data = await Client.GetStringAsync(VacdmApiUrl);
 
@@ -13,16 +13,7 @@ namespace VACDMApp.VACDMData
 
             if (dataList.Count == 0)
             {
-#if DEBUG
-                return VACDMFaker.FakePilots();
-#endif
                 return Enumerable.Empty<VACDMPilot>().ToList();
-                ////TODO
-                //dataList = JsonSerializer.Deserialize<List<VACDMPilot>>(TestData);
-
-                //var random = new Random();
-
-                //dataList.ForEach(x => x.Callsign = VACDMPilots[random.Next(0, VACDMPilots.Count)].Callsign);
             }
 
             //Remove VFR Flights

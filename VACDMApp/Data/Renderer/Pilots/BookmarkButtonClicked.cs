@@ -5,7 +5,7 @@ namespace VACDMApp.Data.Renderer
 {
     internal partial class Pilots
     {
-        private static async void BookmarkButton_Clicked(object sender, EventArgs e)
+        private static async Task BookmarkButton_Clicked(object sender, EventArgs e)
         {
             var button = (ImageButton)sender;
             var parentGrid = (Grid)((Grid)button.Parent).Parent;

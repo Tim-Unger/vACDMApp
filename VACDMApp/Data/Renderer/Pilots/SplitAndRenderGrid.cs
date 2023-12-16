@@ -1,4 +1,6 @@
-﻿using VACDMApp.VACDMData;
+﻿using System.Collections.Concurrent;
+using System.Diagnostics;
+using VACDMApp.VACDMData;
 
 namespace VACDMApp.Data.Renderer
 {
@@ -13,6 +15,17 @@ namespace VACDMApp.Data.Renderer
             foreach (var hourWindow in sortByTime)
             {
                 splitGrid.Add(RenderTimeSeperator(hourWindow.Key));
+
+                //var hourPilots = new List<Border>();
+                //var lockObj = new object();
+
+                //Parallel.ForEach(hourWindow, x =>
+                //{
+                //    lock (lockObj)
+                //    {
+                //        hourPilots.Add(RenderPilot(x));
+                //    }
+                //});
 
                 splitGrid.AddRange(hourWindow.Select(RenderPilot));
             }

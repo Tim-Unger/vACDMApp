@@ -16,9 +16,9 @@ namespace VACDMApp.Data
         public string Url { get; set; }
     }
 
-    internal class VaccDataSources
+    public class VaccDataSources
     {
-        internal static Task<List<DataSource>> GetDataSourcesAsync()
+        public static Task<List<DataSource>> GetDataSourcesAsync()
         {
             var options = new JsonSerializerOptions() { AllowTrailingCommas = true };
             var sources =  Client.GetFromJsonAsync<List<DataSource>>("https://raw.githubusercontent.com/Tim-Unger/vACDMDataSources/main/datasources.json", options);
