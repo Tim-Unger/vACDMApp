@@ -5,6 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
     BackgroundColor="#1c2836"
+    Focused="BottomSheet_Focused"
+    HasBackdrop="True"
     HasHandle="True"
     Unfocused="BottomSheet_Unfocused">
     <!--  TODO  -->

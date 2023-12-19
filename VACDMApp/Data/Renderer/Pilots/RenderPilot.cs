@@ -56,7 +56,9 @@ namespace VACDMApp.Data.Renderer
 
             grid.SetColumn(flightGrid, 1);
 
-            var airport = $"From {pilot.FlightPlan.Departure}";
+            var airportData = VACDMData.Data.Airports.FirstOrDefault(x => x.Icao == pilot.FlightPlan.Departure);
+
+            var airport = $"From {airportData?.Icao ?? pilot.FlightPlan.Departure} ({airportData?.Iata ?? ""})";
             var airportLabel = new Label()
             {
                 Text = airport,
@@ -84,7 +86,7 @@ namespace VACDMApp.Data.Renderer
 
             var icao = pilot.Callsign[..3].ToUpper();
             var airline =
-                airlines.Find(x => x.icao == icao)
+                airlines.FirstOrDefault(x => x.icao == icao)
                 ?? new Airline()
                 {
                     callsign = "",
@@ -94,9 +96,17 @@ namespace VACDMApp.Data.Renderer
                     name = ""
                 };
 
+            if (string.IsNullOrEmpty(airline.iata))
+            {
+                airline.iata = icao;
+            }
+
             var flightNumberOnly = pilot.Callsign.Remove(0, 3);
+
+            var arrAirportData = VACDMData.Data.Airports.FirstOrDefault(x => x.Icao == pilot.FlightPlan.Arrival);
+
             var flightData =
-                $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival}, {flightPlan.aircraft_short}";
+               $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival} ({arrAirportData.Iata}), {flightPlan.aircraft_short}";
 
             var regRegex = new Regex(@"REG/([A-Z0-9-]{3,6})");
             var hasRegFiled = regRegex.IsMatch(flightPlan.remarks);

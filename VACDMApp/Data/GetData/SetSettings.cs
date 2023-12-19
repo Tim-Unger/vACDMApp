@@ -1,18 +1,24 @@
-﻿using System.Text;
-namespace VACDMApp.Data
+﻿namespace VACDMApp.Data
 {
     public partial class SettingsData
     {
+        //TODO
         internal static async Task SetSettingsAsync()
         {
-            var target = Path.Combine(FileSystem.Current.AppDataDirectory, "settings.json");
-
             var settingsJson = JsonSerializer.Serialize(VACDMData.Data.Settings);
 
-            var stream = new MemoryStream(Encoding.UTF8.GetBytes(settingsJson));
+            var filePath = FileSystem.Current.AppDataDirectory;
 
-            var fileStream = new FileStream(target, FileMode.Open, FileAccess.Write);
-            stream.CopyTo(fileStream);
+            var writer = new StreamWriter($"{filePath}/settings.json");
+
+            await writer.WriteAsync(settingsJson);
+
+            writer.Dispose();
+
+            var dataRaw = await FileSystem.Current.OpenAppPackageFileAsync("settings.json");
+
+            var reader = new StreamReader(dataRaw);
+            var data = reader.ReadToEnd();
         }
     }
 }

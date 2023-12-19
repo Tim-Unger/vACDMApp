@@ -24,6 +24,18 @@ public partial class AirportsBottomSheet : BottomSheet
             .DistinctBy(x => x.ToUpper())
             .ToList();
 
+        var handleBar = new RoundRectangle()
+        {
+            CornerRadius = 10,
+            Background = Colors.White,
+            VerticalOptions = LayoutOptions.Center,
+            HorizontalOptions = LayoutOptions.Center,
+            WidthRequest = 50,
+            HeightRequest = 10
+        };
+
+        AirportsStackLayout.Children.Add(handleBar);
+
         var titleLabel = new Label()
         {
             Text = "Please choose an Airport",
@@ -91,5 +103,15 @@ public partial class AirportsBottomSheet : BottomSheet
 
     internal static string GetClickedAirport() => SelectedAirport;
 
-    private void BottomSheet_Unfocused(object sender, FocusEventArgs e) { }
+    private void BottomSheet_Focused(object sender, FocusEventArgs e)
+    {
+        Sender = this;
+
+        VACDMData.Data.SenderPage = VACDMData.SenderPage.About;
+    }
+
+    private void BottomSheet_Unfocused(object sender, FocusEventArgs e)
+    {
+
+    }
 }

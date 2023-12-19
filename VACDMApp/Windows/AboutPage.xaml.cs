@@ -11,9 +11,8 @@ public partial class AboutPage : ContentPage
 
     private void ContentPage_Loaded(object sender, EventArgs e)
     {
-        TitleLabel.Text = "Virtual\nAirport\nCollaborative\nDecision\nMaking";
+        TitleLabel.Text = "VATSIM\nAirport\nCollaborative\nDecision\nMaking";
         VACDMData.Data.SenderPage = SenderPage.About;
-        var now = DateTime.UtcNow;
         VersionLabel.Text = $"Tim Unger (1468997) -- V {AppInfo.Current.VersionString}";
     }
 

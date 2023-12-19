@@ -64,6 +64,7 @@
 
 	<ItemGroup>
 		<None Remove="Resources\Fonts\AdvancedDot-Regular.ttf" />
+		<None Remove="Resources\Raw\airports.json" />
 		<None Remove="Resources\Raw\Settings.json" />
 	</ItemGroup>
 
@@ -82,6 +83,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<MauiAsset Update="Resources\Raw\airports.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</MauiAsset>
 		<MauiAsset Update="Resources\Raw\settings.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</MauiAsset>
@@ -100,14 +104,14 @@
 		<MauiXaml Update="Windows\BottomSheets\AirportsBottomSheet.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Windows\BottomSheets\NotificationBottomSheet.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
 		<MauiXaml Update="Windows\BottomSheets\SingleFlightBottomSheet.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Windows\BottomSheets\VDGSBottomSheet.xaml">
 			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Windows\MiniGamePage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Windows\Views\FlightsView.xaml">
 			<Generator>MSBuild:Compile</Generator>
@@ -131,6 +135,10 @@
 		<MauiPlatformSpecificFolder Remove="Platforms\MacCatalyst\" />
 		<MauiPlatformSpecificFolder Remove="Platforms\Tizen\" />
 		<MauiPlatformSpecificFolder Remove="Platforms\Windows\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Data\GetData\DataFaker\" />
 	</ItemGroup>
 
 	<ProjectExtensions>

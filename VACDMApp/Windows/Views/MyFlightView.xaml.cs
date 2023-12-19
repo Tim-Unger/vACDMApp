@@ -4,6 +4,8 @@ using Microsoft.Maui.Controls;
 using VACDMApp.VACDMData;
 using VACDMApp.Data.Renderer;
 using VACDMApp.Windows.BottomSheets;
+using Java.Util.Zip;
+using VACDMApp.Data;
 
 public partial class MyFlightView : ContentView
 {
@@ -36,7 +38,6 @@ public partial class MyFlightView : ContentView
             CidText.Text = Data.Settings.Cid.ToString();
         }
 
-
         var cidText = CidText.Text;
 
         if (cidText is null)
@@ -52,7 +53,7 @@ public partial class MyFlightView : ContentView
             return;
         }
 
-        if (!IsValidCid(cid))
+        if (!cid.IsValidCid())
         {
             await _page.DisplayAlert("Invalid CID", "The provided CID does not exist", "OK");
             return;
@@ -121,34 +122,6 @@ public partial class MyFlightView : ContentView
         var vdgsSheet = new VDGSBottomSheet();
 
         vdgsSheet.ShowAsync();
-    }
-
-    private static bool IsValidCid(int cid)
-    {
-        //CID cannot be smaller than 800_000 (lowest founder CID is 800_006)
-        if (cid < 800000)
-        {
-            return false;
-        }
-
-        //CID is an older CID and therefore has one less digit (determined by the first letter)
-        if (new[] { 8, 9 }.Any(x => x == int.Parse(cid.ToString()[0].ToString())))
-        {
-            if (cid.ToString().Length != 6)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        //Newer CIDs must be 7 letters long (for now)
-        if (cid.ToString().Length != 7)
-        {
-            return false;
-        }
-
-        return true;
     }
 
     private async Task GetCurrentTime()

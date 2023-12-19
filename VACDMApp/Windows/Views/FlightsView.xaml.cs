@@ -1,10 +1,10 @@
-using CommunityToolkit.Maui.Alerts;
-//using FluentScheduler;
 using VACDMApp.VACDMData;
 using VACDMApp.Data.Renderer;
 using VACDMApp.Windows.BottomSheets;
 using static VACDMApp.VACDMData.Data;
 using VACDMApp.Data.PushNotifications;
+using static VACDMApp.Data.Renderer.Pilots;
+using VACDMApp.Data;
 
 namespace VACDMApp.Windows.Views;
 
@@ -67,7 +67,7 @@ public partial class FlightsView : ContentView
         {
             Routing.RegisterRoute("AboutPage", typeof(AboutPage));
 
-            var flights = Pilots.Render(null);
+            var flights = Pilots.Render(null, null);
             flights.ForEach(FlightsStackLayout.Children.Add);
             GetNearestTime();
 
@@ -112,7 +112,7 @@ public partial class FlightsView : ContentView
             }
 
             FlightsStackLayout.Children.Clear();
-            var allFlights = Pilots.Render(selectedAirport);
+            var allFlights = Pilots.Render(FilterKind.Airport, selectedAirport);
             allFlights.ForEach(FlightsStackLayout.Children.Add);
             FlightsScrollView.Content = FlightsStackLayout;
 
@@ -160,7 +160,7 @@ public partial class FlightsView : ContentView
 
         if (selectedAirport == "ALL AIRPORTS")
         {
-            var allFlights = Pilots.Render(null);
+            var allFlights = Pilots.Render(null, null);
             FlightsStackLayout.Children.Clear();
             allFlights.ForEach(FlightsStackLayout.Children.Add);
             FlightsScrollView.Content = FlightsStackLayout;
@@ -168,7 +168,7 @@ public partial class FlightsView : ContentView
             return;
         }
 
-        var flights = Pilots.Render(selectedAirport);
+        var flights = Pilots.Render(FilterKind.Airport, selectedAirport);
         FlightsStackLayout.Children.Clear();
         flights.ForEach(FlightsStackLayout.Children.Add);
         FlightsScrollView.Content = FlightsStackLayout;
@@ -219,7 +219,7 @@ public partial class FlightsView : ContentView
             selectedAirport = null;
         }
 
-        var allFlights = Pilots.Render(selectedAirport);
+        var allFlights = Pilots.Render(FilterKind.Airport, selectedAirport);
         allFlights.ForEach(FlightsStackLayout.Children.Add);
         FlightsScrollView.Content = FlightsStackLayout;
     }
@@ -233,19 +233,42 @@ public partial class FlightsView : ContentView
     {
         var searchText = ((SearchBar)sender).Text.ToUpperInvariant();
 
+        //Check if search is nothing (User deleted/erased Search Text)
         if (string.IsNullOrWhiteSpace(searchText))
         {
             FlightsStackLayout.Children.Clear();
-            var pilots = Pilots.Render(null);
+            var pilots = Pilots.Render(null, null);
 
             pilots.ForEach(FlightsStackLayout.Children.Add);
 
             return;
         }
 
+        //Check if Search is an Airline ICAO
+        if (searchText.Length <= 3)
+        {
+            var airlineIcao = searchText.ToUpperInvariant();
+
+            var isAirline = Airlines.Any(x => x.icao == airlineIcao);
+
+            if (!isAirline)
+            {
+                FlightsStackLayout.Children.Clear();
+                //TODO nothing found screen
+                return;
+            }
+
+            FlightsStackLayout.Children.Clear();
+            var pilots = Pilots.Render(FilterKind.Airline, airlineIcao);
+
+            pilots.ForEach(FlightsStackLayout.Children.Add);
+
+            return;
+        }
+        
+        //Check if search is an airport
         if (searchText.Length <= 4)
         {
-            //Check if search is an airport
             var depAirports = VACDMPilots
                 .Select(x => x.FlightPlan.Departure)
                 .DistinctBy(x => x.ToUpper())
@@ -262,7 +285,7 @@ public partial class FlightsView : ContentView
             {
                 FlightsStackLayout.Children.Clear();
 
-                var pilots = Pilots.Render(searchText.ToUpper());
+                var pilots = Pilots.Render(FilterKind.Airport, searchText.ToUpper());
 
                 pilots.ForEach(FlightsStackLayout.Children.Add);
 
@@ -270,5 +293,37 @@ public partial class FlightsView : ContentView
                 return;
             }
         }
+
+        //Check if search is a CID
+        if(int.TryParse(searchText, out var cid))
+        {
+            FlightsStackLayout.Children.Clear();
+
+            if (!cid.IsValidCid())
+            {
+                //TODO Nothing found screen
+                return;
+            }
+
+            var pilots = Pilots.Render(FilterKind.Cid, cid.ToString());
+
+            pilots.ForEach(FlightsStackLayout.Children.Add);
+
+            return;
+        }
+
+        //Check if search is a single callsign
+        if(VACDMPilots.Any(x => x.Callsign == searchText.ToUpperInvariant()))
+        {
+            FlightsStackLayout.Children.Clear();
+
+            var pilots = Pilots.Render(FilterKind.Callsign, searchText.ToUpperInvariant());
+
+            pilots.ForEach(FlightsStackLayout.Children.Add);
+
+            return;
+        }
+
+
     }
 }

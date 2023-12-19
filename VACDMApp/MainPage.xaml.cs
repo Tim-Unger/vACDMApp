@@ -1,6 +1,7 @@
 ﻿using Android.Telephony;
 using Plugin.LocalNotification;
 using VACDMApp.Data;
+using VACDMApp.Data.GetData;
 using VACDMApp.Data.PushNotifications;
 using VACDMApp.VACDMData;
 using static VACDMApp.VACDMData.Data;
@@ -94,13 +95,15 @@ namespace VACDMApp
             var dataTask = GetVatsimData.GetVatsimDataAsync();
             var vacdmTask = VACDMPilotsData.GetVACDMPilotsAsync();
             var airlinesTask = AirlinesData.GetAirlinesAsync();
+            var airportsTask = AirportsData.GetAsync();
             var measuresTask = FlowMeasuresData.GetFlowMeasuresAsync();
 
-            await Task.WhenAll(dataTask, vacdmTask, airlinesTask, measuresTask);
+            await Task.WhenAll(dataTask, vacdmTask, airlinesTask, measuresTask, airportsTask);
 
             VatsimPilots = dataTask.Result.pilots.ToList();
             VACDMPilots = vacdmTask.Result;
             Airlines = airlinesTask.Result;
+            Airports = airportsTask.Result;
             FlowMeasures = measuresTask.Result;
         }
     }

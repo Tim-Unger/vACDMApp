@@ -76,7 +76,10 @@ namespace VACDMApp.Data.Renderer
 
             grid.SetColumn(flightGrid, 1);
 
-            var airport = $"From {pilot.FlightPlan.Departure}";
+            var airportData = VACDMData.Data.Airports.FirstOrDefault(x => x.Icao == pilot.FlightPlan.Departure);
+
+            var airport = $"From {airportData?.Icao ?? pilot.FlightPlan.Departure} ({airportData?.Iata ?? ""})";
+
             var airportLabel = new Label()
             {
                 Text = airport,
@@ -113,7 +116,7 @@ namespace VACDMApp.Data.Renderer
 
             var flightNumberOnly = pilot.Callsign.Remove(0, 3);
             var flightData =
-                $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival}, {flightPlan.aircraft_short}";
+                $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival} ({airportData.Iata}), {flightPlan.aircraft_short}";
 
             //TODO Fix
             //var regRegex = new Regex(@"REG/([A-Z0-9-]{3,6})");
