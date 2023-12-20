@@ -20,24 +20,35 @@ namespace VACDMApp
             if(sender == SenderPage.SingleFlight)
             {
                 ((SingleFlightBottomSheet)VACDMData.Data.Sender).DismissAsync();
+                VACDMData.Data.Sender = VACDMData.Data.FlightsView;
                 return true;
             }
 
             if(sender == SenderPage.Vdgs)
             {
                 ((VDGSBottomSheet)VACDMData.Data.Sender).DismissAsync();
+                VACDMData.Data.Sender = VACDMData.Data.FlightsView;
                 return true;
             }
 
             if(sender == SenderPage.Airport)
             {
                 ((AirportsBottomSheet)VACDMData.Data.Sender).DismissAsync();
+                VACDMData.Data.Sender = VACDMData.Data.FlightsView;
                 return true;
             }
 
             if(sender == SenderPage.About)
             {
                 Current.GoToAsync("..", true);
+                VACDMData.Data.Sender = VACDMData.Data.FlightsView;
+                return true;
+            }
+
+            if(sender == SenderPage.Time)
+            {
+                ((TimesBottomSheet)VACDMData.Data.Sender).DismissAsync();
+                VACDMData.Data.Sender = VACDMData.Data.FlightsView;
                 return true;
             }
 

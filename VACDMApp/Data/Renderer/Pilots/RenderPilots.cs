@@ -11,11 +11,14 @@ namespace VACDMApp.Data.Renderer
             Airport,
             Airline,
             Cid,
-            Callsign
+            Callsign,
+            Time
         }
 
         public static List<Border> Render(FilterKind? filterKind, string? filterValue)
         {
+            var pilots = VACDMData.Data.VACDMPilots;
+
             var pilotsWithFP = VACDMData.Data.VACDMPilots
                 //Only Pilots that have are in the Vatsim Datafeed
                 .Where(x => VACDMData.Data.VatsimPilots.Exists(y => y.callsign == x.Callsign))
@@ -46,6 +49,7 @@ namespace VACDMApp.Data.Renderer
                     FilterKind.Airline => SearchByAirline(pilotsWithFP, filterValue),
                     FilterKind.Cid => SearchByCid(pilotsWithFP, filterValue),
                     FilterKind.Callsign => SearchByCallsign(pilotsWithFP, filterValue),
+                    FilterKind.Time => SearchByTime(pilotsWithFP, filterValue)
                 };
             }
 
@@ -97,6 +101,14 @@ namespace VACDMApp.Data.Renderer
 
             var singleList = new List<VACDMPilot>(1) { pilot };
             return SplitAndRenderGrid(singleList);
+        }
+
+        private static List<Border> SearchByTime(IEnumerable<VACDMPilot> pilotsWithFp, string filterValue)
+        {
+            var timeValue = int.Parse(filterValue);
+            var pilots = pilotsWithFp.Where(x => x.Vacdm.Eobt.Hour == timeValue);
+
+            return SplitAndRenderGrid(pilots);
         }
     }
 }

@@ -107,7 +107,7 @@ public partial class AirportsBottomSheet : BottomSheet
     {
         Sender = this;
 
-        VACDMData.Data.SenderPage = VACDMData.SenderPage.About;
+        VACDMData.Data.SenderPage = VACDMData.SenderPage.Airport;
     }
 
     private void BottomSheet_Unfocused(object sender, FocusEventArgs e)

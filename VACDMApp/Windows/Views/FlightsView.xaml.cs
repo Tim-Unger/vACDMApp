@@ -49,7 +49,7 @@ public partial class FlightsView : ContentView
             TextColor = _white
         };
 
-    private static readonly Button _flightsTimePicker =
+    private static readonly Button _timeButton =
         new()
         {
             Margin = new Thickness(10, 5, 10, 5),
@@ -75,10 +75,11 @@ public partial class FlightsView : ContentView
             _airportsButton.Clicked += async (sender, e) => await AirportsButton_Clicked(sender, e);
             ButtonsStackLayout.Children.Add(_dayButton);
             _dayButton.Clicked += DayButton_Clicked;
-            ButtonsStackLayout.Children.Add(_flightsTimePicker);
-            _flightsTimePicker.Clicked += TimeButton_Clicked;
+            ButtonsStackLayout.Children.Add(_timeButton);
+            _timeButton.Clicked += TimeButton_Clicked;
             ButtonsStackLayout.Children.Add(_timeFormatButton);
-            _timeFormatButton.Clicked += async (sender, e)  => await TimeFormatButton_Clicked(sender, e);
+            _timeFormatButton.Clicked += async (sender, e) =>
+                await TimeFormatButton_Clicked(sender, e);
 
             //GetCurrentTime();
             _isFirstLoad = false;
@@ -94,7 +95,7 @@ public partial class FlightsView : ContentView
     {
         var now = DateTime.UtcNow;
 
-        _flightsTimePicker.Text = $"{now.Hour}:00Z";
+        _timeButton.Text = $"{now.Hour}:00Z";
     }
 
     private async Task UpdateDataContinuously()
@@ -140,19 +141,15 @@ public partial class FlightsView : ContentView
 
     private void TimeButton_Clicked(object sender, EventArgs e)
     {
-        //TODO BottomSheet
-        var possibleTimes = VACDMPilots
-            .Where(x => VatsimPilots.Exists(y => y.callsign == x.Callsign)) //Only Pilots that are connected to Vatsim
-            .Where(x => VatsimPilots.First(y => y.callsign == x.Callsign).flight_plan != null) //Only Pilots that have a flight plan
-            .Where(x => x.Vacdm.Eobt.Hour >= DateTime.UtcNow.AddHours(-1).Hour) //Only Pilots whose EOBT is earliest 1 hour in the past (removes weird filed EOBTs)
-            .Select(x => x.Vacdm.Eobt) //Only get the EOBT
-            .DistinctBy(x => x.Hour) //Only get each value once
-            .Select(x => x.Hour) //Only get the hour
-            .Order()//Order by time
-            .ToList();
+        var timesBottomSheet = new TimesBottomSheet();
+
+        timesBottomSheet.ShowAsync();
     }
 
-    private async Task TimeFormatButton_Clicked(object sender, EventArgs e) { throw new NotImplementedException(); }
+    private async Task TimeFormatButton_Clicked(object sender, EventArgs e)
+    {
+        
+    }
 
     internal void GetFlightsFromSelectedAirport()
     {
@@ -265,7 +262,7 @@ public partial class FlightsView : ContentView
 
             return;
         }
-        
+
         //Check if search is an airport
         if (searchText.Length <= 4)
         {
@@ -281,7 +278,7 @@ public partial class FlightsView : ContentView
 
             var airports = depAirports.Concat(arrAirports).Distinct();
 
-            if (airports.Any(searchText.StartsWith)) 
+            if (airports.Any(searchText.StartsWith))
             {
                 FlightsStackLayout.Children.Clear();
 
@@ -295,7 +292,7 @@ public partial class FlightsView : ContentView
         }
 
         //Check if search is a CID
-        if(int.TryParse(searchText, out var cid))
+        if (int.TryParse(searchText, out var cid))
         {
             FlightsStackLayout.Children.Clear();
 
@@ -313,7 +310,7 @@ public partial class FlightsView : ContentView
         }
 
         //Check if search is a single callsign
-        if(VACDMPilots.Any(x => x.Callsign == searchText.ToUpperInvariant()))
+        if (VACDMPilots.Any(x => x.Callsign == searchText.ToUpperInvariant()))
         {
             FlightsStackLayout.Children.Clear();
 
@@ -323,7 +320,29 @@ public partial class FlightsView : ContentView
 
             return;
         }
+    }
 
+    internal void SetTimeText(string selectedTime)
+    {
+        if(selectedTime == "ALL TIMES")
+        {
+            GetNearestTime();
 
+            FlightsStackLayout.Children.Clear();
+
+            var allPilots = Pilots.Render(null, null);
+
+            allPilots.ForEach(FlightsStackLayout.Children.Add);
+            return;
+        }
+
+        var timeString = int.Parse(selectedTime) < 10 ? $"0{selectedTime}:00Z" : $"{selectedTime}:00Z";
+        _timeButton.Text = timeString;
+
+        FlightsStackLayout.Children.Clear();
+
+        var pilots = Pilots.Render(FilterKind.Time, selectedTime.ToString());
+
+        pilots.ForEach(FlightsStackLayout.Children.Add);
     }
 }

@@ -107,6 +107,9 @@
 		<MauiXaml Update="Windows\BottomSheets\SingleFlightBottomSheet.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Windows\BottomSheets\TimesBottomSheet.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Windows\BottomSheets\VDGSBottomSheet.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
