@@ -6,7 +6,9 @@ namespace VACDMApp.Data.PushNotifications
 {
     internal class PushNotificationHandler
     {
-        private static List<(string callsign, DateTime pushedTime)> PushedPilots = new();
+        //private static List<(string callsign, DateTime pushedTime)> PushedPilots = new();
+
+        private static List<VACDMPilot> _subscribedPilots = new();
 
         internal enum NotificationType
         {
@@ -18,96 +20,49 @@ namespace VACDMApp.Data.PushNotifications
         }
 
         //TODO implement
-        internal static void InitializeNotificationEvents(INotificationService notificationService)
+        internal static async Task InitializeNotificationEvents(INotificationService notificationService)
         {
             notificationService.NotificationActionTapped += NotificationTapped;
         }
 
-        private static void NotificationTapped(NotificationActionEventArgs e)
+        private static void NotificationTapped(NotificationActionEventArgs e) => OpenPush.OpenTapped(e);
+
+        internal static async Task StartGlobalHandler()
         {
-            var title = e.Request.Title;
-        }
-
-        internal static async Task SendPushNotificationAsync(
-            VACDMPilot pilot,
-            NotificationType notificationType
-        )
-        {
-            var notificationMessageString = notificationType switch
+            while (true)
             {
-                NotificationType.SlotNow
-                  => $"{pilot.Callsign} is now in the Startup-Window. Your Slot will have expired when this message is {TimeToExpire(pilot)} min. old",
-                NotificationType.SlotChanged
-                  => $"TSAT changed for your Flight {pilot.Callsign}\r New TSAT {pilot.Vacdm.Tsat.ToShortTimeString()}Z",
-                NotificationType.StartupGiven
-                  => $"Your Flight {pilot.Callsign} has just received Startup.\rEnjoy your Flight!",
-                NotificationType.SlotSoonUnconfirmed
-                  => $"The Slot for your Flight {pilot.Callsign} is soon but not yet confirmed.\rConfirm your Slot to make sure you won't get delayed.",
-                _ => throw new ArgumentOutOfRangeException()
-            };
+                var tasks = _subscribedPilots.Select(PushHandler.CheckPilotAsync);
 
-            var notificationMessageTitle = notificationType switch
-            {
-                NotificationType.SlotNow => $"{pilot.Callsign} Slot Now",
-                NotificationType.SlotChanged => $"{pilot.Callsign} Slot Changed",
-                NotificationType.StartupGiven => $"{pilot.Callsign} Startup received",
-                NotificationType.SlotSoonUnconfirmed => $"{pilot.Callsign} Slot not yet confirmed",
-                _ => throw new ArgumentOutOfRangeException()
-            };
+                await Task.WhenAll(tasks);
 
-            var request = new NotificationRequest()
-            {
-                Title = notificationMessageTitle,
-                Subtitle = "vACDM",
-                Description = notificationMessageString,
-            };
-
-            await LocalNotificationCenter.Current.Show(request);
-        }
-
-        internal static async Task CheckTimeWindowAndPushMessage(List<VACDMPilot> pilots)
-        {
-            foreach (var pilot in pilots)
-            {
-                var vacdm = pilot.Vacdm;
-
-                if (!vacdm.Tsat.IsTsatInTheWindow())
-                {
-                    return;
-                }
-
-                if (vacdm.Tsat.IsTsatInTheWindow() && !PushedPilots.Exists(x => x.callsign == pilot.Callsign))
-                {
-                    await SendPushNotificationAsync(pilot, NotificationType.SlotNow);
-
-                    PushedPilots.Add(new(pilot.Callsign, vacdm.Tsat));
-
-                    return;
-                }
-
-                var pushedPilot = PushedPilots.First(x => x.callsign == pilot.Callsign);
-
-                if (pushedPilot.pushedTime != vacdm.Tsat)
-                {
-                    await SendPushNotificationAsync(pilot, NotificationType.SlotChanged);
-
-                    var pushIndex = PushedPilots.FindIndex(x => x.callsign == pilot.Callsign);
-                    PushedPilots[pushIndex] = new(pushedPilot.callsign, vacdm.Tsat);
-                }
-
-                //TODO Startup Given
+                await Task.Delay(TimeSpan.FromSeconds(30));
             }
         }
 
-        private static int TimeToExpire(VACDMPilot pilot) 
+
+        internal static async Task SubscribeAsync(VACDMPilot pilot)
         {
-            var timeDifference = pilot.Vacdm.Tsat.AddMinutes(5) - DateTime.UtcNow;
+            _subscribedPilots.Add(pilot);
 
-            var totalMinutes = timeDifference.TotalMinutes;
+            await PushHandler.CheckPilotAsync(pilot);
+        }
 
-            var roundMinutes = Math.Round(totalMinutes, 0);
+        internal static bool Unsubscribe(VACDMPilot pilot)
+        {
+            var concernedPilot = _subscribedPilots.FirstOrDefault(x => x.Callsign == pilot.Callsign);
 
-            return int.Parse(roundMinutes.ToString());
+            if(concernedPilot is null)
+            {
+                return false;
+            }
+
+            var index = _subscribedPilots.FindIndex(x => x.Callsign == pilot.Callsign);
+
+            _subscribedPilots.RemoveAt(index);
+
+            ClearPush.ClearAll(pilot.Callsign);
+
+            return true;
         }
     }
 }

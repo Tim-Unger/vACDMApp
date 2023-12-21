@@ -1,7 +1,8 @@
-﻿using Android.Telephony;
-using Plugin.LocalNotification;
+﻿using Plugin.LocalNotification;
+using System.Net.NetworkInformation;
 using VACDMApp.Data;
 using VACDMApp.Data.GetData;
+using VACDMApp.Data.OverridePermissions;
 using VACDMApp.Data.PushNotifications;
 using VACDMApp.VACDMData;
 using static VACDMApp.VACDMData.Data;
@@ -23,14 +24,23 @@ namespace VACDMApp
         public MainPage()
         {
             InitializeComponent();
-            PushNotificationHandler.InitializeNotificationEvents(LocalNotificationCenter.Current);
         }
 
-        //OnLoad
         private async void ContentPage_Loaded(object sender, EventArgs e)
         {
+            await OnLoad(sender, e);
+        }
+
+        private async Task OnLoad(object sender, EventArgs e)
+        {
+            //This is just Internet and Network State, but we need to request it anyways,
+            //since we are overriding the default Permissions Later on with the Push Notification Request
+            await Permissions.RequestAsync<DefaultPermissions>();
+
             await GetAllData();
-            
+
+            await PushNotificationHandler.InitializeNotificationEvents(LocalNotificationCenter.Current);
+
             Mainview.Content = FlightsView;
         }
 
@@ -70,11 +80,12 @@ namespace VACDMApp
         internal static async Task GetAllData()
         {
             //TODO Accessibility Modifiers
-            var dataSourcesTask = VaccDataSources.GetDataSourcesAsync();
+            //var dataSourcesTask = VaccDataSources.GetDataSourcesAsync();
             var settingsTask = SettingsData.ReadSettingsAsync();
 
-            await Task.WhenAll(dataSourcesTask, settingsTask);
-            DataSources = dataSourcesTask.Result;
+            await settingsTask;
+
+            DataSources = new List<DataSource>() { new DataSource() { Name = "Test", ShortName = "TEST", Url = "https://vacdm.tim-u.me/api/v1/pilots" } };
             VACDMData.Data.Settings = settingsTask.Result;
             VACDMData.VACDMData.SetApiUrl();
 

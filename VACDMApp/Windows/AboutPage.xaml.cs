@@ -28,7 +28,7 @@ public partial class AboutPage : ContentPage
 
     private async void PilotguideButton_Clicked(object sender, EventArgs e)
     {
-        await Browser.Default.OpenAsync("https://knowledgebase.vatsim-germany.org/books/vacdm/page/vacdm-pilot-guide");
+        await Browser.Default.OpenAsync("https://vacdm.net/docs/pilot/use-vacdm");
     }
 
     private async void GithubButton_Clicked(object sender, EventArgs e)
