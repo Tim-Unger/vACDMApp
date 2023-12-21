@@ -38,6 +38,13 @@ namespace VACDMApp.Data.PushNotifications
             //Check if the TSAT is different from the last time we checked
             if (_lastTsat != vacdm.Tsat)
             {
+                //When we are checking for the first time, we need to set the initial TSAT to prevent triggering the Push immediately
+                if(_lastTsat == DateTime.MinValue)
+                {
+                    _lastTsat = vacdm.Tsat;
+                    return;
+                }
+
                 //The changed Slot Push for this Slot revision has already been sent
                 if (
                     _pushedNotifications

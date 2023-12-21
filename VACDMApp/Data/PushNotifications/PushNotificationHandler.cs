@@ -25,10 +25,7 @@ namespace VACDMApp.Data.PushNotifications
             notificationService.NotificationActionTapped += NotificationTapped;
         }
 
-        private static void NotificationTapped(NotificationActionEventArgs e)
-        {
-            var title = e.Request.Title;
-        }
+        private static void NotificationTapped(NotificationActionEventArgs e) => OpenPush.OpenTapped(e);
 
         internal static async Task StartGlobalHandler()
         {
