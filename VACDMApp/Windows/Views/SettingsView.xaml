@@ -3,15 +3,21 @@
     x:Class="VACDMApp.Windows.Views.SettingsView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Microsoft.Maui.Controls.Compatibility;assembly=Microsoft.Maui.Controls.Compatibility"
     Loaded="ContentView_Loaded"
     Unfocused="ContentView_Unfocused">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
-            <RowDefinition Height="0.2*" />
+            <RowDefinition Height="0.3*" />
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
-            <RowDefinition Height="4*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -22,16 +28,17 @@
 
             <Label
                 Grid.Column="0"
+                Margin="20,0,0,0"
                 FontAttributes="Bold"
                 FontSize="25"
-                HorizontalOptions="Center"
+                HorizontalOptions="Start"
                 Text="CID"
                 VerticalOptions="Center" />
 
             <Entry
                 x:Name="CidEntry"
                 Grid.Column="1"
-                Margin="10"
+                Margin="0,0,0,20"
                 BackgroundColor="#232323"
                 FontAttributes="Bold"
                 FontSize="20"
@@ -44,7 +51,8 @@
             x:Name="ValidCidLabel"
             Grid.Row="1"
             Margin="20,0,0,0"
-            Text="" />
+            Text=""
+            VerticalOptions="Start" />
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -54,15 +62,16 @@
 
             <Label
                 Grid.Column="0"
+                Margin="20,0,0,0"
                 FontAttributes="Bold"
                 FontSize="25"
-                HorizontalOptions="Center"
-                Text="Data Source (vACC)"
+                HorizontalOptions="Start"
+                Text="Data Source"
                 VerticalOptions="Center" />
             <Picker
                 x:Name="DataSourcePicker"
                 Grid.Column="1"
-                Margin="10"
+                Margin="0,0,0,20"
                 BackgroundColor="#232323"
                 FontAttributes="Bold"
                 FontSize="20"
@@ -71,6 +80,172 @@
                 VerticalOptions="Center" />
         </Grid>
 
-        <Grid Grid.Row="3" />
+        <Label
+            Grid.Row="3"
+            Margin="20,0,0,0"
+            FontAttributes="Bold"
+            FontSize="25"
+            HorizontalOptions="Start"
+            Text="Push Notifications"
+            VerticalOptions="Center" />
+
+        <Switch
+            x:Name="EnablePushNotificationsSwitch"
+            Grid.Row="3"
+            Margin="0,0,0,20"
+            HorizontalOptions="End"
+            IsEnabled="True"
+            IsToggled="True"
+            Toggled="EnablePushNotificationsSwitch_Toggled" />
+
+        <Grid
+            x:Name="MyFlightPushGrid"
+            Grid.Row="4"
+            Margin="20,0,0,0">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+
+            <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                FontAttributes="Bold"
+                FontSize="20"
+                HorizontalOptions="Start"
+                Text="Push Notifications about My Flight"
+                VerticalOptions="Center" />
+
+            <Grid Grid.Row="1">
+                <Label
+                    Grid.Column="0"
+                    FontAttributes="Bold"
+                    FontSize="15"
+                    HorizontalOptions="Start"
+                    Text="Flight is inside TSAT Window"
+                    VerticalOptions="Center" />
+
+                <Switch
+                    x:Name="MyFlightTsatSwitch"
+                    Grid.Column="1"
+                    HorizontalOptions="End"
+                    IsToggled="True"
+                    Toggled="MyFlightTsatSwitch_Toggled" />
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Label
+                    Grid.Column="0"
+                    FontAttributes="Bold"
+                    FontSize="15"
+                    HorizontalOptions="Start"
+                    Text="TSAT/Slot has been changed"
+                    VerticalOptions="Center" />
+
+                <Switch
+                    x:Name="MyFlightChangedSwitch"
+                    Grid.Column="1"
+                    HorizontalOptions="End"
+                    IsToggled="False"
+                    Toggled="MyFlightChangedSwitch_Toggled" />
+            </Grid>
+
+            <Grid Grid.Row="3">
+                <Label
+                    Grid.Column="0"
+                    FontAttributes="Bold"
+                    FontSize="15"
+                    HorizontalOptions="Start"
+                    Text="Startup received"
+                    VerticalOptions="Center" />
+
+                <Switch
+                    x:Name="MyFlightStartupSwitch"
+                    Grid.Column="1"
+                    HorizontalOptions="End"
+                    IsEnabled="True"
+                    IsToggled="False"
+                    Toggled="MyFlightStartupSwitch_Toggled" />
+            </Grid>
+        </Grid>
+
+        <Grid
+            x:Name="BookmarkedFlightsPushGrid"
+            Grid.Row="5"
+            Margin="20,0,0,0">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+
+            <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                FontAttributes="Bold"
+                FontSize="20"
+                HorizontalOptions="Start"
+                Text="Push Notifications about Bookmarked Flights"
+                VerticalOptions="Center" />
+
+            <Grid Grid.Row="1">
+                <Label
+                    Grid.Column="0"
+                    FontAttributes="Bold"
+                    FontSize="15"
+                    HorizontalOptions="Start"
+                    Text="Flight is inside TSAT Window"
+                    VerticalOptions="Center" />
+
+                <Switch
+                    x:Name="BookmarkFlightTsatSwitch"
+                    Grid.Column="1"
+                    HorizontalOptions="End"
+                    IsToggled="True"
+                    Toggled="BookmarkFlightTsatSwitch_Toggled" />
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Label
+                    Grid.Column="0"
+                    FontAttributes="Bold"
+                    FontSize="15"
+                    HorizontalOptions="Start"
+                    Text="TSAT/Slot has been changed"
+                    VerticalOptions="Center" />
+
+                <Switch
+                    x:Name="BookmarkFlightChangedSwitch"
+                    Grid.Column="1"
+                    HorizontalOptions="End"
+                    IsToggled="True"
+                    Toggled="BookmarkFlightChangedSwitch_Toggled" />
+            </Grid>
+
+            <Grid Grid.Row="3">
+                <Label
+                    Grid.Column="0"
+                    FontAttributes="Bold"
+                    FontSize="15"
+                    HorizontalOptions="Start"
+                    Text="Startup received"
+                    VerticalOptions="Center" />
+
+                <Switch
+                    x:Name="BookmarkFlightStartupSwitch"
+                    Grid.Column="1"
+                    HorizontalOptions="End"
+                    IsEnabled="True"
+                    IsToggled="False"
+                    Toggled="BookmarkFlightStartupSwitch_Toggled" />
+            </Grid>
+        </Grid>
     </Grid>
 </ContentView>

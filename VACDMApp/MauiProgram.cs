@@ -28,8 +28,8 @@ namespace VACDMApp
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
-
             return builder.Build();
+
         }
     }
 }

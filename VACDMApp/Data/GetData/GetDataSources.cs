@@ -10,7 +10,7 @@ namespace VACDMApp.Data
         public string Name { get; set; }
 
         [JsonPropertyName("shortName")]
-        public string ShortName { get;set; }
+        public string ShortName { get; set; }
 
         [JsonPropertyName("url")]
         public string Url { get; set; }
@@ -21,7 +21,10 @@ namespace VACDMApp.Data
         public static Task<List<DataSource>> GetDataSourcesAsync()
         {
             var options = new JsonSerializerOptions() { AllowTrailingCommas = true };
-            var sources =  Client.GetFromJsonAsync<List<DataSource>>("https://raw.githubusercontent.com/Tim-Unger/vACDMDataSources/main/datasources.json", options);
+
+            var sources = Client.GetFromJsonAsync<List<DataSource>>(
+                "https://raw.githubusercontent.com/Tim-Unger/vACDMDataSources/main/datasources.json", options
+            );
 
             return sources;
         }

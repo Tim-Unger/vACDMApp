@@ -1,5 +1,5 @@
-using Java.Util.Zip;
 using VACDMApp.Data;
+using VACDMApp.Data.OverridePermissions;
 using static VACDMApp.VACDMData.Data;
 
 namespace VACDMApp.Windows.Views;
@@ -9,6 +9,7 @@ public partial class SettingsView : ContentView
     public SettingsView()
     {
         InitializeComponent();
+        SetToggleStates();
     }
 
     private static bool _isFirstLoad = true;
@@ -77,5 +78,69 @@ public partial class SettingsView : ContentView
 
         ValidCidLabel.TextColor = Colors.Green;
         ValidCidLabel.Text = "CID is valid";
+    }
+
+    private async void EnablePushNotificationsSwitch_Toggled(object sender, ToggledEventArgs e)
+    {
+        var isToggled = EnablePushNotificationsSwitch.IsToggled;
+
+        if (isToggled)
+        {
+            var grantState = await Permissions.RequestAsync<SendNotifications>();
+
+            if(grantState == PermissionStatus.Granted)
+            {
+                EnablePushNotificationsSwitch.IsToggled = true;
+                return;
+            }
+
+            EnablePushNotificationsSwitch.IsToggled = false;
+        }
+
+        //Revokation needs to be done within the Notification Handler
+        //TODO
+    }
+
+    private void MyFlightTsatSwitch_Toggled(object sender, ToggledEventArgs e)
+    {
+
+    }
+
+    private void MyFlightChangedSwitch_Toggled(object sender, ToggledEventArgs e)
+    {
+
+    }
+
+    private void MyFlightStartupSwitch_Toggled(object sender, ToggledEventArgs e)
+    {
+
+    }
+
+    private void BookmarkFlightTsatSwitch_Toggled(object sender, ToggledEventArgs e)
+    {
+
+    }
+
+    private void BookmarkFlightChangedSwitch_Toggled(object sender, ToggledEventArgs e)
+    {
+
+    }
+
+    private void BookmarkFlightStartupSwitch_Toggled(object sender, ToggledEventArgs e)
+    {
+
+    }
+
+    private async Task SetToggleStates()
+    {
+        var status = await Permissions.CheckStatusAsync<SendNotifications>();
+
+        EnablePushNotificationsSwitch.IsToggled = status == PermissionStatus.Granted ? true : false;
+
+        if(status == PermissionStatus.Denied)
+        {
+            MyFlightPushGrid.IsEnabled = false;
+            BookmarkedFlightsPushGrid.IsEnabled = false;
+        }
     }
 }

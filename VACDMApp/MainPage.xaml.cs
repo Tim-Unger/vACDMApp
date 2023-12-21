@@ -23,14 +23,15 @@ namespace VACDMApp
         public MainPage()
         {
             InitializeComponent();
-            PushNotificationHandler.InitializeNotificationEvents(LocalNotificationCenter.Current);
         }
 
         //OnLoad
         private async void ContentPage_Loaded(object sender, EventArgs e)
         {
             await GetAllData();
-            
+
+            //await PushNotificationHandler.InitializeNotificationEvents(LocalNotificationCenter.Current);
+
             Mainview.Content = FlightsView;
         }
 
@@ -74,6 +75,7 @@ namespace VACDMApp
             var settingsTask = SettingsData.ReadSettingsAsync();
 
             await Task.WhenAll(dataSourcesTask, settingsTask);
+
             DataSources = dataSourcesTask.Result;
             VACDMData.Data.Settings = settingsTask.Result;
             VACDMData.VACDMData.SetApiUrl();

@@ -2,7 +2,6 @@ using VACDMApp.VACDMData;
 using VACDMApp.Data.Renderer;
 using VACDMApp.Windows.BottomSheets;
 using static VACDMApp.VACDMData.Data;
-using VACDMApp.Data.PushNotifications;
 using static VACDMApp.Data.Renderer.Pilots;
 using VACDMApp.Data;
 
@@ -93,7 +92,9 @@ public partial class FlightsView : ContentView
     {
         var now = DateTime.UtcNow;
 
-        _timeButton.Text = $"{now.Hour}:00Z";
+        var hourString = now.Hour < 10 ? $"0{now.Hour}" : now.Hour.ToString();
+
+        _timeButton.Text = $"{hourString}:00Z";
     }
 
     private async Task UpdateDataContinuously()
@@ -114,8 +115,6 @@ public partial class FlightsView : ContentView
             var allFlights = Pilots.Render(FilterKind.Airport, selectedAirport);
             allFlights.ForEach(FlightsStackLayout.Children.Add);
             FlightsScrollView.Content = FlightsStackLayout;
-
-            await PushNotificationHandler.CheckTimeWindowAndPushMessage(BookmarkedPilots);
 
             await Task.Delay(TimeSpan.FromMinutes(1));
         }
@@ -334,7 +333,8 @@ public partial class FlightsView : ContentView
             return;
         }
 
-        var timeString = int.Parse(selectedTime) < 10 ? $"0{selectedTime}:00Z" : $"{selectedTime}:00Z";
+        var timeVal = int.Parse(selectedTime);
+        var timeString =  timeVal < 10 ? $"0{timeVal}:00Z" : $"{timeVal}:00Z";
         _timeButton.Text = timeString;
 
         FlightsStackLayout.Children.Clear();

@@ -23,6 +23,7 @@ namespace VACDMApp.Data.Renderer
                 VACDMData.Data.BookmarkedPilots.RemoveAt(removeIndex);
 
                 var removedToast = Toast.Make($"Removed Flight {callsign} from your Bookmarks", CommunityToolkit.Maui.Core.ToastDuration.Short, 14);
+                PushNotificationHandler.Unsubscribe(pilot);
                 await removedToast.Show();
                 return;
             }
@@ -32,7 +33,7 @@ namespace VACDMApp.Data.Renderer
 
             var savedToast = Toast.Make($"Saved Flight {callsign} to your Bookmarks", CommunityToolkit.Maui.Core.ToastDuration.Short, 14);
             await savedToast.Show();
-            await PushNotificationHandler.CheckTimeWindowAndPushMessage(new(1) { pilot });
+            await PushNotificationHandler.SubscribeAsync(pilot);
         }
     }
 }
