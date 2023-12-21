@@ -29,15 +29,15 @@ public partial class FlightsView : ContentView
             TextColor = _white
         };
 
-    private static readonly Button _dayButton =
-        new()
-        {
-            Margin = new Thickness(10, 5, 10, 5),
-            Background = _grey,
-            FontAttributes = FontAttributes.Bold,
-            Text = "Today",
-            TextColor = _white
-        };
+    //private static readonly Button _stateButton =
+    //    new()
+    //    {
+    //        Margin = new Thickness(10, 5, 10, 5),
+    //        Background = _grey,
+    //        FontAttributes = FontAttributes.Bold,
+    //        Text = "Confirmed\r\nUnconfirmed",
+    //        TextColor = _white
+    //    };
 
     private static readonly Button _timeFormatButton =
         new()
@@ -45,7 +45,7 @@ public partial class FlightsView : ContentView
             Margin = new Thickness(10, 5, 10, 5),
             Background = _grey,
             FontAttributes = FontAttributes.Bold,
-            Text = "Today",
+            Text = "UTC",
             TextColor = _white
         };
 
@@ -73,8 +73,8 @@ public partial class FlightsView : ContentView
 
             ButtonsStackLayout.Children.Add(_airportsButton);
             _airportsButton.Clicked += async (sender, e) => await AirportsButton_Clicked(sender, e);
-            ButtonsStackLayout.Children.Add(_dayButton);
-            _dayButton.Clicked += DayButton_Clicked;
+            //ButtonsStackLayout.Children.Add(_stateButton);
+            //_stateButton.Clicked += DayButton_Clicked;
             ButtonsStackLayout.Children.Add(_timeButton);
             _timeButton.Clicked += TimeButton_Clicked;
             ButtonsStackLayout.Children.Add(_timeFormatButton);
@@ -87,8 +87,6 @@ public partial class FlightsView : ContentView
         }
 
         _isFirstLoad = false;
-
-        //FlightsSearchBar.Text = Properties.Settings.Default.Cid;
     }
 
     private void GetNearestTime()

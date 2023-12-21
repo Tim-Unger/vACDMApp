@@ -32,19 +32,6 @@ namespace VACDMApp
             await GetAllData();
             
             Mainview.Content = FlightsView;
-
-            //var imageHeight = NavbarGrid.Height - (AllFlightsLabel.Height * 4);
-            //MyFlightImage.WidthRequest = imageHeight;
-
-            //AllFlightsImage.HeightRequest = imageHeight;
-            //AllFlightsImage.WidthRequest = imageHeight;
-
-            //FlowmeasuresImage.HeightRequest = imageHeight;
-            //FlowmeasuresImage.WidthRequest = imageHeight;
-
-            //SettingsImage.HeightRequest = imageHeight;
-            //SettingsImage.WidthRequest = imageHeight;
-            //TODO
         }
 
         private void MyFlightButton_Clicked(object sender, EventArgs e)

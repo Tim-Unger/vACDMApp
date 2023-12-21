@@ -1,7 +1,5 @@
 using Microsoft.Maui.Controls.Shapes;
-using System.Runtime.CompilerServices;
 using The49.Maui.BottomSheet;
-using VACDMApp.VACDMData;
 using static VACDMApp.VACDMData.Data;
 
 namespace VACDMApp.Windows.BottomSheets;
@@ -14,7 +12,11 @@ public partial class TimesBottomSheet : BottomSheet
 	{
 		InitializeComponent();
         GetTimes();
-	}
+
+        Sender = this;
+
+        VACDMData.Data.SenderPage = VACDMData.SenderPage.Time;
+    }
 
     public static int SelectedTime = 0;
 
@@ -23,12 +25,12 @@ public partial class TimesBottomSheet : BottomSheet
         var possibleTimes = VACDMPilots
             .Where(x => VatsimPilots.Exists(y => y.callsign == x.Callsign)) //Only Pilots that are connected to Vatsim
             .Where(x => VatsimPilots.First(y => y.callsign == x.Callsign).flight_plan != null) //Only Pilots that have a flight plan
-                                                                                               //.Where(x => x.Vacdm.Eobt.Hour >= DateTime.UtcNow.AddHours(-1).Hour) //Only Pilots whose EOBT is earliest 1 hour in the past (removes weird filed EOBTs)
+            //.Where(x => x.Vacdm.Eobt.Hour >= DateTime.UtcNow.AddHours(-1).Hour) //Only Pilots whose EOBT is earliest 1 hour in the past (removes weird filed EOBTs)
             .Select(x => x.Vacdm.Eobt) //Only get the EOBT
             .DistinctBy(x => x.Hour) //Only get each value once
             .Select(x => x.Hour) //Only get the hour
             .Order()//Order by time
-            .Select(x => x.ToString())
+            .Select(x => x.ToString()) //We can't cast the Collection, so we have to run ToString()
             .ToList();
 
 
@@ -70,9 +72,7 @@ public partial class TimesBottomSheet : BottomSheet
 
     private void BottomSheet_Focused(object sender, FocusEventArgs e)
     {
-        Sender = this;
-
-        VACDMData.Data.SenderPage = VACDMData.SenderPage.Time;
+        
     }
 
     private Grid GetTimeGrid(string time)
@@ -80,7 +80,17 @@ public partial class TimesBottomSheet : BottomSheet
         var grid = new Grid() { Padding = 20 };
         var timeButton = new Button() { BackgroundColor = Colors.Transparent, WidthRequest = _width };
 
-        var timeText = time == "ALL TIMES" ? "ALL TIMES" : $"{time}:00Z";
+        var timeText = "ALL TIMES";
+
+        if(int.TryParse(time, out var timeVal))
+        {
+            timeText = $"{timeVal}:00Z";
+
+            if (timeVal < 10)
+            {
+                timeText = $"0{timeVal}:00Z";
+            }
+        }
 
         var timeLabel = new Label()
         {
@@ -109,14 +119,14 @@ public partial class TimesBottomSheet : BottomSheet
 
         var childText = ((Label)childLabel).Text;
 
-        if(childText == "ALL TIMES")
+        if (childText == "ALL TIMES")
         {
             FlightsView.SetTimeText(childText);
             DismissAsync();
             return;
         }
 
-        var timeValue = childText[..2];
+        var timeValue = childText.Length == 5 ? childText[..1] : childText[..2];
 
         FlightsView.SetTimeText(timeValue);
         DismissAsync();

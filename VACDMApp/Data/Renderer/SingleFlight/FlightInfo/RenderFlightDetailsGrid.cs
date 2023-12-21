@@ -1,4 +1,5 @@
-﻿using VACDMApp.VACDMData;
+﻿using System.Text.RegularExpressions;
+using VACDMApp.VACDMData;
 
 namespace VACDMApp.Data.Renderer
 {
@@ -42,9 +43,31 @@ namespace VACDMApp.Data.Renderer
                     name = ""
                 };
 
+            if (string.IsNullOrEmpty(airline.iata))
+            {
+                airline.iata = icao;
+            }
+
+            var arrAirportData = VACDMData.Data.Airports.FirstOrDefault(x => x.Icao == pilot.FlightPlan.Arrival);
+
             var flightNumberOnly = pilot.Callsign.Remove(0, 3);
             var flightData =
-                $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival}, {flightPlan.aircraft_short}";
+                $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival} ({arrAirportData.Iata}), {flightPlan.aircraft_short}";
+
+            var regRegex = new Regex(@"REG/([A-Z0-9-]{3,6})");
+            var isRegFiled = regRegex.IsMatch(flightPlan.remarks);
+
+            var defaultRegs = new string[] { "N172SP", "GFNX", "PMDG737", "ASXGS" };
+
+            if (isRegFiled)
+            {
+                var reg = regRegex.Match(flightPlan.remarks).Groups[1].Value.ToUpperInvariant();
+
+                if(!defaultRegs.Any(x => x == reg))
+                {
+                    flightData += $", {regRegex.Match(flightPlan.remarks).Groups[1].Value}";
+                }
+            }
 
             var flightDataLabel = new Label()
             {

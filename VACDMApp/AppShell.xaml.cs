@@ -21,6 +21,7 @@ namespace VACDMApp
             {
                 ((SingleFlightBottomSheet)VACDMData.Data.Sender).DismissAsync();
                 VACDMData.Data.Sender = VACDMData.Data.FlightsView;
+                VACDMData.Data.SenderPage = SenderPage.Default;
                 return true;
             }
 
@@ -28,6 +29,7 @@ namespace VACDMApp
             {
                 ((VDGSBottomSheet)VACDMData.Data.Sender).DismissAsync();
                 VACDMData.Data.Sender = VACDMData.Data.FlightsView;
+                VACDMData.Data.SenderPage = SenderPage.Default;
                 return true;
             }
 
@@ -35,6 +37,7 @@ namespace VACDMApp
             {
                 ((AirportsBottomSheet)VACDMData.Data.Sender).DismissAsync();
                 VACDMData.Data.Sender = VACDMData.Data.FlightsView;
+                VACDMData.Data.SenderPage = SenderPage.Default;
                 return true;
             }
 
@@ -42,6 +45,7 @@ namespace VACDMApp
             {
                 Current.GoToAsync("..", true);
                 VACDMData.Data.Sender = VACDMData.Data.FlightsView;
+                VACDMData.Data.SenderPage = SenderPage.Default;
                 return true;
             }
 
@@ -49,6 +53,7 @@ namespace VACDMApp
             {
                 ((TimesBottomSheet)VACDMData.Data.Sender).DismissAsync();
                 VACDMData.Data.Sender = VACDMData.Data.FlightsView;
+                VACDMData.Data.SenderPage = SenderPage.Default;
                 return true;
             }
 
@@ -63,6 +68,7 @@ namespace VACDMApp
             if(_backSwipeCount == 1)
             {
                 _backSwipeCount = 0;
+                VACDMData.Data.SenderPage = SenderPage.Default;
                 return false;
             }
 
