@@ -1,3 +1,4 @@
+using Android.App.Admin;
 using VACDMApp.Data;
 using VACDMApp.Data.OverridePermissions;
 using static VACDMApp.VACDMData.Data;
@@ -9,12 +10,13 @@ public partial class SettingsView : ContentView
     public SettingsView()
     {
         InitializeComponent();
-        SetToggleStates();
     }
 
     private static bool _isFirstLoad = true;
 
-    private void ContentView_Loaded(object sender, EventArgs e)
+    private static VACDMData.Settings _settings = new();
+
+    private async void ContentView_Loaded(object sender, EventArgs e)
     {
         if (_isFirstLoad)
         {
@@ -27,21 +29,24 @@ public partial class SettingsView : ContentView
 
             if (Settings.DataSource is not null)
             {
-                var selectedSourceIndex = DataSources.FindIndex(x => x.ShortName == Settings.DataSource);
+                var selectedSourceIndex = DataSources.FindIndex(
+                    x => x.ShortName == Settings.DataSource
+                );
                 var dataSources = DataSources;
                 var source = Settings.DataSource;
                 DataSourcePicker.SelectedIndex = selectedSourceIndex;
             }
+
+            _settings = Settings;
+
+            await SetToggleStates();
 
             _isFirstLoad = false;
             return;
         }
     }
 
-    private void ContentView_Unfocused(object sender, FocusEventArgs e)
-    {
-        
-    }
+    private void ContentView_Unfocused(object sender, FocusEventArgs e) { }
 
     private async void DataSourcePicker_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -88,7 +93,7 @@ public partial class SettingsView : ContentView
         {
             var grantState = await Permissions.RequestAsync<SendNotifications>();
 
-            if(grantState == PermissionStatus.Granted)
+            if (grantState == PermissionStatus.Granted)
             {
                 EnablePushNotificationsSwitch.IsToggled = true;
                 return;
@@ -101,46 +106,44 @@ public partial class SettingsView : ContentView
         //TODO
     }
 
-    private void MyFlightTsatSwitch_Toggled(object sender, ToggledEventArgs e)
-    {
+    private void MyFlightTsatSwitch_Toggled(object sender, ToggledEventArgs e) { }
 
-    }
+    private void MyFlightChangedSwitch_Toggled(object sender, ToggledEventArgs e) { }
 
-    private void MyFlightChangedSwitch_Toggled(object sender, ToggledEventArgs e)
-    {
+    private void MyFlightStartupSwitch_Toggled(object sender, ToggledEventArgs e) { }
 
-    }
+    private void BookmarkFlightTsatSwitch_Toggled(object sender, ToggledEventArgs e) { }
 
-    private void MyFlightStartupSwitch_Toggled(object sender, ToggledEventArgs e)
-    {
+    private void BookmarkFlightChangedSwitch_Toggled(object sender, ToggledEventArgs e) { }
 
-    }
-
-    private void BookmarkFlightTsatSwitch_Toggled(object sender, ToggledEventArgs e)
-    {
-
-    }
-
-    private void BookmarkFlightChangedSwitch_Toggled(object sender, ToggledEventArgs e)
-    {
-
-    }
-
-    private void BookmarkFlightStartupSwitch_Toggled(object sender, ToggledEventArgs e)
-    {
-
-    }
+    private void BookmarkFlightStartupSwitch_Toggled(object sender, ToggledEventArgs e) { }
 
     private async Task SetToggleStates()
     {
         var status = await Permissions.CheckStatusAsync<SendNotifications>();
 
-        EnablePushNotificationsSwitch.IsToggled = status == PermissionStatus.Granted ? true : false;
+        EnablePushNotificationsSwitch.IsToggled = status == PermissionStatus.Granted;
 
-        if(status == PermissionStatus.Denied)
+        if (status == PermissionStatus.Denied)
         {
             MyFlightPushGrid.IsEnabled = false;
             BookmarkedFlightsPushGrid.IsEnabled = false;
         }
+
+        MyFlightTsatSwitch.IsEnabled = true;
+        MyFlightChangedSwitch.IsEnabled = true;
+        MyFlightStartupSwitch.IsEnabled = true;
+
+        MyFlightTsatSwitch.IsToggled = _settings.SendPushMyFlightInsideWindow;
+        MyFlightChangedSwitch.IsToggled = _settings.SendPushMyFlightTsatChanged;
+        MyFlightStartupSwitch.IsToggled = _settings.SendPushMyFlightInsideWindow;
+
+        BookmarkFlightTsatSwitch.IsEnabled = true;
+        BookmarkFlightChangedSwitch.IsEnabled = true;
+        BookmarkFlightStartupSwitch.IsEnabled = true;
+
+        BookmarkFlightTsatSwitch.IsToggled = _settings.SendPushBookmarkFlightInsideWindow;
+        BookmarkFlightChangedSwitch.IsToggled = _settings.SendPuishBookmarkTsatChanged;
+        BookmarkFlightStartupSwitch.IsToggled = _settings.SendPushBookmarkStartup;
     }
 }

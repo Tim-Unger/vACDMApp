@@ -23,7 +23,8 @@ namespace VACDMApp.Data
             var options = new JsonSerializerOptions() { AllowTrailingCommas = true };
 
             var sources = Client.GetFromJsonAsync<List<DataSource>>(
-                "https://raw.githubusercontent.com/Tim-Unger/vACDMDataSources/main/datasources.json", options
+                "https://raw.githubusercontent.com/Tim-Unger/vACDMDataSources/main/datasources.json",
+                options
             );
 
             return sources;

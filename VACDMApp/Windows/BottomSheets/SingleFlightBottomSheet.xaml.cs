@@ -10,9 +10,9 @@ public partial class SingleFlightBottomSheet : BottomSheet
 {
     public static string SelectedCallsign = "";
 
-	public SingleFlightBottomSheet()
-	{
-		InitializeComponent();
+    public SingleFlightBottomSheet()
+    {
+        InitializeComponent();
     }
 
     private async void ContentView_Loaded(object sender, EventArgs e)
@@ -27,7 +27,6 @@ public partial class SingleFlightBottomSheet : BottomSheet
 
     private async Task UpdateDataContinuously()
     {
-
         //TODO Pause on lost focus/Cancellation Token
         while (true)
         {
@@ -55,5 +54,4 @@ public partial class SingleFlightBottomSheet : BottomSheet
         var pilot = VACDMPilots.First(x => x.Callsign == SelectedCallsign);
         await UpdateDataContinuously();
     }
-
 }

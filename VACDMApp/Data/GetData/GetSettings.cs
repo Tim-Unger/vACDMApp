@@ -12,7 +12,12 @@ namespace VACDMApp.Data
             var reader = new StreamReader(dataRaw);
             var data = reader.ReadToEnd();
 
-            return JsonSerializer.Deserialize<Settings>(data);
+            var options = new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            return JsonSerializer.Deserialize<Settings>(data, options);
         }
     }
 }

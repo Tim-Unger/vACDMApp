@@ -143,10 +143,7 @@ public partial class FlightsView : ContentView
         timesBottomSheet.ShowAsync();
     }
 
-    private async Task TimeFormatButton_Clicked(object sender, EventArgs e)
-    {
-        
-    }
+    private async Task TimeFormatButton_Clicked(object sender, EventArgs e) { }
 
     internal void GetFlightsFromSelectedAirport()
     {
@@ -321,7 +318,7 @@ public partial class FlightsView : ContentView
 
     internal void SetTimeText(string selectedTime)
     {
-        if(selectedTime == "ALL TIMES")
+        if (selectedTime == "ALL TIMES")
         {
             GetNearestTime();
 
@@ -334,7 +331,7 @@ public partial class FlightsView : ContentView
         }
 
         var timeVal = int.Parse(selectedTime);
-        var timeString =  timeVal < 10 ? $"0{timeVal}:00Z" : $"{timeVal}:00Z";
+        var timeString = timeVal < 10 ? $"0{timeVal}:00Z" : $"{timeVal}:00Z";
         _timeButton.Text = timeString;
 
         FlightsStackLayout.Children.Clear();

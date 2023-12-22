@@ -1,5 +1,5 @@
-﻿namespace VACDMApp.Data.Renderer 
-{ 
+﻿namespace VACDMApp.Data.Renderer
+{
     internal partial class Pilots
     {
         private static Border RenderNoFlightsFound()

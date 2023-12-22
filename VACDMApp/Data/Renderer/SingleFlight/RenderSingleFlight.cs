@@ -3,7 +3,7 @@ using VACDMApp.VACDMData;
 
 namespace VACDMApp.Data.Renderer
 {
-    internal partial  class SingleFlight
+    internal partial class SingleFlight
     {
         internal static readonly Color _darkBlue = new(28, 40, 54);
 

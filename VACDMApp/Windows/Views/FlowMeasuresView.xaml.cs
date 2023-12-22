@@ -5,23 +5,23 @@ namespace VACDMApp.Windows.Views;
 
 public partial class FlowMeasuresView : ContentView
 {
-	public FlowMeasuresView()
-	{
-		InitializeComponent();
-	}
+    public FlowMeasuresView()
+    {
+        InitializeComponent();
+    }
 
-	private bool _isFirstLoad = true;
+    private bool _isFirstLoad = true;
 
     private void ContentView_Loaded(object sender, EventArgs e)
     {
-		if (_isFirstLoad)
-		{
-			var measures = FlowMeasures.Render();
+        if (_isFirstLoad)
+        {
+            var measures = FlowMeasures.Render();
 
-			measures.ForEach(FlowMeasuresStackLayout.Children.Add);
-		}
-		
-		_isFirstLoad = false;
+            measures.ForEach(FlowMeasuresStackLayout.Children.Add);
+        }
+
+        _isFirstLoad = false;
     }
 
     private async void RefreshView_Refreshing(object sender, EventArgs e)

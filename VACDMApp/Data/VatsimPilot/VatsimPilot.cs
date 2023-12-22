@@ -1,6 +1,5 @@
 ﻿namespace VACDMApp.VACDMData
 {
-
     public class VatsimData
     {
         public General general { get; set; }

@@ -5,7 +5,11 @@ namespace VACDMApp.Data.Renderer
 {
     internal partial class SingleFlight
     {
-        private static Grid FlightDetailsGrid(VACDMPilot pilot, List<Airline> airlines, Flight_Plan flightPlan)
+        private static Grid FlightDetailsGrid(
+            VACDMPilot pilot,
+            List<Airline> airlines,
+            Flight_Plan flightPlan
+        )
         {
             var flightDetailsGrid = new Grid();
             flightDetailsGrid.RowDefinitions.Add(
@@ -48,7 +52,9 @@ namespace VACDMApp.Data.Renderer
                 airline.iata = icao;
             }
 
-            var arrAirportData = VACDMData.Data.Airports.FirstOrDefault(x => x.Icao == pilot.FlightPlan.Arrival);
+            var arrAirportData = VACDMData.Data.Airports.FirstOrDefault(
+                x => x.Icao == pilot.FlightPlan.Arrival
+            );
 
             var flightNumberOnly = pilot.Callsign.Remove(0, 3);
             var flightData =
@@ -63,7 +69,7 @@ namespace VACDMApp.Data.Renderer
             {
                 var reg = regRegex.Match(flightPlan.remarks).Groups[1].Value.ToUpperInvariant();
 
-                if(!defaultRegs.Any(x => x == reg))
+                if (!defaultRegs.Any(x => x == reg))
                 {
                     flightData += $", {regRegex.Match(flightPlan.remarks).Groups[1].Value}";
                 }

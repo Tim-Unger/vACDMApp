@@ -56,23 +56,30 @@ namespace VACDMApp.Data.Renderer
             return SplitAndRenderGrid(pilotsWithFP);
         }
 
-        private static List<Border> SearchByAirport(IEnumerable<VACDMPilot> pilotsWithFP, string filterValue)
+        private static List<Border> SearchByAirport(
+            IEnumerable<VACDMPilot> pilotsWithFP,
+            string filterValue
+        )
         {
-            var pilotsFromAirport = pilotsWithFP.Where(
-                       x => x.FlightPlan.Departure == filterValue
-                   );
+            var pilotsFromAirport = pilotsWithFP.Where(x => x.FlightPlan.Departure == filterValue);
             return SplitAndRenderGrid(pilotsFromAirport);
         }
 
-        private static List<Border> SearchByAirline(IEnumerable<VACDMPilot> pilotsWithFP, string filterValue)
+        private static List<Border> SearchByAirline(
+            IEnumerable<VACDMPilot> pilotsWithFP,
+            string filterValue
+        )
         {
             var pilotsFromAirline = pilotsWithFP.Where(
-                        x => x.Callsign.StartsWith(filterValue.ToUpperInvariant())
-                    );
+                x => x.Callsign.StartsWith(filterValue.ToUpperInvariant())
+            );
             return SplitAndRenderGrid(pilotsFromAirline);
         }
 
-        private static List<Border> SearchByCid(IEnumerable<VACDMPilot> pilotsWithFP, string filterValue)
+        private static List<Border> SearchByCid(
+            IEnumerable<VACDMPilot> pilotsWithFP,
+            string filterValue
+        )
         {
             //TryParse is done before the function is called
             var cid = int.Parse(filterValue);
@@ -84,7 +91,9 @@ namespace VACDMApp.Data.Renderer
                 return new(1) { RenderNoFlightsFound() };
             }
 
-            var pilotWithCid = pilotsWithFP.FirstOrDefault(x => x.Callsign == vatsimPilotWithCid.callsign);
+            var pilotWithCid = pilotsWithFP.FirstOrDefault(
+                x => x.Callsign == vatsimPilotWithCid.callsign
+            );
 
             if (pilotWithCid is null)
             {
@@ -95,7 +104,10 @@ namespace VACDMApp.Data.Renderer
             return SplitAndRenderGrid(singleList);
         }
 
-        private static List<Border> SearchByCallsign(IEnumerable<VACDMPilot> pilotsWithFP, string filterValue)
+        private static List<Border> SearchByCallsign(
+            IEnumerable<VACDMPilot> pilotsWithFP,
+            string filterValue
+        )
         {
             var pilot = pilotsWithFP.First(x => x.Callsign == filterValue.ToUpperInvariant());
 
@@ -103,7 +115,10 @@ namespace VACDMApp.Data.Renderer
             return SplitAndRenderGrid(singleList);
         }
 
-        private static List<Border> SearchByTime(IEnumerable<VACDMPilot> pilotsWithFp, string filterValue)
+        private static List<Border> SearchByTime(
+            IEnumerable<VACDMPilot> pilotsWithFp,
+            string filterValue
+        )
         {
             var timeValue = int.Parse(filterValue);
             var pilots = pilotsWithFp.Where(x => x.Vacdm.Eobt.Hour == timeValue);

@@ -97,7 +97,7 @@ public partial class MyFlightView : ContentView
         var singleFlightSheet = new SingleFlightBottomSheet();
 
         SingleFlightBottomSheet.SelectedCallsign = vacdmPilot.Callsign;
-        
+
         await singleFlightSheet.ShowAsync();
     }
 

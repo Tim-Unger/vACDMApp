@@ -26,7 +26,6 @@ public partial class VDGSBottomSheet : BottomSheet
 
     private async void BottomSheet_Loaded(object sender, EventArgs e)
     {
-        
         Sender = this;
         SenderPage = VACDMData.SenderPage.Vdgs;
         var vacdmPilot = VACDMPilots.First(x => x.Callsign == SelectedCallsign);
@@ -120,7 +119,6 @@ public partial class VDGSBottomSheet : BottomSheet
 
     private async Task UpdateDataContinuously()
     {
-
         //TODO Pause on lost focus/Cancellation Token
         while (true)
         {

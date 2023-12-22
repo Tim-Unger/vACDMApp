@@ -8,7 +8,7 @@ namespace VACDMApp.VACDMData
 
         internal static string VacdmApiUrl = "";
 
-        internal static void SetApiUrl() 
+        internal static void SetApiUrl()
         {
             var selectedDataSourceName = Data.Settings.DataSource;
 

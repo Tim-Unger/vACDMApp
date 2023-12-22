@@ -29,7 +29,7 @@ namespace VACDMApp.Data.Renderer
             flightPositionGrid.Children.Add(flightPositionFirstGrid);
             flightPositionGrid.SetRow(flightPositionFirstGrid, 0);
 
-            var flightPositionSecondGrid = FlightPositionSecondRowGrid(pilot ,vacdm);
+            var flightPositionSecondGrid = FlightPositionSecondRowGrid(pilot, vacdm);
             flightPositionGrid.Children.Add(flightPositionSecondGrid);
             flightPositionGrid.SetRow(flightPositionSecondGrid, 1);
 

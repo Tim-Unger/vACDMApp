@@ -17,19 +17,20 @@ namespace VACDMApp
                 .UseBottomSheet()
                 .UseLocalNotification()
                 .UseMauiCommunityToolkit()
-                .ConfigureFonts(fonts =>
-                {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                    fonts.AddFont("OpenSans-Bold.ttf", "OpenSansBold");
-                    fonts.AddFont("AdvancedDot-Regular.ttf", "AdvancedDot");
-                });
+                .ConfigureFonts(
+                    fonts =>
+                    {
+                        fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                        fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                        fonts.AddFont("OpenSans-Bold.ttf", "OpenSansBold");
+                        fonts.AddFont("AdvancedDot-Regular.ttf", "AdvancedDot");
+                    }
+                );
 
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
             return builder.Build();
-
         }
     }
 }

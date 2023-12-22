@@ -5,6 +5,9 @@ namespace VACDMApp.VACDMData
 {
     public class GetVatsimData
     {
-        public static async Task<VatsimData> GetVatsimDataAsync() => await Client.GetFromJsonAsync<VatsimData>("https://data.vatsim.net/v3/vatsim-data.json");
+        public static async Task<VatsimData> GetVatsimDataAsync() =>
+            await Client.GetFromJsonAsync<VatsimData>(
+                "https://data.vatsim.net/v3/vatsim-data.json"
+            );
     }
 }

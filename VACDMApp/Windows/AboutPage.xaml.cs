@@ -4,10 +4,10 @@ namespace VACDMApp;
 
 public partial class AboutPage : ContentPage
 {
-	public AboutPage()
-	{
-		InitializeComponent();
-	}
+    public AboutPage()
+    {
+        InitializeComponent();
+    }
 
     private void ContentPage_Loaded(object sender, EventArgs e)
     {

@@ -16,9 +16,10 @@ namespace VACDMApp.VACDMData
             }
 
             //Remove VFR Flights
-            return dataList.Where(x => x.FlightPlan.FlightRules == "I")
-                    .OrderBy(x => x.Vacdm.Eobt)
-                    .ToList();
+            return dataList
+                .Where(x => x.FlightPlan.FlightRules == "I")
+                .OrderBy(x => x.Vacdm.Eobt)
+                .ToList();
         }
     }
 }

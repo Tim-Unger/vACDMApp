@@ -8,5 +8,4 @@
         public string callsign { get; set; }
         public string country { get; set; }
     }
-
 }

@@ -9,16 +9,20 @@ namespace VACDMApp.Data.PushNotifications
         {
             var id = e.Request.NotificationId;
 
-            var concernedNotification = PushSender.SentNotifications.FirstOrDefault(x => x.request.NotificationId == id);
+            var concernedNotification = PushSender.SentNotifications.FirstOrDefault(
+                x => x.request.NotificationId == id
+            );
 
-            if(concernedNotification.callsign is null)
+            if (concernedNotification.callsign is null)
             {
                 return;
             }
 
-            var concernedPilot = VACDMData.Data.VACDMPilots.FirstOrDefault(x => x.Callsign == concernedNotification.callsign);
+            var concernedPilot = VACDMData.Data.VACDMPilots.FirstOrDefault(
+                x => x.Callsign == concernedNotification.callsign
+            );
 
-            if(concernedPilot is null)
+            if (concernedPilot is null)
             {
                 return;
             }

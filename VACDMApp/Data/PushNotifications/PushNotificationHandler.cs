@@ -20,12 +20,15 @@ namespace VACDMApp.Data.PushNotifications
         }
 
         //TODO implement
-        internal static async Task InitializeNotificationEvents(INotificationService notificationService)
+        internal static async Task InitializeNotificationEvents(
+            INotificationService notificationService
+        )
         {
             notificationService.NotificationActionTapped += NotificationTapped;
         }
 
-        private static void NotificationTapped(NotificationActionEventArgs e) => OpenPush.OpenTapped(e);
+        private static void NotificationTapped(NotificationActionEventArgs e) =>
+            OpenPush.OpenTapped(e);
 
         internal static async Task StartGlobalHandler()
         {
@@ -39,7 +42,6 @@ namespace VACDMApp.Data.PushNotifications
             }
         }
 
-
         internal static async Task SubscribeAsync(VACDMPilot pilot)
         {
             _subscribedPilots.Add(pilot);
@@ -49,9 +51,11 @@ namespace VACDMApp.Data.PushNotifications
 
         internal static bool Unsubscribe(VACDMPilot pilot)
         {
-            var concernedPilot = _subscribedPilots.FirstOrDefault(x => x.Callsign == pilot.Callsign);
+            var concernedPilot = _subscribedPilots.FirstOrDefault(
+                x => x.Callsign == pilot.Callsign
+            );
 
-            if(concernedPilot is null)
+            if (concernedPilot is null)
             {
                 return false;
             }

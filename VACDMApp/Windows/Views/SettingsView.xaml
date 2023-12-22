@@ -133,6 +133,7 @@
                     x:Name="MyFlightTsatSwitch"
                     Grid.Column="1"
                     HorizontalOptions="End"
+                    IsEnabled="True"
                     IsToggled="True"
                     Toggled="MyFlightTsatSwitch_Toggled" />
             </Grid>
@@ -150,6 +151,7 @@
                     x:Name="MyFlightChangedSwitch"
                     Grid.Column="1"
                     HorizontalOptions="End"
+                    IsEnabled="True"
                     IsToggled="False"
                     Toggled="MyFlightChangedSwitch_Toggled" />
             </Grid>
@@ -208,6 +210,7 @@
                     x:Name="BookmarkFlightTsatSwitch"
                     Grid.Column="1"
                     HorizontalOptions="End"
+                    IsEnabled="True"
                     IsToggled="True"
                     Toggled="BookmarkFlightTsatSwitch_Toggled" />
             </Grid>

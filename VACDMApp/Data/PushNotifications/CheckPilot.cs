@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.App.Admin;
+using VACDMApp.Data.OverridePermissions;
 using VACDMApp.VACDMData;
 using static VACDMApp.Data.PushNotifications.PushNotificationHandler;
 
@@ -12,8 +13,30 @@ namespace VACDMApp.Data.PushNotifications
 
         private static DateTime _lastTsat;
 
+        private static readonly Settings _settings = VACDMData.Data.Settings;
+
         internal static async Task CheckPilotAsync(VACDMPilot pilot)
         {
+            var grantState = await Permissions.CheckStatusAsync<SendNotifications>();
+
+            if (grantState != PermissionStatus.Granted)
+            {
+                //We can't send notifications, so there is no point to continue
+                return;
+            }
+
+            var ownFlight = VACDMData.Data.VatsimPilots.FirstOrDefault(x => x.cid == _settings.Cid);
+
+            var isOwnFlight = false;
+
+            if (
+                ownFlight is not null
+                && VACDMData.Data.VACDMPilots.Any(x => x.Callsign == ownFlight.callsign)
+            )
+            {
+                isOwnFlight = true;
+            }
+
             var vacdm = pilot.Vacdm;
 
             var pushTime = TimeOnly.FromDateTime(DateTime.UtcNow);
@@ -21,6 +44,11 @@ namespace VACDMApp.Data.PushNotifications
             //Startup in the Window now
             if (vacdm.Tsat.IsTsatInTheWindow())
             {
+                if (!IsAllowedToSendPush(NotificationType.SlotNow, isOwnFlight))
+                {
+                    return;
+                }
+
                 //Slot Now Push has already been sent
                 if (_pushedNotifications.Any(x => x.notificationType == NotificationType.SlotNow))
                 {
@@ -38,8 +66,13 @@ namespace VACDMApp.Data.PushNotifications
             //Check if the TSAT is different from the last time we checked
             if (_lastTsat != vacdm.Tsat)
             {
+                if (!IsAllowedToSendPush(NotificationType.SlotChanged, isOwnFlight))
+                {
+                    return;
+                }
+
                 //When we are checking for the first time, we need to set the initial TSAT to prevent triggering the Push immediately
-                if(_lastTsat == DateTime.MinValue)
+                if (_lastTsat == DateTime.MinValue)
                 {
                     _lastTsat = vacdm.Tsat;
                     return;
@@ -66,6 +99,11 @@ namespace VACDMApp.Data.PushNotifications
             //Startup Received
             if (vacdm.Sug != DateTime.MinValue)
             {
+                if (!IsAllowedToSendPush(NotificationType.StartupGiven, isOwnFlight))
+                {
+                    return;
+                }
+
                 //Startup Push has already been sent
                 if (
                     _pushedNotifications.Any(
@@ -87,7 +125,11 @@ namespace VACDMApp.Data.PushNotifications
             if (vacdm.Tsat.AddMinutes(-10) < DateTime.UtcNow)
             {
                 //Unconfirmed Slot Push has already been given
-                if(_pushedNotifications.Any(x => x.notificationType == NotificationType.SlotSoonUnconfirmed))
+                if (
+                    _pushedNotifications.Any(
+                        x => x.notificationType == NotificationType.SlotSoonUnconfirmed
+                    )
+                )
                 {
                     return;
                 }
@@ -107,6 +149,28 @@ namespace VACDMApp.Data.PushNotifications
 
                 return;
             }
+        }
+
+        private static bool IsAllowedToSendPush(NotificationType notificationType, bool isOwnFlight)
+        {
+            if (isOwnFlight)
+            {
+                return notificationType switch
+                {
+                    NotificationType.SlotNow => _settings.SendPushMyFlightInsideWindow,
+                    NotificationType.SlotChanged => _settings.SendPushMyFlightTsatChanged,
+                    NotificationType.StartupGiven => _settings.SendPushMyFlightStartup,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+
+            return notificationType switch
+            {
+                NotificationType.SlotNow => _settings.SendPushBookmarkFlightInsideWindow,
+                NotificationType.SlotChanged => _settings.SendPuishBookmarkTsatChanged,
+                NotificationType.StartupGiven => _settings.SendPushBookmarkStartup,
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
     }
 }

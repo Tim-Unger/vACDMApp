@@ -11,9 +11,14 @@ namespace VACDMApp.Data.GetData
             var reader = new StreamReader(dataRaw);
             var data = reader.ReadToEnd();
 
-            var options = new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+            var options = new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
 
-            return await JsonSerializer.DeserializeAsync<List<Airport>>(new MemoryStream(Encoding.UTF8.GetBytes(data)));
+            return await JsonSerializer.DeserializeAsync<List<Airport>>(
+                new MemoryStream(Encoding.UTF8.GetBytes(data))
+            );
         }
     }
 }

@@ -9,8 +9,9 @@ namespace VACDMApp.Data.PushNotifications
             //TOD implement correctly
             var pushsFromCallsign = PushSender.SentNotifications.Where(x => x.callsign == callsign);
 
-            _ = pushsFromCallsign.Select(x => LocalNotificationCenter.Current.Clear(x.request.NotificationId));
+            _ = pushsFromCallsign.Select(
+                x => LocalNotificationCenter.Current.Clear(x.request.NotificationId)
+            );
         }
-
     }
 }

@@ -4,7 +4,11 @@
     {
         private static Border RenderTimeSeperator(int hour)
         {
-            var border = new Border() { Stroke = Colors.Transparent, BackgroundColor = Colors.Transparent };
+            var border = new Border()
+            {
+                Stroke = Colors.Transparent,
+                BackgroundColor = Colors.Transparent
+            };
             var grid = new Grid();
             grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(2, GridUnitType.Star)));
             grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(10, GridUnitType.Star)));

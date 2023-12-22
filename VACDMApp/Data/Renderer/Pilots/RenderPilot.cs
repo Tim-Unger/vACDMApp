@@ -24,12 +24,13 @@ namespace VACDMApp.Data.Renderer
             grid.ColumnDefinitions.Add(new ColumnDefinition(_oneStar));
             grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(3, GridUnitType.Star)));
             grid.ColumnDefinitions.Add(
-                new ColumnDefinition(new GridLength(0.5, GridUnitType.Star))
+                new ColumnDefinition(new GridLength(0.3, GridUnitType.Star))
+            );
+            grid.ColumnDefinitions.Add(
+                new ColumnDefinition(new GridLength(0.3, GridUnitType.Star))
             );
 
             var timeGrid = new Grid();
-            //timeGrid.RowDefinitions.Add(new RowDefinition(new GridLength(4, GridUnitType.Star)));
-            //timeGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
 
             grid.SetColumn(timeGrid, 0);
 
@@ -48,7 +49,7 @@ namespace VACDMApp.Data.Renderer
             timeGrid.Children.Add(eobt);
             timeGrid.SetRow(eobt, 0);
 
-            var flightGrid = new Grid() { HorizontalOptions = LayoutOptions.Start};
+            var flightGrid = new Grid() { HorizontalOptions = LayoutOptions.Start };
             flightGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
             flightGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
             flightGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
@@ -56,9 +57,12 @@ namespace VACDMApp.Data.Renderer
 
             grid.SetColumn(flightGrid, 1);
 
-            var airportData = VACDMData.Data.Airports.FirstOrDefault(x => x.Icao == pilot.FlightPlan.Departure);
+            var airportData = VACDMData.Data.Airports.FirstOrDefault(
+                x => x.Icao == pilot.FlightPlan.Departure
+            );
 
-            var airport = $"From {airportData?.Icao ?? pilot.FlightPlan.Departure} ({airportData?.Iata ?? ""})";
+            var airport =
+                $"From {airportData?.Icao ?? pilot.FlightPlan.Departure} ({airportData?.Iata ?? ""})";
             var airportLabel = new Label()
             {
                 Text = airport,
@@ -103,10 +107,12 @@ namespace VACDMApp.Data.Renderer
 
             var flightNumberOnly = pilot.Callsign.Remove(0, 3);
 
-            var arrAirportData = VACDMData.Data.Airports.FirstOrDefault(x => x.Icao == pilot.FlightPlan.Arrival);
+            var arrAirportData = VACDMData.Data.Airports.FirstOrDefault(
+                x => x.Icao == pilot.FlightPlan.Arrival
+            );
 
             var flightData =
-               $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival} ({arrAirportData.Iata}), {flightPlan.aircraft_short}";
+                $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival} ({arrAirportData.Iata}), {flightPlan.aircraft_short}";
 
             var regRegex = new Regex(@"REG/([A-Z0-9-]{3,6})");
             var hasRegFiled = regRegex.IsMatch(flightPlan.remarks);
@@ -162,27 +168,28 @@ namespace VACDMApp.Data.Renderer
             grid.SetColumnSpan(button, 5);
 
             //TODO Padding is fucked up
-            var bookmarkGrid = new Grid { Padding = new Thickness(5), };
+            var bookmarkGrid = new Grid() { Padding = new Thickness(10) };
+
+            bookmarkGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
+            bookmarkGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
 
             //TODO not woking
-            var isPilotBookmarked = VACDMData.Data.BookmarkedPilots.Contains(pilot);
+            var isPilotBookmarked =
+                VACDMData.Data.BookmarkedPilots.FirstOrDefault(x => x.Callsign == pilot.Callsign)
+                != null;
             var bookmarkImageSource = isPilotBookmarked ? "bookmark.svg" : "bookmark_outline.svg";
 
-            var bookmarkButton = new ImageButton()
-            {
-                VerticalOptions = LayoutOptions.Start,
-                HorizontalOptions = LayoutOptions.End,
-                Source = bookmarkImageSource,
-                HeightRequest = 25,
-                WidthRequest = 25
-            };
+            var bookmarkImage = new Image() { Source = bookmarkImageSource, Scale = 0.5 };
+
+            var bookmarkButton = new Button() { Background = Colors.Transparent, Scale = 1.5 };
 
             bookmarkButton.Clicked += async (sender, e) => await BookmarkButton_Clicked(sender, e);
 
             bookmarkGrid.Children.Add(bookmarkButton);
+            bookmarkGrid.Children.Add(bookmarkImage);
 
             grid.Children.Add(bookmarkGrid);
-            grid.SetColumn(bookmarkGrid, 2);
+            grid.SetColumn(bookmarkGrid, 3);
 
             parentGridContainer.Children.Add(grid);
 

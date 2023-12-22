@@ -9,8 +9,8 @@ public partial class TimesBottomSheet : BottomSheet
     private static readonly double _width = Shell.Current.CurrentPage.Width;
 
     public TimesBottomSheet()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
         GetTimes();
 
         Sender = this;
@@ -29,10 +29,9 @@ public partial class TimesBottomSheet : BottomSheet
             .Select(x => x.Vacdm.Eobt) //Only get the EOBT
             .DistinctBy(x => x.Hour) //Only get each value once
             .Select(x => x.Hour) //Only get the hour
-            .Order()//Order by time
+            .Order() //Order by time
             .Select(x => x.ToString()) //We can't cast the Collection, so we have to run ToString()
             .ToList();
-
 
         var handleBar = new RoundRectangle()
         {
@@ -60,29 +59,27 @@ public partial class TimesBottomSheet : BottomSheet
 
         TimesStackLayout.Children.Add(titleLabel);
 
-        var timeLabels = new List<Grid>
-        {
-            GetTimeGrid("ALL TIMES")
-        };
+        var timeLabels = new List<Grid> { GetTimeGrid("ALL TIMES") };
 
         timeLabels.AddRange(possibleTimes.Select(GetTimeGrid).ToList());
 
         timeLabels.ForEach(TimesStackLayout.Children.Add);
     }
 
-    private void BottomSheet_Focused(object sender, FocusEventArgs e)
-    {
-        
-    }
+    private void BottomSheet_Focused(object sender, FocusEventArgs e) { }
 
     private Grid GetTimeGrid(string time)
     {
         var grid = new Grid() { Padding = 20 };
-        var timeButton = new Button() { BackgroundColor = Colors.Transparent, WidthRequest = _width };
+        var timeButton = new Button()
+        {
+            BackgroundColor = Colors.Transparent,
+            WidthRequest = _width
+        };
 
         var timeText = "ALL TIMES";
 
-        if(int.TryParse(time, out var timeVal))
+        if (int.TryParse(time, out var timeVal))
         {
             timeText = $"{timeVal}:00Z";
 

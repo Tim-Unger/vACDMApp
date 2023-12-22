@@ -1,5 +1,4 @@
 ﻿using Plugin.LocalNotification;
-using System.Net.NetworkInformation;
 using VACDMApp.Data;
 using VACDMApp.Data.GetData;
 using VACDMApp.Data.OverridePermissions;
@@ -39,7 +38,9 @@ namespace VACDMApp
 
             await GetAllData();
 
-            await PushNotificationHandler.InitializeNotificationEvents(LocalNotificationCenter.Current);
+            await PushNotificationHandler.InitializeNotificationEvents(
+                LocalNotificationCenter.Current
+            );
 
             Mainview.Content = FlightsView;
         }
@@ -71,24 +72,29 @@ namespace VACDMApp
 
         private void SetButton(CurrentPage currentPage)
         {
-            MyFlightImage.Source = currentPage == CurrentPage.MyFlight ? "plane.svg" : "plane_outline.svg";
-            AllFlightsImage.Source = currentPage == CurrentPage.AllFlights ? "planes.svg" : "planes_outline.svg";
-            FlowmeasuresImage.Source = currentPage == CurrentPage.FlowMeasures ? "flowmeasures.svg" : "flowmeasures_outline.svg";
-            SettingsImage.Source = currentPage == CurrentPage.Settings ? "settings.svg" : "settings_outline.svg";
+            MyFlightImage.Source =
+                currentPage == CurrentPage.MyFlight ? "plane.svg" : "plane_outline.svg";
+            AllFlightsImage.Source =
+                currentPage == CurrentPage.AllFlights ? "planes.svg" : "planes_outline.svg";
+            FlowmeasuresImage.Source =
+                currentPage == CurrentPage.FlowMeasures
+                    ? "flowmeasures.svg"
+                    : "flowmeasures_outline.svg";
+            SettingsImage.Source =
+                currentPage == CurrentPage.Settings ? "settings.svg" : "settings_outline.svg";
         }
 
         internal static async Task GetAllData()
         {
             //TODO Accessibility Modifiers
-            //var dataSourcesTask = VaccDataSources.GetDataSourcesAsync();
+            var dataSourcesTask = VaccDataSources.GetDataSourcesAsync();
             var settingsTask = SettingsData.ReadSettingsAsync();
 
-            await settingsTask;
+            await Task.WhenAll(settingsTask, dataSourcesTask);
 
-            DataSources = new List<DataSource>() { new DataSource() { Name = "Test", ShortName = "TEST", Url = "https://vacdm.tim-u.me/api/v1/pilots" } };
+            DataSources = dataSourcesTask.Result;
             VACDMData.Data.Settings = settingsTask.Result;
             VACDMData.VACDMData.SetApiUrl();
-
 
             var dataTask = GetVatsimData.GetVatsimDataAsync();
             var vacdmTask = VACDMPilotsData.GetVACDMPilotsAsync();

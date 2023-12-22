@@ -6,7 +6,8 @@ namespace VACDMApp.Data.PushNotifications
 {
     internal class PushSender
     {
-        internal static List<(NotificationRequest request, string callsign)> SentNotifications = new();
+        internal static List<(NotificationRequest request, string callsign)> SentNotifications =
+            new();
 
         internal static async Task SendPushNotificationAsync(
             VACDMPilot pilot,

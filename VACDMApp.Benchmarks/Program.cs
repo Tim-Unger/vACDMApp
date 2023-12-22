@@ -11,7 +11,7 @@
 //{
 //    public class Program
 //    {
-//        public static void Main(string[] args) 
+//        public static void Main(string[] args)
 //        {
 //            var config = DefaultConfig.Instance.AddJob(
 //               Job.MediumRun.WithLaunchCount(1).WithToolchain(InProcessNoEmitToolchain.Instance)

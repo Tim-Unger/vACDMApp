@@ -16,7 +16,9 @@ namespace VACDMApp.Data.Renderer
 
             grid.ColumnDefinitions.Add(new ColumnDefinition(_oneStar));
             grid.ColumnDefinitions.Add(new ColumnDefinition(_oneStar));
-            grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(0.3, GridUnitType.Star)));
+            grid.ColumnDefinitions.Add(
+                new ColumnDefinition(new GridLength(0.3, GridUnitType.Star))
+            );
 
             var timeGrid = new Grid();
 
@@ -76,9 +78,12 @@ namespace VACDMApp.Data.Renderer
 
             grid.SetColumn(flightGrid, 1);
 
-            var airportData = VACDMData.Data.Airports.FirstOrDefault(x => x.Icao == pilot.FlightPlan.Departure);
+            var airportData = VACDMData.Data.Airports.FirstOrDefault(
+                x => x.Icao == pilot.FlightPlan.Departure
+            );
 
-            var airport = $"From {airportData?.Icao ?? pilot.FlightPlan.Departure} ({airportData?.Iata ?? ""})";
+            var airport =
+                $"From {airportData?.Icao ?? pilot.FlightPlan.Departure} ({airportData?.Iata ?? ""})";
 
             var airportLabel = new Label()
             {
@@ -100,7 +105,9 @@ namespace VACDMApp.Data.Renderer
             };
 
             var airlines = VACDMData.Data.Airlines;
-            var flightPlan = VACDMData.Data.VatsimPilots.First(x => x.callsign == pilot.Callsign).flight_plan;
+            var flightPlan = VACDMData.Data.VatsimPilots
+                .First(x => x.callsign == pilot.Callsign)
+                .flight_plan;
 
             var icao = pilot.Callsign[..3].ToUpper();
             var airline =
@@ -151,7 +158,6 @@ namespace VACDMApp.Data.Renderer
 
             grid.SetRowSpan(button, 5);
             grid.SetColumnSpan(button, 5);
-
 
             flightGrid.Children.Add(airportLabel);
             flightGrid.Children.Add(callsignLabel);

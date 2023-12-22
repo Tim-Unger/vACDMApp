@@ -2,9 +2,9 @@ namespace VACDMApp.Windows.BottomSheets;
 
 public partial class NotificationBottomSheet : ContentView
 {
-	public NotificationBottomSheet()
-	{
-		InitializeComponent();
+    public NotificationBottomSheet()
+    {
+        InitializeComponent();
         //TODO
-	}
+    }
 }

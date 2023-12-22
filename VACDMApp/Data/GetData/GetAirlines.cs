@@ -13,7 +13,9 @@ namespace VACDMApp.VACDMData
             var reader = new StreamReader(dataRaw);
             var data = reader.ReadToEnd();
 
-            return await JsonSerializer.DeserializeAsync<List<Airline>>(new MemoryStream(Encoding.UTF8.GetBytes(data)));
+            return await JsonSerializer.DeserializeAsync<List<Airline>>(
+                new MemoryStream(Encoding.UTF8.GetBytes(data))
+            );
 
             //var client = new HttpClient();
 
