@@ -58,7 +58,7 @@
                     <Label
                         Grid.Row="1"
                         Background="Transparent"
-                        FontAttributes="Bold"
+                        FontAttributes="None"
                         HorizontalOptions="Center"
                         Text="My Flights"
                         TextColor="#FEFEFE"
@@ -94,7 +94,7 @@
                     <Label
                         x:Name="AllFlightsLabel"
                         Grid.Row="1"
-                        FontAttributes="Bold"
+                        FontAttributes="None"
                         HorizontalOptions="Center"
                         Text="All Flights"
                         TextColor="#FEFEFE"
@@ -130,7 +130,7 @@
 
                     <Label
                         Grid.Row="1"
-                        FontAttributes="Bold"
+                        FontAttributes="None"
                         HorizontalOptions="Center"
                         Text="Flow Measures"
                         TextColor="#FEFEFE"
@@ -166,7 +166,7 @@
 
                     <Label
                         Grid.Row="1"
-                        FontAttributes="Bold"
+                        FontAttributes="None"
                         HorizontalOptions="Center"
                         Text="Settings"
                         TextColor="#FEFEFE"

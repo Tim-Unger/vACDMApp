@@ -27,6 +27,7 @@ namespace VACDMApp.Data.Renderer
                 TextColor = Colors.White,
                 Background = _darkBlue,
                 FontSize = 20,
+                FontAttributes = FontAttributes.Bold,
                 VerticalTextAlignment = TextAlignment.Center
             };
             var tobtTimeLabel = new Label()
@@ -34,7 +35,7 @@ namespace VACDMApp.Data.Renderer
                 Text = $"{vacdm.Tobt:HH:mmZ}",
                 TextColor = Colors.White,
                 Background = _darkBlue,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 20,
                 HorizontalTextAlignment = TextAlignment.End,
                 VerticalTextAlignment = TextAlignment.Center,
@@ -46,6 +47,7 @@ namespace VACDMApp.Data.Renderer
                 TextColor = Colors.White,
                 Background = _darkBlue,
                 FontSize = 20,
+                FontAttributes = FontAttributes.Bold,
                 VerticalTextAlignment = TextAlignment.Center
             };
             var tsatBackgroundColor = GetTsatBackgroundColor(vacdm.Tsat, vacdm.Tobt);
@@ -54,7 +56,7 @@ namespace VACDMApp.Data.Renderer
                 Text = $"{vacdm.Tsat:HH:mmZ}",
                 BackgroundColor = tsatBackgroundColor,
                 TextColor = Colors.White,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 20,
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.End,

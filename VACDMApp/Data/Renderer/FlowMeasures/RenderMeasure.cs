@@ -28,7 +28,7 @@
                 Text = nameText,
                 TextColor = Colors.White,
                 Background = _darkBlue,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 20,
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalTextAlignment = TextAlignment.Center
@@ -49,7 +49,7 @@
                 Text = $"{measure.StartTime:dd.MM HH:mmZ} - {measure.EndTime:dd.MM HH:mmZ}",
                 TextColor = Colors.White,
                 Background = _darkBlue,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 20,
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalTextAlignment = TextAlignment.Center
@@ -60,7 +60,7 @@
                 Text = $"{measure.Measure}",
                 TextColor = Colors.White,
                 Background = _darkBlue,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 20,
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalTextAlignment = TextAlignment.Center

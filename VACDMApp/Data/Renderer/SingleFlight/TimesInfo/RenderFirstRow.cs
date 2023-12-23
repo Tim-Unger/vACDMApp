@@ -27,6 +27,7 @@ namespace VACDMApp.Data.Renderer
                 Text = $"EOBT:",
                 TextColor = Colors.White,
                 Background = _darkBlue,
+                FontAttributes = FontAttributes.Bold,
                 FontSize = 20,
                 VerticalTextAlignment = TextAlignment.Center
             };
@@ -35,7 +36,7 @@ namespace VACDMApp.Data.Renderer
                 Text = $"{vacdm.Eobt:HH:mmZ}",
                 TextColor = Colors.White,
                 Background = _darkBlue,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 20,
                 HorizontalTextAlignment = TextAlignment.End,
                 VerticalTextAlignment = TextAlignment.Center,
@@ -55,6 +56,7 @@ namespace VACDMApp.Data.Renderer
                 TextColor = Colors.White,
                 Background = _darkBlue,
                 FontSize = 20,
+                FontAttributes = FontAttributes.Bold,
                 VerticalTextAlignment = TextAlignment.Center
             };
             var ctotTimeLabel = new Label()
@@ -62,7 +64,7 @@ namespace VACDMApp.Data.Renderer
                 Text = $"{ctot:HH:mmZ}",
                 TextColor = Colors.White,
                 Background = _darkBlue,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 20,
                 HorizontalTextAlignment = TextAlignment.End,
                 VerticalTextAlignment = TextAlignment.Center,

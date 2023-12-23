@@ -64,6 +64,9 @@
 
 	<ItemGroup>
 		<None Remove="Resources\Fonts\AdvancedDot-Regular.ttf" />
+		<None Remove="Resources\Fonts\Roboto-Bold.ttf" />
+		<None Remove="Resources\Fonts\Roboto-Medium.ttf" />
+		<None Remove="Resources\Fonts\Roboto-Regular.ttf" />
 		<None Remove="Resources\Raw\airports.json" />
 		<None Remove="Resources\Raw\Settings.json" />
 	</ItemGroup>

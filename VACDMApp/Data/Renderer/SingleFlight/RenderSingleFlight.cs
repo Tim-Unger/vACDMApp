@@ -1,5 +1,4 @@
 ﻿using Microsoft.Maui.Controls.Shapes;
-using VACDMApp.VACDMData;
 
 namespace VACDMApp.Data.Renderer
 {
@@ -22,13 +21,13 @@ namespace VACDMApp.Data.Renderer
 
             var grid = new Grid { BackgroundColor = _darkGrey };
 
-            grid.RowDefinitions.Add(new RowDefinition(new GridLength(10, GridUnitType.Star)));
-            grid.RowDefinitions.Add(new RowDefinition(new GridLength(20, GridUnitType.Star)));
-            grid.RowDefinitions.Add(new RowDefinition(new GridLength(10, GridUnitType.Star)));
-            grid.RowDefinitions.Add(new RowDefinition(new GridLength(20, GridUnitType.Star)));
-            grid.RowDefinitions.Add(new RowDefinition(new GridLength(10, GridUnitType.Star)));
-            grid.RowDefinitions.Add(new RowDefinition(new GridLength(20, GridUnitType.Star)));
-            grid.RowDefinitions.Add(new RowDefinition(new GridLength(50, GridUnitType.Star))); //Placeholder bottom
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(2, GridUnitType.Star)));
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(2, GridUnitType.Star)));
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(2, GridUnitType.Star)));
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(5, GridUnitType.Star))); //Placeholder bottom
 
             var placeholderRectangle = new Rectangle()
             {
@@ -44,7 +43,7 @@ namespace VACDMApp.Data.Renderer
                 Text = $"From: {pilot.FlightPlan.Departure}",
                 TextColor = Colors.White,
                 Background = _darkBlue,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 15
             };
             grid.Children.Add(airport);

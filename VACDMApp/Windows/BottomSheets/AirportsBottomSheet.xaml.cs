@@ -19,7 +19,17 @@ public partial class AirportsBottomSheet : BottomSheet
 
     private void GetAirports()
     {
-        var airports = VACDMPilots
+        var pilotsWithFP = VACDMPilots
+               //Only Pilots that have are in the Vatsim Datafeed
+               .Where(x => VatsimPilots.Exists(y => y.callsign == x.Callsign))
+               //Only Pilots that have filed a flight plan
+               .Where(
+                   x =>
+                       VatsimPilots.First(y => y.callsign == x.Callsign).flight_plan
+                       != null
+               );
+
+        var airports = pilotsWithFP
             .Select(x => x.FlightPlan.Departure)
             .DistinctBy(x => x.ToUpper())
             .ToList();
@@ -43,7 +53,7 @@ public partial class AirportsBottomSheet : BottomSheet
             TextColor = Colors.White,
             Background = Colors.Transparent,
             FontSize = 20,
-            FontAttributes = FontAttributes.Bold,
+            FontAttributes = FontAttributes.None,
             HorizontalOptions = LayoutOptions.Center,
             VerticalOptions = LayoutOptions.Center
         };
@@ -73,7 +83,7 @@ public partial class AirportsBottomSheet : BottomSheet
             TextColor = Colors.White,
             Background = Colors.Transparent,
             FontSize = 17,
-            FontAttributes = FontAttributes.Bold,
+            FontAttributes = FontAttributes.None,
             HorizontalOptions = LayoutOptions.Start,
             VerticalOptions = LayoutOptions.Center
         };

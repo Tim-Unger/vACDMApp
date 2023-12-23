@@ -8,13 +8,13 @@ namespace VACDMApp.Data.Renderer
         {
             var button = (Button)sender;
             var parentGrid = (Grid)button.Parent;
-            var callsignGrid = (Grid)parentGrid.Children[1];
+            var callsignGrid = (Grid)((Grid)parentGrid.Children[0]).Children[1];
             var callsignLabel = (Label)callsignGrid.Children[1];
             var callsign = callsignLabel.Text;
 
-            var singleFlightSheet = new SingleFlightBottomSheet();
-
             SingleFlightBottomSheet.SelectedCallsign = callsign;
+
+            var singleFlightSheet = new SingleFlightBottomSheet();
 
             //var currentWindow = Shell.Current.Window;
             singleFlightSheet.ShowAsync();

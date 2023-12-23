@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using VACDMApp.Data.PushNotifications;
+using VACDMApp.Windows.Views;
 
 namespace VACDMApp.Data.Renderer
 {
@@ -31,6 +32,7 @@ namespace VACDMApp.Data.Renderer
                 );
                 PushNotificationHandler.Unsubscribe(pilot);
                 await removedToast.Show();
+                VACDMData.Data.MyFlightView.RenderBookmarks();
                 return;
             }
 
@@ -44,6 +46,7 @@ namespace VACDMApp.Data.Renderer
             );
             await savedToast.Show();
             await PushNotificationHandler.SubscribeAsync(pilot);
+            VACDMData.Data.MyFlightView.RenderBookmarks();
         }
     }
 }

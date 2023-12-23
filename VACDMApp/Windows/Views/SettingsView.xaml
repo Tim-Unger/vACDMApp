@@ -29,7 +29,7 @@
             <Label
                 Grid.Column="0"
                 Margin="20,0,0,0"
-                FontAttributes="Bold"
+                FontAttributes="None"
                 FontSize="25"
                 HorizontalOptions="Start"
                 Text="CID"
@@ -40,7 +40,7 @@
                 Grid.Column="1"
                 Margin="0,0,0,20"
                 BackgroundColor="#232323"
-                FontAttributes="Bold"
+                FontAttributes="None"
                 FontSize="20"
                 Keyboard="Numeric"
                 TextChanged="CidEntry_TextChanged"
@@ -63,7 +63,7 @@
             <Label
                 Grid.Column="0"
                 Margin="20,0,0,0"
-                FontAttributes="Bold"
+                FontAttributes="None"
                 FontSize="25"
                 HorizontalOptions="Start"
                 Text="Data Source"
@@ -73,7 +73,7 @@
                 Grid.Column="1"
                 Margin="0,0,0,20"
                 BackgroundColor="#232323"
-                FontAttributes="Bold"
+                FontAttributes="None"
                 FontSize="20"
                 SelectedIndex="0"
                 SelectedIndexChanged="DataSourcePicker_SelectedIndexChanged"
@@ -83,7 +83,7 @@
         <Label
             Grid.Row="3"
             Margin="20,0,0,0"
-            FontAttributes="Bold"
+            FontAttributes="None"
             FontSize="25"
             HorizontalOptions="Start"
             Text="Push Notifications"
@@ -114,7 +114,7 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
-                FontAttributes="Bold"
+                FontAttributes="None"
                 FontSize="20"
                 HorizontalOptions="Start"
                 Text="Push Notifications about My Flight"
@@ -123,7 +123,7 @@
             <Grid Grid.Row="1">
                 <Label
                     Grid.Column="0"
-                    FontAttributes="Bold"
+                    FontAttributes="None"
                     FontSize="15"
                     HorizontalOptions="Start"
                     Text="Flight is inside TSAT Window"
@@ -141,7 +141,7 @@
             <Grid Grid.Row="2">
                 <Label
                     Grid.Column="0"
-                    FontAttributes="Bold"
+                    FontAttributes="None"
                     FontSize="15"
                     HorizontalOptions="Start"
                     Text="TSAT/Slot has been changed"
@@ -159,7 +159,7 @@
             <Grid Grid.Row="3">
                 <Label
                     Grid.Column="0"
-                    FontAttributes="Bold"
+                    FontAttributes="None"
                     FontSize="15"
                     HorizontalOptions="Start"
                     Text="Startup received"
@@ -191,7 +191,7 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
-                FontAttributes="Bold"
+                FontAttributes="None"
                 FontSize="20"
                 HorizontalOptions="Start"
                 Text="Push Notifications about Bookmarked Flights"
@@ -200,7 +200,7 @@
             <Grid Grid.Row="1">
                 <Label
                     Grid.Column="0"
-                    FontAttributes="Bold"
+                    FontAttributes="None"
                     FontSize="15"
                     HorizontalOptions="Start"
                     Text="Flight is inside TSAT Window"
@@ -218,7 +218,7 @@
             <Grid Grid.Row="2">
                 <Label
                     Grid.Column="0"
-                    FontAttributes="Bold"
+                    FontAttributes="None"
                     FontSize="15"
                     HorizontalOptions="Start"
                     Text="TSAT/Slot has been changed"
@@ -235,7 +235,7 @@
             <Grid Grid.Row="3">
                 <Label
                     Grid.Column="0"
-                    FontAttributes="Bold"
+                    FontAttributes="None"
                     FontSize="15"
                     HorizontalOptions="Start"
                     Text="Startup received"

@@ -6,7 +6,6 @@
     xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
     HandleColor="White"
     HasHandle="True"
-    Loaded="ContentView_Loaded"
-    Unfocused="BottomSheet_Unfocused">
+    Loaded="ContentView_Loaded">
     <StackLayout x:Name="SingleFlightGrid" />
 </the49:BottomSheet>

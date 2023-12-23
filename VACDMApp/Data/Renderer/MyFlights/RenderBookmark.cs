@@ -31,7 +31,7 @@ namespace VACDMApp.Data.Renderer
                 Text = pilot.Vacdm.Eobt.ToString("HH:mmZ"),
                 Margin = new Thickness(20, 0, 0, 0),
                 TextColor = Colors.White,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 25,
                 HorizontalTextAlignment = TextAlignment.Start,
                 VerticalTextAlignment = TextAlignment.End
@@ -45,7 +45,7 @@ namespace VACDMApp.Data.Renderer
                 Text = pilot.Vacdm.Tobt.ToString("HH:mmZ"),
                 Margin = new Thickness(20, 0, 0, 0),
                 TextColor = Colors.White,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 20,
                 HorizontalTextAlignment = TextAlignment.Start,
                 VerticalTextAlignment = TextAlignment.End
@@ -61,7 +61,7 @@ namespace VACDMApp.Data.Renderer
                 Text = pilot.Vacdm.Tsat.ToString("HH:mmZ"),
                 Margin = new Thickness(20, 0, 0, 0),
                 TextColor = tsatColor,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 20,
                 HorizontalTextAlignment = TextAlignment.Start,
                 VerticalTextAlignment = TextAlignment.Center
@@ -90,7 +90,7 @@ namespace VACDMApp.Data.Renderer
                 Text = airport,
                 TextColor = Colors.White,
                 Background = _darkBlue,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 18
             };
 
@@ -140,7 +140,7 @@ namespace VACDMApp.Data.Renderer
                 Text = flightData,
                 TextColor = Colors.White,
                 Background = _darkBlue,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 15
             };
             var statusLabel = new Label()
@@ -148,7 +148,7 @@ namespace VACDMApp.Data.Renderer
                 Text = Pilots.GetFlightStatus(pilot),
                 TextColor = Colors.White,
                 Background = _darkBlue,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 15
             };
 
@@ -186,9 +186,9 @@ namespace VACDMApp.Data.Renderer
             var callsignLabel = (Label)callsignGrid.Children[1];
             var callsign = callsignLabel.Text;
 
-            var singleFlightSheet = new SingleFlightBottomSheet();
-
             SingleFlightBottomSheet.SelectedCallsign = callsign;
+
+            var singleFlightSheet = new SingleFlightBottomSheet();
 
             singleFlightSheet.ShowAsync();
         }

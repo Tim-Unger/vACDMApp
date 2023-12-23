@@ -31,26 +31,30 @@ namespace VACDMApp.Data.Renderer
             {
                 Text = $"RWY:",
                 TextColor = Colors.White,
+                FontAttributes = FontAttributes.Bold,
                 Background = _darkBlue,
                 FontSize = 20,
                 VerticalTextAlignment = TextAlignment.Center
             };
+
             var rwyDataLabel = new Label()
             {
                 Text = rwy,
                 TextColor = Colors.White,
                 Background = _darkBlue,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 20,
                 HorizontalTextAlignment = TextAlignment.End,
                 VerticalTextAlignment = TextAlignment.Center,
                 Margin = _timeMargin
             };
+
             var taxitimeTextLabel = new Label()
             {
                 Text = $"Taxi-Time:",
                 TextColor = Colors.White,
                 Background = _darkBlue,
+                FontAttributes = FontAttributes.Bold,
                 FontSize = 20,
                 VerticalTextAlignment = TextAlignment.Center
             };
@@ -59,7 +63,7 @@ namespace VACDMApp.Data.Renderer
                 Text = $"{vacdm.Exot} min.",
                 TextColor = Colors.White,
                 Background = _darkBlue,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 20,
                 HorizontalTextAlignment = TextAlignment.End,
                 VerticalTextAlignment = TextAlignment.Center,

@@ -43,7 +43,7 @@ namespace VACDMApp.Data.Renderer
                 Text = DateOnly.FromDateTime(DateTime.UtcNow).ToShortDateString(),
                 TextColor = Colors.White,
                 Background = _darkBlue,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 25,
                 VerticalTextAlignment = TextAlignment.Center
             };

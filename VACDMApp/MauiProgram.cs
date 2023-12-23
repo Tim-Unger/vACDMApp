@@ -7,8 +7,6 @@ namespace VACDMApp
 {
     public static class MauiProgram
     {
-        public static HttpClient Client;
-
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
@@ -20,9 +18,9 @@ namespace VACDMApp
                 .ConfigureFonts(
                     fonts =>
                     {
-                        fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                        fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                        fonts.AddFont("OpenSans-Bold.ttf", "OpenSansBold");
+                        fonts.AddFont("Roboto-Regular.ttf", "RobotoRegular");
+                        fonts.AddFont("Roboto-Bold.ttf", "RobotoBold");
+                        fonts.AddFont("Roboto-Medium.ttf", "RobotoMedium");
                         fonts.AddFont("AdvancedDot-Regular.ttf", "AdvancedDot");
                     }
                 );

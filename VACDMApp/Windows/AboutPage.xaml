@@ -24,7 +24,7 @@
         <Label
             x:Name="TitleLabel"
             Margin="20"
-            FontAttributes="Bold"
+            FontAttributes="None"
             FontFamily="OpenSans-Bold"
             FontSize="60"
             HorizontalOptions="Start"

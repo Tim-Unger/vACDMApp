@@ -35,7 +35,7 @@ public partial class VDGSBottomSheet : BottomSheet
             Text = vacdmPilot.Callsign,
             TextColor = Orange,
             FontFamily = "AdvancedDot",
-            FontAttributes = FontAttributes.Bold,
+            FontAttributes = FontAttributes.None,
             FontSize = 30,
             HorizontalTextAlignment = TextAlignment.Center
         };
@@ -45,7 +45,7 @@ public partial class VDGSBottomSheet : BottomSheet
             Text = $"TOBT {vacdmPilot.Vacdm.Tobt.ToShortTimeString()} UTC",
             TextColor = Orange,
             FontFamily = "AdvancedDot",
-            FontAttributes = FontAttributes.Bold,
+            FontAttributes = FontAttributes.None,
             FontSize = 30,
             HorizontalTextAlignment = TextAlignment.Center
         };
@@ -55,7 +55,7 @@ public partial class VDGSBottomSheet : BottomSheet
             Text = $"TSAT {vacdmPilot.Vacdm.Tsat.ToShortTimeString()} UTC",
             TextColor = Orange,
             FontFamily = "AdvancedDot",
-            FontAttributes = FontAttributes.Bold,
+            FontAttributes = FontAttributes.None,
             FontSize = 30,
             HorizontalTextAlignment = TextAlignment.Center
         };
@@ -67,7 +67,7 @@ public partial class VDGSBottomSheet : BottomSheet
             Text = timeToGo.ToString(),
             TextColor = Orange,
             FontFamily = "AdvancedDot",
-            FontAttributes = FontAttributes.Bold,
+            FontAttributes = FontAttributes.None,
             FontSize = 30,
             HorizontalTextAlignment = TextAlignment.Center
         };
@@ -77,7 +77,7 @@ public partial class VDGSBottomSheet : BottomSheet
             Text = $"PLANNED RWY {vacdmPilot.Clearance.DepRwy}",
             TextColor = Orange,
             FontFamily = "AdvancedDot",
-            FontAttributes = FontAttributes.Bold,
+            FontAttributes = FontAttributes.None,
             FontSize = 30,
             HorizontalTextAlignment = TextAlignment.Center
         };
@@ -87,7 +87,7 @@ public partial class VDGSBottomSheet : BottomSheet
             Text = $"SID {vacdmPilot.Clearance.Sid}",
             TextColor = Orange,
             FontFamily = "AdvancedDot",
-            FontAttributes = FontAttributes.Bold,
+            FontAttributes = FontAttributes.None,
             FontSize = 30,
             HorizontalTextAlignment = TextAlignment.Center
         };

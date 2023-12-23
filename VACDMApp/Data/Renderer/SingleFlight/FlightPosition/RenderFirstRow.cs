@@ -21,15 +21,17 @@ namespace VACDMApp.Data.Renderer
                 Text = $"Gate-Area:",
                 TextColor = Colors.White,
                 Background = _darkBlue,
+                FontAttributes = FontAttributes.Bold,
                 FontSize = 20,
                 VerticalTextAlignment = TextAlignment.Center
             };
+
             var gateDataLabel = new Label()
             {
                 Text = gateArea,
                 TextColor = Colors.White,
                 Background = _darkBlue,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 20,
                 HorizontalTextAlignment = TextAlignment.End,
                 VerticalTextAlignment = TextAlignment.Center,

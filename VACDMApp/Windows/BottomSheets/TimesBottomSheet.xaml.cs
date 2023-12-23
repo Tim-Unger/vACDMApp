@@ -22,15 +22,21 @@ public partial class TimesBottomSheet : BottomSheet
 
     private void GetTimes()
     {
-        var possibleTimes = VACDMPilots
-            .Where(x => VatsimPilots.Exists(y => y.callsign == x.Callsign)) //Only Pilots that are connected to Vatsim
-            .Where(x => VatsimPilots.First(y => y.callsign == x.Callsign).flight_plan != null) //Only Pilots that have a flight plan
+        var pilotsWithFP = VACDMPilots
+            //Only Pilots that have are in the Vatsim Datafeed
+            .Where(x => VatsimPilots.Exists(y => y.callsign == x.Callsign))
+            //Only Pilots that have filed a flight plan
+            .Where(x => VatsimPilots.First(y => y.callsign == x.Callsign).flight_plan != null);
+
+        var possibleTimes = pilotsWithFP
+            //.Where(x => VatsimPilots.Exists(y => y.callsign == x.Callsign)) //Only Pilots that are connected to Vatsim
+            //.Where(x => VatsimPilots.First(y => y.callsign == x.Callsign).flight_plan != null) //Only Pilots that have a flight plan
             //.Where(x => x.Vacdm.Eobt.Hour >= DateTime.UtcNow.AddHours(-1).Hour) //Only Pilots whose EOBT is earliest 1 hour in the past (removes weird filed EOBTs)
             .Select(x => x.Vacdm.Eobt) //Only get the EOBT
             .DistinctBy(x => x.Hour) //Only get each value once
             .Select(x => x.Hour) //Only get the hour
             .Order() //Order by time
-            .Select(x => x.ToString()) //We can't cast the Collection, so we have to run ToString()
+            .Select(x => x.ToString()) //We can't Cast<string> the Collection, so we have to run ToString()
             .ToList();
 
         var handleBar = new RoundRectangle()
@@ -52,7 +58,7 @@ public partial class TimesBottomSheet : BottomSheet
             TextColor = Colors.White,
             Background = Colors.Transparent,
             FontSize = 20,
-            FontAttributes = FontAttributes.Bold,
+            FontAttributes = FontAttributes.None,
             HorizontalOptions = LayoutOptions.Center,
             VerticalOptions = LayoutOptions.Center
         };
@@ -95,7 +101,7 @@ public partial class TimesBottomSheet : BottomSheet
             TextColor = Colors.White,
             Background = Colors.Transparent,
             FontSize = 15,
-            FontAttributes = FontAttributes.Bold,
+            FontAttributes = FontAttributes.None,
             HorizontalOptions = LayoutOptions.Center,
             VerticalOptions = LayoutOptions.Center
         };

@@ -25,6 +25,7 @@ namespace VACDMApp.Data.Renderer
                 Text = $"SID:",
                 TextColor = Colors.White,
                 Background = _darkBlue,
+                FontAttributes = FontAttributes.Bold,
                 FontSize = 20,
                 VerticalTextAlignment = TextAlignment.Center
             };
@@ -33,7 +34,7 @@ namespace VACDMApp.Data.Renderer
                 Text = pilot.Clearance.Sid,
                 TextColor = Colors.White,
                 Background = _darkBlue,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 20,
                 HorizontalTextAlignment = TextAlignment.End,
                 VerticalTextAlignment = TextAlignment.Center,
@@ -44,6 +45,7 @@ namespace VACDMApp.Data.Renderer
                 Text = $"Squawk:",
                 TextColor = Colors.White,
                 Background = _darkBlue,
+                FontAttributes = FontAttributes.Bold,
                 FontSize = 20,
                 VerticalTextAlignment = TextAlignment.Center
             };
@@ -52,7 +54,7 @@ namespace VACDMApp.Data.Renderer
                 Text = pilot.Clearance.AssignedSquawk,
                 TextColor = Colors.White,
                 Background = _darkBlue,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 20,
                 HorizontalTextAlignment = TextAlignment.End,
                 VerticalTextAlignment = TextAlignment.Center,

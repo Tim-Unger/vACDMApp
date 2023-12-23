@@ -3,7 +3,6 @@
     x:Class="VACDMApp.Windows.Views.MyFlightView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Focused="ContentView_Focused"
     Loaded="ContentView_Loaded">
     <Grid x:Name="MyFlightGrid">
         <Grid>
@@ -25,8 +24,8 @@
                         VerticalOptions="Center">
                         <Label
                             x:Name="TimeLabel"
-                            Margin="0,20,0,20"
-                            FontAttributes="Bold"
+                            Margin="10,5,10,5"
+                            FontAttributes="None"
                             FontSize="30"
                             HorizontalOptions="Center"
                             TextColor="#FEFEFE"
@@ -50,26 +49,22 @@
                             <Button
                                 x:Name="FindCidButton"
                                 Grid.Column="0"
-                                Margin="0,20,0,20"
+                                Margin="10,5,10,5"
                                 BackgroundColor="#232323"
                                 Clicked="FindCidButton_Clicked"
-                                FontAttributes="Bold"
-                                HeightRequest="50"
+                                FontAttributes="None"
                                 HorizontalOptions="Center"
-                                IsEnabled="True"
                                 Text="Show Information"
                                 TextColor="#FEFEFE" />
 
                             <Button
                                 x:Name="ShowVdgsButton"
                                 Grid.Column="1"
-                                Margin="0,20,0,20"
+                                Margin="10,5,10,5"
                                 BackgroundColor="#232323"
                                 Clicked="ShowVdgsButton_Clicked"
-                                FontAttributes="Bold"
-                                HeightRequest="50"
+                                FontAttributes="None"
                                 HorizontalOptions="Center"
-                                IsEnabled="True"
                                 Text="Show VDGS"
                                 TextColor="#FEFEFE" />
                         </Grid>
@@ -82,13 +77,13 @@
             </Grid>
 
             <Grid x:Name="BookmarksGrid" Grid.Row="1">
-                <!--<CarouselView
-                    x:Name="BookmarksCarouselView"
-                    Margin="10"
-                    EmptyView="No Flights bookmarked" />-->
-                <ScrollView x:Name="BookmarksScrollView" VerticalOptions="FillAndExpand">
-                    <VerticalStackLayout x:Name="BookmarksStackLayout" Margin="10" />
+                <ScrollView
+                    x:Name="BookmarksScrollView"
+                    Background="Transparent"
+                    VerticalOptions="FillAndExpand">
+                    <VerticalStackLayout x:Name="BookmarksStackLayout" />
                 </ScrollView>
+
             </Grid>
 
         </Grid>

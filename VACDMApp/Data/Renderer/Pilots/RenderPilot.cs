@@ -21,7 +21,7 @@ namespace VACDMApp.Data.Renderer
             var parentGridContainer = new Grid() { Background = _darkBlue };
             var grid = new Grid() { Margin = new Thickness(10) };
 
-            grid.ColumnDefinitions.Add(new ColumnDefinition(_oneStar));
+            grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
             grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(3, GridUnitType.Star)));
             grid.ColumnDefinitions.Add(
                 new ColumnDefinition(new GridLength(0.3, GridUnitType.Star))
@@ -39,7 +39,6 @@ namespace VACDMApp.Data.Renderer
                 Text = pilot.Vacdm.Eobt.ToString("HH:mmZ"),
                 Margin = new Thickness(20, 0, 0, 0),
                 TextColor = Colors.White,
-                Background = _darkBlue,
                 FontAttributes = FontAttributes.Bold,
                 FontSize = 20,
                 HorizontalTextAlignment = TextAlignment.Start,
@@ -63,11 +62,11 @@ namespace VACDMApp.Data.Renderer
 
             var airport =
                 $"From {airportData?.Icao ?? pilot.FlightPlan.Departure} ({airportData?.Iata ?? ""})";
+
             var airportLabel = new Label()
             {
                 Text = airport,
                 TextColor = Colors.White,
-                Background = _darkBlue,
                 FontAttributes = FontAttributes.Bold,
                 FontSize = 18,
                 HorizontalTextAlignment = TextAlignment.Start,
@@ -80,7 +79,6 @@ namespace VACDMApp.Data.Renderer
             {
                 Text = callsign,
                 TextColor = Colors.White,
-                Background = _darkBlue,
                 FontAttributes = FontAttributes.Bold,
                 FontSize = 25,
                 HorizontalTextAlignment = TextAlignment.Start,
@@ -117,21 +115,22 @@ namespace VACDMApp.Data.Renderer
             var regRegex = new Regex(@"REG/([A-Z0-9-]{3,6})");
             var hasRegFiled = regRegex.IsMatch(flightPlan.remarks);
 
-            //TODO fix bug with text alignment breaking when adding reg
-            //if (hasRegFiled)
-            //{
-            //    var reg = regRegex.Match(flightPlan.remarks).Groups[1].Value;
-            //    flightData += $", {reg}";
-            //}
+            var regMatch = regRegex.Match(flightPlan.remarks)?.Groups[1].Value;
 
-            //flightData = hasRegFiled ? $"{flightData}, {regRegex.Match(flightPlan.remarks).Groups[1].Value}" : $"{flightData} ";
+            var defaultRegs = new string[] { "N172SP", "GFENX", "PMDG737", "ASXGS" };
+
+            if (defaultRegs.Any(x => x == regMatch))
+            {
+                hasRegFiled = false;
+            }
+
+            flightData = hasRegFiled ? $"{flightData}, {regMatch}" : $"{flightData}     ";
 
             var flightDataLabel = new Label()
             {
                 Text = flightData,
                 TextColor = Colors.White,
-                Background = _darkBlue,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 15,
                 HorizontalOptions = LayoutOptions.Start
             };
@@ -139,8 +138,7 @@ namespace VACDMApp.Data.Renderer
             {
                 Text = GetFlightStatus(pilot),
                 TextColor = Colors.White,
-                Background = _darkBlue,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 FontSize = 15,
                 HorizontalTextAlignment = TextAlignment.Start,
                 VerticalTextAlignment = TextAlignment.Center,
@@ -162,13 +160,10 @@ namespace VACDMApp.Data.Renderer
 
             var button = new Button() { BackgroundColor = Colors.Transparent };
             button.Clicked += Button_Clicked;
-            grid.Children.Add(button);
-
-            grid.SetRowSpan(button, 5);
-            grid.SetColumnSpan(button, 5);
 
             //TODO Padding is fucked up
-            var bookmarkGrid = new Grid() { Padding = new Thickness(10) };
+            //TODO Button Alignment
+            var bookmarkGrid = new Grid() { Padding = new Thickness(10)};
 
             bookmarkGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
             bookmarkGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
@@ -179,7 +174,7 @@ namespace VACDMApp.Data.Renderer
                 != null;
             var bookmarkImageSource = isPilotBookmarked ? "bookmark.svg" : "bookmark_outline.svg";
 
-            var bookmarkImage = new Image() { Source = bookmarkImageSource, Scale = 0.5 };
+            var bookmarkImage = new Image() { Source = bookmarkImageSource, Scale = 0.5};
 
             var bookmarkButton = new Button() { Background = Colors.Transparent, Scale = 1.5 };
 
@@ -192,6 +187,7 @@ namespace VACDMApp.Data.Renderer
             grid.SetColumn(bookmarkGrid, 3);
 
             parentGridContainer.Children.Add(grid);
+            parentGridContainer.Children.Add(button);
 
             border.Content = parentGridContainer;
             return border;

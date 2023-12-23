@@ -21,7 +21,7 @@
                 Padding = new Thickness(10, 0, 0, 0),
                 TextColor = Colors.White,
                 Background = Colors.Black,
-                FontAttributes = FontAttributes.Bold,
+                FontAttributes = FontAttributes.None,
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center,
                 FontSize = 17

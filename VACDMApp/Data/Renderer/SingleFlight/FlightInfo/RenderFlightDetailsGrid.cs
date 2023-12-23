@@ -63,7 +63,7 @@ namespace VACDMApp.Data.Renderer
             var regRegex = new Regex(@"REG/([A-Z0-9-]{3,6})");
             var isRegFiled = regRegex.IsMatch(flightPlan.remarks);
 
-            var defaultRegs = new string[] { "N172SP", "GFNX", "PMDG737", "ASXGS" };
+            var defaultRegs = new string[] { "N172SP", "GFENX", "PMDG737", "ASXGS" };
 
             if (isRegFiled)
             {

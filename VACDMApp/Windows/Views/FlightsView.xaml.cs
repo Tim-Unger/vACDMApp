@@ -23,27 +23,17 @@ public partial class FlightsView : ContentView
         {
             Margin = new Thickness(10, 5, 10, 5),
             Background = _grey,
-            FontAttributes = FontAttributes.Bold,
+            FontAttributes = FontAttributes.None,
             Text = "All Airports",
             TextColor = _white
         };
-
-    //private static readonly Button _stateButton =
-    //    new()
-    //    {
-    //        Margin = new Thickness(10, 5, 10, 5),
-    //        Background = _grey,
-    //        FontAttributes = FontAttributes.Bold,
-    //        Text = "Confirmed\r\nUnconfirmed",
-    //        TextColor = _white
-    //    };
 
     private static readonly Button _timeFormatButton =
         new()
         {
             Margin = new Thickness(10, 5, 10, 5),
             Background = _grey,
-            FontAttributes = FontAttributes.Bold,
+            FontAttributes = FontAttributes.None,
             Text = "UTC",
             TextColor = _white
         };
@@ -53,7 +43,7 @@ public partial class FlightsView : ContentView
         {
             Margin = new Thickness(10, 5, 10, 5),
             Background = _grey,
-            FontAttributes = FontAttributes.Bold,
+            FontAttributes = FontAttributes.None,
             IsVisible = true,
             TextColor = _white
         };
