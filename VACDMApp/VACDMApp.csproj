@@ -69,6 +69,7 @@
 		<None Remove="Resources\Fonts\Roboto-Regular.ttf" />
 		<None Remove="Resources\Raw\airports.json" />
 		<None Remove="Resources\Raw\Settings.json" />
+		<None Remove="resources\raw\waypoints.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -133,6 +134,9 @@
 		<MauiXaml Update="Windows\Views\SettingsView.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Windows\WaypointlePage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -140,10 +144,6 @@
 		<MauiPlatformSpecificFolder Remove="Platforms\MacCatalyst\" />
 		<MauiPlatformSpecificFolder Remove="Platforms\Tizen\" />
 		<MauiPlatformSpecificFolder Remove="Platforms\Windows\" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Data\GetData\DataFaker\" />
 	</ItemGroup>
 
 	<ProjectExtensions>

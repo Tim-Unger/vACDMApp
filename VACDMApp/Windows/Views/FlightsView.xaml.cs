@@ -50,7 +50,7 @@ public partial class FlightsView : ContentView
 
     private bool _isFirstLoad = true;
 
-    private async void ContentView_Loaded(object sender, EventArgs e)
+    private void ContentView_Loaded(object sender, EventArgs e)
     {
         if (_isFirstLoad)
         {
@@ -72,7 +72,7 @@ public partial class FlightsView : ContentView
 
             //GetCurrentTime();
             _isFirstLoad = false;
-            await UpdateDataContinuously();
+            //await UpdateDataContinuously();
         }
 
         _isFirstLoad = false;

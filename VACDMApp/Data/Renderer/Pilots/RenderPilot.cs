@@ -105,9 +105,11 @@ namespace VACDMApp.Data.Renderer
 
             var flightNumberOnly = pilot.Callsign.Remove(0, 3);
 
+            var arrivalIcao = pilot.FlightPlan.Arrival;
+
             var arrAirportData = VACDMData.Data.Airports.FirstOrDefault(
-                x => x.Icao == pilot.FlightPlan.Arrival
-            );
+                x => x.Icao == arrivalIcao
+            ) ?? new Airport() { Iata = arrivalIcao, Icao = arrivalIcao };
 
             var flightData =
                 $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival} ({arrAirportData.Iata}), {flightPlan.aircraft_short}";

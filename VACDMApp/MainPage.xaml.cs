@@ -100,14 +100,16 @@ namespace VACDMApp
             var airlinesTask = AirlinesData.GetAirlinesAsync();
             var airportsTask = AirportsData.GetAsync();
             var measuresTask = FlowMeasuresData.GetFlowMeasuresAsync();
+            var waypointsTask = GameWaypoints.GetWaypointsAsync();
 
-            await Task.WhenAll(dataTask, vacdmTask, airlinesTask, measuresTask, airportsTask);
+            await Task.WhenAll(dataTask, vacdmTask, airlinesTask, measuresTask, airportsTask, waypointsTask);
 
             VatsimPilots = dataTask.Result.pilots.ToList();
             VACDMPilots = vacdmTask.Result;
             Airlines = airlinesTask.Result;
             Airports = airportsTask.Result;
             FlowMeasures = measuresTask.Result;
+            Waypoints = waypointsTask.Result;
         }
     }
 }

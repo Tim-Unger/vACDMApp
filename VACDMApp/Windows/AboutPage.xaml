@@ -72,5 +72,16 @@
             HorizontalOptions="End"
             TextColor="White"
             VerticalOptions="Start" />
+
+        <Button
+            x:Name="WaypointleButton"
+            Margin="20,10,0,0"
+            BackgroundColor="#1C2836"
+            Clicked="WaypointleButton_Clicked"
+            FontFamily="OpenSans-Bold"
+            FontSize="30"
+            HorizontalOptions="Start"
+            Text="Waypointle Minigame"
+            TextColor="White" />
     </VerticalStackLayout>
 </ContentPage>

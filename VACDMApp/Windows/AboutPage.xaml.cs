@@ -4,6 +4,9 @@ namespace VACDMApp;
 
 public partial class AboutPage : ContentPage
 {
+    private bool _isFirstLoad = true;
+
+
     public AboutPage()
     {
         InitializeComponent();
@@ -11,6 +14,12 @@ public partial class AboutPage : ContentPage
 
     private void ContentPage_Loaded(object sender, EventArgs e)
     {
+        if (_isFirstLoad)
+        {
+            Routing.RegisterRoute("WaypointlePage", typeof(WaypointlePage));
+            _isFirstLoad = false;
+        }
+
         TitleLabel.Text = "VATSIM\nAirport\nCollaborative\nDecision\nMaking";
         VACDMData.Data.SenderPage = SenderPage.About;
         VersionLabel.Text = $"Tim Unger (1468997) -- V {AppInfo.Current.VersionString}";
@@ -34,5 +43,10 @@ public partial class AboutPage : ContentPage
     private async void GithubButton_Clicked(object sender, EventArgs e)
     {
         await Browser.Default.OpenAsync("https://github.com/Tim-Unger/vacdm-app");
+    }
+
+    private void WaypointleButton_Clicked(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync("WaypointlePage");
     }
 }
