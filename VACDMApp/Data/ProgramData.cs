@@ -35,7 +35,7 @@ namespace VACDMApp.VACDMData
 
         internal static SettingsView SettingsView = new();
 
-        internal static Settings Settings = new();
+        internal static Settings? Settings = null;
 
         internal static AboutPage AboutPage = new();
 
@@ -44,6 +44,8 @@ namespace VACDMApp.VACDMData
         internal static List<string> Waypoints = new();
 
         internal static SenderPage SenderPage;
+
+        internal static LoadingView LoadingView = new();
 
         internal static object Sender;
     }

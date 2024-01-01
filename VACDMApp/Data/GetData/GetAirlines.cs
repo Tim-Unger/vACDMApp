@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Text;
 using VACDMApp.VACDMData;
+using static VACDMApp.Windows.Views.LoadingView;
 
 namespace VACDMApp.VACDMData
 {
@@ -8,6 +9,8 @@ namespace VACDMApp.VACDMData
     {
         public static async Task<List<Airline>> GetAirlinesAsync()
         {
+            Data.LoadingView.SetLabelText(LoadingStatus.Airlines);
+
             var dataRaw = await FileSystem.Current.OpenAppPackageFileAsync("airlines.json");
 
             var reader = new StreamReader(dataRaw);

@@ -17,7 +17,7 @@
             new List<(string androidPermission, bool isRuntime)>()
             {
                 (global::Android.Manifest.Permission.Internet, true),
-                (global::Android.Manifest.Permission.AccessNetworkState, true)
+                (global::Android.Manifest.Permission.AccessNetworkState, true),
             }.ToArray();
     }
 }

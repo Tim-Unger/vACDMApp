@@ -8,6 +8,8 @@ public partial class SingleFlightBottomSheet : BottomSheet
 {
     public static string SelectedCallsign = "";
 
+    private bool _isFirstLoad = true;
+
     public SingleFlightBottomSheet()
     {
         InitializeComponent();
@@ -19,8 +21,6 @@ public partial class SingleFlightBottomSheet : BottomSheet
 
     private async void ContentView_Loaded(object sender, EventArgs e)
     {
-        
-
         await UpdateDataContinuously();
     }
 
@@ -29,6 +29,12 @@ public partial class SingleFlightBottomSheet : BottomSheet
         //TODO Pause on lost focus/Cancellation Token
         while (true)
         {
+            if (_isFirstLoad)
+            {
+                await Task.Delay(TimeSpan.FromMinutes(1));
+                _isFirstLoad = false;
+            }
+
             await MainPage.GetAllData();
 
             SingleFlightGrid.Children.Clear();

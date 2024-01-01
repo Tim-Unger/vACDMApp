@@ -1,6 +1,4 @@
-﻿using Android.App;
-using Android.App.Admin;
-using VACDMApp.Data.OverridePermissions;
+﻿using VACDMApp.Data.OverridePermissions;
 using VACDMApp.VACDMData;
 using static VACDMApp.Data.PushNotifications.PushNotificationHandler;
 
@@ -167,7 +165,7 @@ namespace VACDMApp.Data.PushNotifications
             return notificationType switch
             {
                 NotificationType.SlotNow => _settings.SendPushBookmarkFlightInsideWindow,
-                NotificationType.SlotChanged => _settings.SendPuishBookmarkTsatChanged,
+                NotificationType.SlotChanged => _settings.SendPushBookmarkTsatChanged,
                 NotificationType.StartupGiven => _settings.SendPushBookmarkStartup,
                 _ => throw new ArgumentOutOfRangeException()
             };

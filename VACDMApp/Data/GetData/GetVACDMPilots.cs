@@ -1,4 +1,5 @@
 ﻿using static VACDMApp.VACDMData.VACDMData;
+using static VACDMApp.Windows.Views.LoadingView;
 
 namespace VACDMApp.VACDMData
 {
@@ -6,6 +7,8 @@ namespace VACDMApp.VACDMData
     {
         public static async Task<List<VACDMPilot>> GetVACDMPilotsAsync()
         {
+            Data.LoadingView.SetLabelText(LoadingStatus.VacdmData);
+
             var data = await Client.GetStringAsync(VacdmApiUrl);
 
             var dataList = JsonSerializer.Deserialize<List<VACDMPilot>>(data);

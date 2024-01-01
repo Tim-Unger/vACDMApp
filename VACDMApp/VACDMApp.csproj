@@ -125,6 +125,9 @@
 		<MauiXaml Update="Windows\Views\FlowMeasuresView.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Windows\Views\LoadingView.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Windows\Views\MyFlightView.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

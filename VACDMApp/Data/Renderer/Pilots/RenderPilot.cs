@@ -188,8 +188,8 @@ namespace VACDMApp.Data.Renderer
             grid.Children.Add(bookmarkGrid);
             grid.SetColumn(bookmarkGrid, 3);
 
-            parentGridContainer.Children.Add(grid);
             parentGridContainer.Children.Add(button);
+            parentGridContainer.Children.Add(grid);
 
             border.Content = parentGridContainer;
             return border;

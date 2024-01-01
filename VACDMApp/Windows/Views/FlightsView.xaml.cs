@@ -202,6 +202,7 @@ public partial class FlightsView : ContentView
 
         var allFlights = Pilots.Render(FilterKind.Airport, selectedAirport);
         allFlights.ForEach(FlightsStackLayout.Children.Add);
+
         FlightsScrollView.Content = FlightsStackLayout;
     }
 

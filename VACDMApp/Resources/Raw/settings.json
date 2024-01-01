@@ -2,11 +2,11 @@
   "cid": 1468997,
   "dataSource": "TEST",
 
-  "allowPushNotifications": false,
-  "sendPushMyFlightInsideWindow": false,
-  "sendPushMyFlightTsatChanged": false,
-  "sendPushMyFlightStartup": false,
-  "sendPushBookmarkFlightInsideWindow": false,
-  "sendPuishBookmarkTsatChanged": false,
-  "sendPushBookmarkStartup": false
+  "allowPushNotifications": true,
+  "sendPushMyFlightInsideWindow": true,
+  "sendPushMyFlightTsatChanged": true,
+  "sendPushMyFlightStartup": true,
+  "sendPushBookmarkFlightInsideWindow": true,
+  "sendPuishBookmarkTsatChanged": true,
+  "sendPushBookmarkStartup": true
 }

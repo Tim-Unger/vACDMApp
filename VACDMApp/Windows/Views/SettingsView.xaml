@@ -4,8 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:Microsoft.Maui.Controls.Compatibility;assembly=Microsoft.Maui.Controls.Compatibility"
-    Loaded="ContentView_Loaded"
-    Unfocused="ContentView_Unfocused">
+    Loaded="ContentView_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
@@ -173,6 +172,19 @@
                     IsToggled="False"
                     Toggled="MyFlightStartupSwitch_Toggled" />
             </Grid>
+
+            <Grid
+                x:Name="AllowPushMyFlightGrid"
+                Grid.Row="1"
+                Grid.RowSpan="3">
+                <Rectangle Background="#303030" Opacity="0.6" />
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    HorizontalOptions="Center"
+                    Text="Please allow Push Notifications to enable this"
+                    VerticalOptions="Center" />
+            </Grid>
         </Grid>
 
         <Grid
@@ -248,6 +260,19 @@
                     IsEnabled="True"
                     IsToggled="False"
                     Toggled="BookmarkFlightStartupSwitch_Toggled" />
+            </Grid>
+
+            <Grid
+                x:Name="AllowPushBookmarkGrid"
+                Grid.Row="1"
+                Grid.RowSpan="3">
+                <Rectangle Background="#303030" Opacity="0.6" />
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    HorizontalOptions="Center"
+                    Text="Please allow Push Notifications to enable this"
+                    VerticalOptions="Center" />
             </Grid>
         </Grid>
     </Grid>

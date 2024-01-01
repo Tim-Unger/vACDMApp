@@ -46,6 +46,7 @@ namespace VACDMApp.Data.PushNotifications
                 Title = notificationMessageTitle,
                 Subtitle = "vACDM",
                 Description = notificationMessageString,
+                //Image = new NotificationImage() { ResourceName = "splash.svg"}
             };
 
             SentNotifications.Add(new(request, pilot.Callsign));

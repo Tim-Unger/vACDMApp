@@ -16,7 +16,7 @@
 
         public bool SendPushBookmarkFlightInsideWindow { get; set; } = false;
 
-        public bool SendPuishBookmarkTsatChanged { get; set; } = false;
+        public bool SendPushBookmarkTsatChanged { get; set; } = false;
 
         public bool SendPushBookmarkStartup { get; set; } = false;
     }

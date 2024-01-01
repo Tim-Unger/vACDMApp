@@ -5,6 +5,7 @@ using VACDMApp.Data.OverridePermissions;
 using VACDMApp.Data.PushNotifications;
 using VACDMApp.VACDMData;
 using static VACDMApp.VACDMData.Data;
+using static VACDMApp.Windows.Views.LoadingView;
 
 namespace VACDMApp
 {
@@ -18,7 +19,7 @@ namespace VACDMApp
             Settings
         }
 
-        private static bool _isLoadFinished = false;
+        private static bool _isFirstLoad = true;
 
         public MainPage()
         {
@@ -27,22 +28,28 @@ namespace VACDMApp
 
         private async void ContentPage_Loaded(object sender, EventArgs e)
         {
-            await OnLoad(sender, e);
+            await OnLoad();
         }
 
-        private async Task OnLoad(object sender, EventArgs e)
+        private async Task OnLoad()
         {
+            //TODO Fix Content getting fucked up when reloading
+            //Mainview.Content = LoadingView;
+
             //This is just Internet and Network State, but we need to request it anyways,
             //since we are overriding the default Permissions Later on with the Push Notification Request
-            await Permissions.RequestAsync<DefaultPermissions>();
+            var permissionsTask = Permissions.RequestAsync<DefaultPermissions>();
+            permissionsTask.Wait();
 
             await GetAllData();
 
-            await PushNotificationHandler.InitializeNotificationEvents(
-                LocalNotificationCenter.Current
-            );
-
             Mainview.Content = FlightsView;
+
+            await PushNotificationHandler.StartGlobalHandler();
+
+            await PushNotificationHandler.InitializeNotificationEvents(
+               LocalNotificationCenter.Current
+           );
         }
 
         private void MyFlightButton_Clicked(object sender, EventArgs e)
@@ -85,31 +92,69 @@ namespace VACDMApp
 
         internal static async Task GetAllData()
         {
-            //TODO Accessibility Modifiers
-            var dataSourcesTask = VaccDataSources.GetDataSourcesAsync();
-            var settingsTask = SettingsData.ReadSettingsAsync();
+            var permissionsTask = Permissions.RequestAsync<DefaultPermissions>();
+            permissionsTask.Wait();
 
-            await Task.WhenAll(settingsTask, dataSourcesTask);
+            if (_isFirstLoad)
+            {
+                var dataSourcesTask = VaccDataSources.GetDataSourcesAsync();
+                var settingsTask = SettingsData.ReadSettingsAsync();
 
-            DataSources = dataSourcesTask.Result;
-            VACDMData.Data.Settings = settingsTask.Result;
-            VACDMData.VACDMData.SetApiUrl();
+                LoadingView.SetLabelText(LoadingStatus.Settings);
+
+                await Task.WhenAll(settingsTask, dataSourcesTask);
+
+                if (DataSources.Count == 0)
+                {
+                    DataSources = dataSourcesTask.Result;
+                }
+
+                if (VACDMData.Data.Settings is null)
+                {
+                    VACDMData.Data.Settings = settingsTask.Result;
+                    VACDMData.VACDMData.SetApiUrl();
+                }
+            }
+
+            var taskList = new List<Task>();
 
             var dataTask = GetVatsimData.GetVatsimDataAsync();
+            taskList.Add(dataTask);
+
             var vacdmTask = VACDMPilotsData.GetVACDMPilotsAsync();
-            var airlinesTask = AirlinesData.GetAirlinesAsync();
-            var airportsTask = AirportsData.GetAsync();
+            taskList.Add(vacdmTask);
+
             var measuresTask = FlowMeasuresData.GetFlowMeasuresAsync();
+            taskList.Add(measuresTask);
+
+            var airlinesTask = AirlinesData.GetAirlinesAsync();
+            var airportsTask = AirportsData.GetAirportsAsync();
             var waypointsTask = GameWaypoints.GetWaypointsAsync();
 
-            await Task.WhenAll(dataTask, vacdmTask, airlinesTask, measuresTask, airportsTask, waypointsTask);
+            if (_isFirstLoad)
+            {
+                taskList.Add(airlinesTask);
+                taskList.Add(airportsTask);
+                taskList.Add(waypointsTask);
+            }
+
+            await Task.WhenAll(taskList);
 
             VatsimPilots = dataTask.Result.pilots.ToList();
             VACDMPilots = vacdmTask.Result;
-            Airlines = airlinesTask.Result;
-            Airports = airportsTask.Result;
             FlowMeasures = measuresTask.Result;
-            Waypoints = waypointsTask.Result;
+
+            if (_isFirstLoad)
+            {
+                Airlines = airlinesTask.Result;
+                Airports = airportsTask.Result;
+                Waypoints = waypointsTask.Result;
+            }
+        }
+
+        internal void SetView()
+        {
+            Mainview.Content = FlightsView;
         }
     }
 }

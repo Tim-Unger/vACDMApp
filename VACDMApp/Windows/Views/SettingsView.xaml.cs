@@ -1,6 +1,7 @@
 using Android.App.Admin;
 using VACDMApp.Data;
 using VACDMApp.Data.OverridePermissions;
+using VACDMApp.VACDMData;
 using static VACDMApp.VACDMData.Data;
 
 namespace VACDMApp.Windows.Views;
@@ -14,30 +15,30 @@ public partial class SettingsView : ContentView
 
     private static bool _isFirstLoad = true;
 
-    private static VACDMData.Settings _settings = new();
+    private VACDMData.Settings _settings = new();
 
     private async void ContentView_Loaded(object sender, EventArgs e)
     {
         if (_isFirstLoad)
         {
-            if (Settings.Cid is not null)
+            if (VACDMData.Data.Settings.Cid is not null)
             {
-                CidEntry.Text = Settings.Cid!.ToString();
+                CidEntry.Text = VACDMData.Data.Settings.Cid!.ToString();
             }
 
             DataSources.ForEach(x => DataSourcePicker.Items.Add(x.Name));
 
-            if (Settings.DataSource is not null)
+            if (VACDMData.Data.Settings.DataSource is not null)
             {
                 var selectedSourceIndex = DataSources.FindIndex(
-                    x => x.ShortName == Settings.DataSource
+                    x => x.ShortName == VACDMData.Data.Settings.DataSource
                 );
                 var dataSources = DataSources;
-                var source = Settings.DataSource;
+                var source = VACDMData.Data.Settings.DataSource;
                 DataSourcePicker.SelectedIndex = selectedSourceIndex;
             }
 
-            _settings = Settings;
+            _settings = VACDMData.Data.Settings;
 
             await SetToggleStates();
 
@@ -46,19 +47,23 @@ public partial class SettingsView : ContentView
         }
     }
 
-    private void ContentView_Unfocused(object sender, FocusEventArgs e) { }
-
     private async void DataSourcePicker_SelectedIndexChanged(object sender, EventArgs e)
     {
         var selectedDataSourceName = DataSourcePicker.SelectedItem.ToString();
 
         var shortName = DataSources.First(x => x.Name == selectedDataSourceName).ShortName;
 
-        Settings.DataSource = shortName;
+        VACDMData.Data.Settings.DataSource = shortName;
 
-        await SettingsData.SetSettingsAsync();
+        var pilotTask = await VACDMPilotsData.GetVACDMPilotsAsync();
+
+        VACDMPilots = pilotTask;
 
         VACDMData.VACDMData.SetApiUrl();
+
+        var settings = VACDMData.Data.Settings;
+
+        Preferences.Default.Set("data_source", settings.DataSource);
 
         await VACDMData.Data.FlightsView.RefreshDataAndView();
     }
@@ -83,6 +88,8 @@ public partial class SettingsView : ContentView
 
         ValidCidLabel.TextColor = Colors.Green;
         ValidCidLabel.Text = "CID is valid";
+
+        Preferences.Set("cid", cid);
     }
 
     private async void EnablePushNotificationsSwitch_Toggled(object sender, ToggledEventArgs e)
@@ -96,27 +103,75 @@ public partial class SettingsView : ContentView
             if (grantState == PermissionStatus.Granted)
             {
                 EnablePushNotificationsSwitch.IsToggled = true;
+                VACDMData.Data.Settings.AllowPushNotifications = true;
+                AllowPushBookmarkGrid.IsVisible = false;
+                AllowPushMyFlightGrid.IsVisible = false;
+                Preferences.Set("allow_push", true);
+
                 return;
             }
 
             EnablePushNotificationsSwitch.IsToggled = false;
+            AllowPushBookmarkGrid.IsVisible = true;
+            AllowPushMyFlightGrid.IsVisible = true;
+            Preferences.Set("allow_push", false);
+            return;
         }
 
         //Revokation needs to be done within the Notification Handler
         //TODO
+        AllowPushBookmarkGrid.IsVisible = true;
+        AllowPushMyFlightGrid.IsVisible = true;
+        Preferences.Set("allow_push", false);
     }
 
-    private void MyFlightTsatSwitch_Toggled(object sender, ToggledEventArgs e) { }
+    private void MyFlightTsatSwitch_Toggled(object sender, ToggledEventArgs e)
+    {
+        var isToggled = ((Switch)sender).IsToggled;
 
-    private void MyFlightChangedSwitch_Toggled(object sender, ToggledEventArgs e) { }
+        VACDMData.Data.Settings.SendPushMyFlightTsatChanged = isToggled;
+        Preferences.Set("push_my_flight_window", isToggled);
+    }
 
-    private void MyFlightStartupSwitch_Toggled(object sender, ToggledEventArgs e) { }
+    private void MyFlightChangedSwitch_Toggled(object sender, ToggledEventArgs e)
+    {
+        var isToggled = ((Switch)sender).IsToggled;
 
-    private void BookmarkFlightTsatSwitch_Toggled(object sender, ToggledEventArgs e) { }
+        VACDMData.Data.Settings.SendPushMyFlightTsatChanged = isToggled;
+        Preferences.Set("push_my_flight_tsat", isToggled);
+    }
 
-    private void BookmarkFlightChangedSwitch_Toggled(object sender, ToggledEventArgs e) { }
+    private void MyFlightStartupSwitch_Toggled(object sender, ToggledEventArgs e)
+    {
+        var isToggled = ((Switch)sender).IsToggled;
 
-    private void BookmarkFlightStartupSwitch_Toggled(object sender, ToggledEventArgs e) { }
+        VACDMData.Data.Settings.SendPushMyFlightInsideWindow = isToggled;
+        Preferences.Set("push_my_flight_startup", isToggled);
+    }
+
+    private void BookmarkFlightTsatSwitch_Toggled(object sender, ToggledEventArgs e)
+    {
+        var isToggled = ((Switch)sender).IsToggled;
+
+        VACDMData.Data.Settings.SendPushBookmarkFlightInsideWindow = isToggled;
+        Preferences.Set("push_bookmark_window", isToggled);
+    }
+
+    private void BookmarkFlightChangedSwitch_Toggled(object sender, ToggledEventArgs e)
+    {
+        var isToggled = ((Switch)sender).IsToggled;
+
+        VACDMData.Data.Settings.SendPushBookmarkTsatChanged = isToggled;
+        Preferences.Set("push_bookmark_tsat", isToggled);
+    }
+
+    private void BookmarkFlightStartupSwitch_Toggled(object sender, ToggledEventArgs e)
+    {
+        var isToggled = ((Switch)sender).IsToggled;
+
+        VACDMData.Data.Settings.SendPushBookmarkStartup = isToggled;
+        Preferences.Set("push_bookmark_startup", isToggled);
+    }
 
     private async Task SetToggleStates()
     {
@@ -126,9 +181,16 @@ public partial class SettingsView : ContentView
 
         if (status == PermissionStatus.Denied)
         {
+            AllowPushBookmarkGrid.IsVisible = true;
+            AllowPushMyFlightGrid.IsVisible = true;
+            
             MyFlightPushGrid.IsEnabled = false;
             BookmarkedFlightsPushGrid.IsEnabled = false;
+            return;
         }
+
+        AllowPushBookmarkGrid.IsVisible = false;
+        AllowPushMyFlightGrid.IsVisible = false;
 
         MyFlightTsatSwitch.IsEnabled = true;
         MyFlightChangedSwitch.IsEnabled = true;
@@ -143,7 +205,7 @@ public partial class SettingsView : ContentView
         BookmarkFlightStartupSwitch.IsEnabled = true;
 
         BookmarkFlightTsatSwitch.IsToggled = _settings.SendPushBookmarkFlightInsideWindow;
-        BookmarkFlightChangedSwitch.IsToggled = _settings.SendPuishBookmarkTsatChanged;
+        BookmarkFlightChangedSwitch.IsToggled = _settings.SendPushBookmarkTsatChanged;
         BookmarkFlightStartupSwitch.IsToggled = _settings.SendPushBookmarkStartup;
     }
 }

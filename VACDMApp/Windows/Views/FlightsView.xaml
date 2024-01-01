@@ -46,10 +46,7 @@
         </Grid>
 
         <Grid Grid.Row="1">
-            <RefreshView
-                x:Name="FlightsRefreshView"
-                IsRefreshing="False"
-                Refreshing="RefreshView_Refreshing">
+            <RefreshView x:Name="FlightsRefreshView" Refreshing="RefreshView_Refreshing">
                 <ScrollView x:Name="FlightsScrollView" VerticalOptions="FillAndExpand">
                     <VerticalStackLayout x:Name="FlightsStackLayout" />
                 </ScrollView>
