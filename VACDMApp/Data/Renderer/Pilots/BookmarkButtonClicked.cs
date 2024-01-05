@@ -32,7 +32,7 @@ namespace VACDMApp.Data.Renderer
                 );
                 PushNotificationHandler.Unsubscribe(pilot);
                 await removedToast.Show();
-                VACDMData.Data.MyFlightView.RenderBookmarks();
+                //VACDMData.Data.MyFlightView.RenderBookmarks();
                 return;
             }
 
@@ -46,7 +46,7 @@ namespace VACDMApp.Data.Renderer
             );
             await savedToast.Show();
             await PushNotificationHandler.SubscribeAsync(pilot);
-            VACDMData.Data.MyFlightView.RenderBookmarks();
+            //VACDMData.Data.MyFlightView.RenderBookmarks();
         }
     }
 }

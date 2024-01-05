@@ -1,4 +1,5 @@
 ﻿using Plugin.LocalNotification;
+using System.Net.NetworkInformation;
 using VACDMApp.Data;
 using VACDMApp.Data.GetData;
 using VACDMApp.Data.OverridePermissions;
@@ -38,11 +39,26 @@ namespace VACDMApp
 
             //This is just Internet and Network State, but we need to request it anyways,
             //since we are overriding the default Permissions Later on with the Push Notification Request
+
+            var hasUserInternet = HasUserInternet();
+
+            if (!hasUserInternet)
+            {
+                NoInternetGrid.IsVisible = true;
+                Mainview.IsVisible = false;
+                return;
+            }
+
+            NoInternetGrid.IsVisible = false;
+            Mainview.IsVisible = true;
+            LoadingGrid.IsVisible = true;
+
             var permissionsTask = Permissions.RequestAsync<DefaultPermissions>();
             permissionsTask.Wait();
 
             await GetAllData();
 
+            LoadingGrid.IsVisible = false;
             Mainview.Content = FlightsView;
 
             await PushNotificationHandler.StartGlobalHandler();
@@ -155,6 +171,33 @@ namespace VACDMApp
         internal void SetView()
         {
             Mainview.Content = FlightsView;
+        }
+
+        private bool HasUserInternet()
+        {
+            var ping = new Ping();
+
+            var cloudflarePing = ping.Send("1.1.1.1");
+
+            if(cloudflarePing.Status != IPStatus.Success)
+            {
+                //We try Google just in case Cloudflare is down
+                var googlePing = ping.Send("8.8.8.8");
+
+                if(googlePing.Status != IPStatus.Success)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            return true;
+        }
+
+        private async void TryAgainButton_Pressed(object sender, EventArgs e)
+        {
+            await OnLoad();
         }
     }
 }

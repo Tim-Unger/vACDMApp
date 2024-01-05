@@ -16,7 +16,6 @@
                 <Grid Grid.Row="1">
                     <VerticalStackLayout x:Name="FlowMeasuresStackLayout" />
                 </Grid>
-
             </Grid>
         </RefreshView>
     </Grid>

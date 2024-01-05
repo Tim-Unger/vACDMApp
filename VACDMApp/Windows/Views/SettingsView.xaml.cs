@@ -96,33 +96,33 @@ public partial class SettingsView : ContentView
     {
         var isToggled = EnablePushNotificationsSwitch.IsToggled;
 
-        if (isToggled)
+        if (!isToggled)
         {
-            var grantState = await Permissions.RequestAsync<SendNotifications>();
-
-            if (grantState == PermissionStatus.Granted)
-            {
-                EnablePushNotificationsSwitch.IsToggled = true;
-                VACDMData.Data.Settings.AllowPushNotifications = true;
-                AllowPushBookmarkGrid.IsVisible = false;
-                AllowPushMyFlightGrid.IsVisible = false;
-                Preferences.Set("allow_push", true);
-
-                return;
-            }
-
-            EnablePushNotificationsSwitch.IsToggled = false;
+            //Revokation needs to be done within the Notification Handler
+            //TODO
             AllowPushBookmarkGrid.IsVisible = true;
             AllowPushMyFlightGrid.IsVisible = true;
             Preferences.Set("allow_push", false);
             return;
         }
 
-        //Revokation needs to be done within the Notification Handler
-        //TODO
-        AllowPushBookmarkGrid.IsVisible = true;
-        AllowPushMyFlightGrid.IsVisible = true;
-        Preferences.Set("allow_push", false);
+        var grantState = await Permissions.RequestAsync<SendNotifications>();
+
+        if (grantState != PermissionStatus.Granted)
+        {
+            EnablePushNotificationsSwitch.IsToggled = false;
+            AllowPushBookmarkGrid.IsVisible = true;
+            AllowPushMyFlightGrid.IsVisible = true;
+            Preferences.Set("allow_push", false);
+
+            return;
+        }
+
+        EnablePushNotificationsSwitch.IsToggled = true;
+        VACDMData.Data.Settings.AllowPushNotifications = true;
+        AllowPushBookmarkGrid.IsVisible = false;
+        AllowPushMyFlightGrid.IsVisible = false;
+        Preferences.Set("allow_push", true);
     }
 
     private void MyFlightTsatSwitch_Toggled(object sender, ToggledEventArgs e)
@@ -186,11 +186,14 @@ public partial class SettingsView : ContentView
             
             MyFlightPushGrid.IsEnabled = false;
             BookmarkedFlightsPushGrid.IsEnabled = false;
+
             return;
         }
 
-        AllowPushBookmarkGrid.IsVisible = false;
-        AllowPushMyFlightGrid.IsVisible = false;
+        var isPushAllowed = Preferences.Get("allow_push", false);
+
+        AllowPushBookmarkGrid.IsVisible = !isPushAllowed;
+        AllowPushMyFlightGrid.IsVisible = !isPushAllowed;
 
         MyFlightTsatSwitch.IsEnabled = true;
         MyFlightChangedSwitch.IsEnabled = true;

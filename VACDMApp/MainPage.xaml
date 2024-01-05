@@ -23,7 +23,44 @@
                 <RowDefinition Height="1.5*" />
             </Grid.RowDefinitions>
 
-            <ScrollView x:Name="Mainview" Grid.Row="0" />
+            <ContentView x:Name="Mainview" Grid.Row="0" />
+
+            <Grid
+                x:Name="NoInternetGrid"
+                Grid.Row="0"
+                IsVisible="False"
+                VerticalOptions="Center">
+                <VerticalStackLayout>
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="40"
+                        HorizontalTextAlignment="Center"
+                        Text="No Internet. Please try again when you are connected"
+                        VerticalOptions="Center" />
+                    <Button
+                        x:Name="TryAgainButton"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        Pressed="TryAgainButton_Pressed"
+                        Text="Try Again" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <Grid
+                x:Name="LoadingGrid"
+                Grid.Row="0"
+                IsVisible="False"
+                VerticalOptions="Center">
+                <VerticalStackLayout>
+                    <ActivityIndicator IsRunning="True" Color="White" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="30"
+                        HorizontalTextAlignment="Center"
+                        Text="Loading, just a second"
+                        VerticalOptions="Center" />
+                </VerticalStackLayout>
+            </Grid>
 
             <Grid
                 Grid.Row="1"

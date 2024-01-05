@@ -1,5 +1,4 @@
 ﻿using static VACDMApp.VACDMData.VACDMData;
-using static VACDMApp.VACDMData.Data;
 using System.Net.Http.Json;
 
 namespace VACDMApp.Data

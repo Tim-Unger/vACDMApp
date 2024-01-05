@@ -4,7 +4,7 @@ using VACDMApp.VACDMData;
 
 namespace VACDMApp.Data.PushNotifications
 {
-    internal class PushNotificationHandler
+    internal partial class PushNotificationHandler
     {
         //private static List<(string callsign, DateTime pushedTime)> PushedPilots = new();
 
@@ -34,7 +34,7 @@ namespace VACDMApp.Data.PushNotifications
         {
             while (true)
             {
-                var tasks = _subscribedPilots.Select(PushHandler.CheckPilotAsync);
+                var tasks = _subscribedPilots.Select(CheckPilotAsync);
 
                 await Task.WhenAll(tasks);
 
@@ -46,7 +46,7 @@ namespace VACDMApp.Data.PushNotifications
         {
             _subscribedPilots.Add(pilot);
 
-            await PushHandler.CheckPilotAsync(pilot);
+            await CheckPilotAsync(pilot);
         }
 
         internal static bool Unsubscribe(VACDMPilot pilot)

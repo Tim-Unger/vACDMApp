@@ -50,10 +50,12 @@ public partial class FlightsView : ContentView
 
     private bool _isFirstLoad = true;
 
-    private void ContentView_Loaded(object sender, EventArgs e)
+    private async void ContentView_Loaded(object sender, EventArgs e)
     {
         if (_isFirstLoad)
         {
+            //SetLoadingScreen(true);
+
             Routing.RegisterRoute("AboutPage", typeof(AboutPage));
 
             var flights = Pilots.Render(null, null);
@@ -70,12 +72,14 @@ public partial class FlightsView : ContentView
             _timeFormatButton.Clicked += async (sender, e) =>
                 await TimeFormatButton_Clicked(sender, e);
 
-            //GetCurrentTime();
+            await UpdateDataContinuously();
+
             _isFirstLoad = false;
-            //await UpdateDataContinuously();
+            //SetLoadingScreen(false);
         }
 
         _isFirstLoad = false;
+        //SetLoadingScreen(false);
     }
 
     private void GetNearestTime()
@@ -92,6 +96,15 @@ public partial class FlightsView : ContentView
         //TODO Pause on lost focus
         while (true)
         {
+            if (_isFirstLoad)
+            {
+                //SetLoadingScreen(false);
+                _isFirstLoad = false;
+                await Task.Delay(TimeSpan.FromSeconds(30));
+            }
+
+            //SetLoadingScreen(true);
+
             await MainPage.GetAllData();
 
             var selectedAirport = AirportsBottomSheet.GetClickedAirport();
@@ -105,6 +118,8 @@ public partial class FlightsView : ContentView
             var allFlights = Pilots.Render(FilterKind.Airport, selectedAirport);
             allFlights.ForEach(FlightsStackLayout.Children.Add);
             FlightsScrollView.Content = FlightsStackLayout;
+
+            //SetLoadingScreen(false);
 
             await Task.Delay(TimeSpan.FromMinutes(1));
         }
@@ -302,8 +317,6 @@ public partial class FlightsView : ContentView
             var pilots = Pilots.Render(FilterKind.Callsign, searchText.ToUpperInvariant());
 
             pilots.ForEach(FlightsStackLayout.Children.Add);
-
-            return;
         }
     }
 
@@ -330,5 +343,10 @@ public partial class FlightsView : ContentView
         var pilots = Pilots.Render(FilterKind.Time, selectedTime.ToString());
 
         pilots.ForEach(FlightsStackLayout.Children.Add);
+    }
+
+    private void SetLoadingScreen(bool isLoading)
+    {
+        LoadingGrid.IsVisible = isLoading;
     }
 }
