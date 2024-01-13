@@ -10,7 +10,7 @@ namespace VACDMApp.Data.Renderer
 
         private static readonly GridLength _oneStar = new(3, GridUnitType.Star);
 
-        private static Grid RenderBookmark(VACDMPilot pilot)
+        internal static Grid RenderBookmark(VACDMPilot pilot)
         {
             var grid = new Grid() { Background = _darkBlue, Margin = new Thickness(10) };
 

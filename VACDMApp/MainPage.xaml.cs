@@ -168,11 +168,6 @@ namespace VACDMApp
             }
         }
 
-        internal void SetView()
-        {
-            Mainview.Content = FlightsView;
-        }
-
         private bool HasUserInternet()
         {
             var ping = new Ping();

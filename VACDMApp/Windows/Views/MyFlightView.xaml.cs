@@ -4,7 +4,6 @@ using Microsoft.Maui.Controls;
 using VACDMApp.VACDMData;
 using VACDMApp.Data.Renderer;
 using VACDMApp.Windows.BottomSheets;
-using Java.Util.Zip;
 using VACDMApp.Data;
 
 public partial class MyFlightView : ContentView
@@ -21,9 +20,15 @@ public partial class MyFlightView : ContentView
 
     private async void ContentView_Loaded(object sender, EventArgs e)
     {
+        RenderBookmarks();
+        RenderOwnFlightView();
+
         if (_isFirstLoad)
         {
             await GetCurrentTime();
+
+            _isFirstLoad = false;
+            return;
         }
 
         _isFirstLoad = false;
@@ -174,7 +179,7 @@ public partial class MyFlightView : ContentView
         }
     }
 
-    internal void RenderBookmarks()
+    private void RenderBookmarks()
     {
         //TODO only works once then breaks somehow
         BookmarksStackLayout.Children.Clear();
@@ -186,5 +191,62 @@ public partial class MyFlightView : ContentView
 
         var bookmarks = Bookmarks.Render(Data.BookmarkedPilots);
         bookmarks.ForEach(BookmarksStackLayout.Children.Add);
+
+        //BookmarksScrollView.Content = BookmarksStackLayout;
     }
+   
+    private void RenderOwnFlightView()
+    {
+        OwnFlightGrid.Children.Clear();
+
+        var vatsimPilots = Data.VatsimPilots;
+        var vacdmPilots = Data.VACDMPilots;
+        var cid = Data.Settings.Cid;
+        
+        if(vatsimPilots.Find(x => x.cid == cid) is null)
+        {
+            OwnFlightGrid.Children.Add(NoFlightLabel);
+            return;
+        }
+
+        var callsign = vatsimPilots.First(x => x.cid == cid).callsign;
+
+        if(vacdmPilots.Find(x => x.Callsign == callsign) is null)
+        {
+            OwnFlightGrid.Children.Add(NoFlightLabel);
+            return;
+        }
+
+        var yourFlightLabel = new Label()
+        {
+            Text = "Your Flight",
+            VerticalOptions = LayoutOptions.Start,
+            HorizontalOptions = LayoutOptions.Start,
+            TextColor = Colors.Grey,
+            FontSize = 18,
+            Margin = 10
+        };
+
+        var pilot = vacdmPilots.Find(x => x.Callsign == callsign);
+        var flight = Bookmarks.RenderBookmark(pilot);
+        
+        flight.VerticalOptions = LayoutOptions.Start;
+
+        var stackLayout = new VerticalStackLayout();
+
+        stackLayout.Children.Add(yourFlightLabel);
+        stackLayout.Children.Add(flight);
+
+        OwnFlightGrid.Children.Add(stackLayout);
+    }
+
+    private static readonly Label NoFlightLabel = new()
+    {
+        Text = "You dont't have an active vACDM Flight at the moment.\r\nYou can look up another cid at the top",
+        VerticalOptions = LayoutOptions.Center,
+        HorizontalOptions = LayoutOptions.Center,
+        TextColor = Colors.Grey,
+        HorizontalTextAlignment = TextAlignment.Center,
+        FontSize = 18,
+    };
 }

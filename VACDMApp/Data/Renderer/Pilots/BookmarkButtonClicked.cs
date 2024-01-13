@@ -22,7 +22,9 @@ namespace VACDMApp.Data.Renderer
             if (bookmarks.Exists(x => x.Callsign == pilot.Callsign))
             {
                 image.Source = "bookmark_outline.svg";
+
                 var removeIndex = bookmarks.FindIndex(x => x.Callsign == pilot.Callsign);
+
                 VACDMData.Data.BookmarkedPilots.RemoveAt(removeIndex);
 
                 var removedToast = Toast.Make(
@@ -30,13 +32,16 @@ namespace VACDMApp.Data.Renderer
                     CommunityToolkit.Maui.Core.ToastDuration.Short,
                     14
                 );
+
                 PushNotificationHandler.Unsubscribe(pilot);
                 await removedToast.Show();
                 //VACDMData.Data.MyFlightView.RenderBookmarks();
+
                 return;
             }
 
             image.Source = "bookmark.svg";
+
             VACDMData.Data.BookmarkedPilots.Add(pilot);
 
             var savedToast = Toast.Make(
@@ -44,6 +49,7 @@ namespace VACDMApp.Data.Renderer
                 CommunityToolkit.Maui.Core.ToastDuration.Short,
                 14
             );
+
             await savedToast.Show();
             await PushNotificationHandler.SubscribeAsync(pilot);
             //VACDMData.Data.MyFlightView.RenderBookmarks();

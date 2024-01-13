@@ -23,7 +23,9 @@
                 <RowDefinition Height="1.5*" />
             </Grid.RowDefinitions>
 
-            <ContentView x:Name="Mainview" Grid.Row="0" />
+            <Grid>
+                <ScrollView x:Name="Mainview" Grid.Row="0" />
+            </Grid>
 
             <Grid
                 x:Name="NoInternetGrid"
