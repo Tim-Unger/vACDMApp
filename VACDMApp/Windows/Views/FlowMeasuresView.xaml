@@ -5,18 +5,19 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Loaded="ContentView_Loaded">
     <Grid>
-        <RefreshView x:Name="FlowMeasuresRefreshView" Refreshing="RefreshView_Refreshing">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*" />
-                    <RowDefinition Height="2*" />
-                    <RowDefinition Height="1*" />
-                </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="10*" />
+            </Grid.RowDefinitions>
 
-                <Grid Grid.Row="1">
-                    <VerticalStackLayout x:Name="FlowMeasuresStackLayout" />
-                </Grid>
+            <Grid Grid.Row="1">
+                <RefreshView x:Name="FlowMeasuresRefreshView" Refreshing="RefreshView_Refreshing">
+                    <ScrollView VerticalOptions="FillAndExpand">
+                        <VerticalStackLayout x:Name="FlowMeasuresStackLayout" />
+                    </ScrollView>
+                </RefreshView>
             </Grid>
-        </RefreshView>
+        </Grid>
     </Grid>
 </ContentView>

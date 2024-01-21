@@ -15,6 +15,14 @@
         MandatoryRoute
     }
 
+    public enum MeasureStatus
+    {
+        Active,
+        Notified,
+        Expired,
+        Withdrawn
+    }
+
     public class FlowMeasure
     {
         [JsonPropertyName("id")]
@@ -46,8 +54,12 @@
 
         public List<Fir> NotifiedFirs { get; set; } = new();
 
+        public MeasureStatus MeasureStatus { get; set; } 
+
         [JsonPropertyName("withdrawn_at")]
         public DateTime? WithdrawnAt { get; set; }
+
+        public bool IsWithdrawn { get; set; } = false;
     }
 
     public class Measure
@@ -60,7 +72,7 @@
         public string MeasureTypeString { get; set; }
 
         [JsonPropertyName("value")]
-        public object Value { get; set; }
+        public int? Value { get; set; }
     }
 
     public class Filter
@@ -69,7 +81,7 @@
         public string Type { get; set; }
 
         [JsonPropertyName("value")]
-        public object? Value { get; set; }
+        public object[] Value { get; set; }
     }
 
     public class Fir

@@ -1,4 +1,3 @@
-using Android.App.Admin;
 using VACDMApp.Data;
 using VACDMApp.Data.OverridePermissions;
 using VACDMApp.VACDMData;
@@ -175,11 +174,11 @@ public partial class SettingsView : ContentView
 
     private async Task SetToggleStates()
     {
-        var status = await Permissions.CheckStatusAsync<SendNotifications>();
+        //var status = await Permissions.CheckStatusAsync<SendNotifications>();
+        var isPushAllowed = Preferences.Get("allow_push", false);
+        EnablePushNotificationsSwitch.IsToggled = isPushAllowed;
 
-        EnablePushNotificationsSwitch.IsToggled = status == PermissionStatus.Granted;
-
-        if (status == PermissionStatus.Denied)
+        if (!isPushAllowed)
         {
             AllowPushBookmarkGrid.IsVisible = true;
             AllowPushMyFlightGrid.IsVisible = true;
@@ -190,10 +189,8 @@ public partial class SettingsView : ContentView
             return;
         }
 
-        var isPushAllowed = Preferences.Get("allow_push", false);
-
-        AllowPushBookmarkGrid.IsVisible = !isPushAllowed;
-        AllowPushMyFlightGrid.IsVisible = !isPushAllowed;
+        AllowPushBookmarkGrid.IsVisible = false;
+        AllowPushMyFlightGrid.IsVisible = false;
 
         MyFlightTsatSwitch.IsEnabled = true;
         MyFlightChangedSwitch.IsEnabled = true;

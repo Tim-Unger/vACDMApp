@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Json;
 using VACDMApp.Data;
+using VACDMApp.Data.Renderer;
 using static VACDMApp.VACDMData.VACDMData;
 using static VACDMApp.Windows.Views.LoadingView;
 
@@ -31,7 +32,14 @@ namespace VACDMApp.VACDMData
                 }
             );
 
-            return measures;
+            measures
+                .Where(x => x.WithdrawnAt is not null)
+                .ToList()
+                .ForEach(x => x.IsWithdrawn = true);
+
+            measures.ForEach(x => x.MeasureStatus = FlowMeasures.GetStatus(x).Status);
+
+            return measures.OrderBy(x => x.MeasureStatus).ToList();
         }
 
         //TODO

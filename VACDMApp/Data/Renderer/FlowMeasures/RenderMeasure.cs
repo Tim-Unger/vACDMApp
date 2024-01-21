@@ -1,86 +1,162 @@
-﻿namespace VACDMApp.Data.Renderer
+﻿using System.Text;
+
+namespace VACDMApp.Data.Renderer
 {
     internal partial class FlowMeasures
     {
-        private static readonly Color _darkBlue = new Color(28, 40, 54);
+        private static readonly Color _darkBlue = new(28, 40, 54);
 
-        private static readonly GridLength _oneStar = new GridLength(3, GridUnitType.Star);
+        private static readonly GridLength _oneStar = new(1, GridUnitType.Star);
 
         private static Grid RenderMeasure(FlowMeasure measure)
         {
             var grid = new Grid() { Background = _darkBlue, Margin = 10 };
 
-            var status = GetStatusColor(measure);
+            var status = GetStatus(measure);
 
-            grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(20, GridUnitType.Star)));
             grid.ColumnDefinitions.Add(new ColumnDefinition(_oneStar));
+            grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(40, GridUnitType.Star)));
 
             var contentGrid = new Grid();
+            contentGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
+            contentGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
             contentGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
             contentGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
             contentGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
 
             var nameGrid = new Grid();
 
-            var nameText = $@"{measure.Ident} -- {(status.IsActive ? "Active" : "Inactive")}";
             var nameLabel = new Label()
             {
-                Text = nameText,
+                Text = measure.Ident,
                 TextColor = Colors.White,
-                Background = _darkBlue,
-                FontAttributes = FontAttributes.None,
+                FontAttributes = FontAttributes.Bold,
                 FontSize = 20,
-                HorizontalTextAlignment = TextAlignment.Center,
-                VerticalTextAlignment = TextAlignment.Center
+                Margin = 5,
+                HorizontalOptions = LayoutOptions.Start,
+            };
+
+            var statusLabel = new Label()
+            {
+                Text = measure.MeasureStatus.ToString(),
+                TextColor = Colors.White,
+                FontSize = 20,
+                FontAttributes = FontAttributes.Bold,
+                Margin = 5,
+                HorizontalOptions = LayoutOptions.End
             };
 
             nameGrid.Children.Add(nameLabel);
-            nameGrid.SetRow(nameLabel, 0);
+            nameGrid.Children.Add(statusLabel);
 
             contentGrid.Children.Add(nameGrid);
             contentGrid.SetRow(nameGrid, 0);
 
-            var dateGrid = new Grid();
-            dateGrid.ColumnDefinitions.Add(new ColumnDefinition(_oneStar));
-            dateGrid.ColumnDefinitions.Add(new ColumnDefinition(_oneStar));
+            if (measure.IsWithdrawn)
+            {
+                grid.Children.Add(contentGrid);
+                grid.SetColumn(contentGrid, 1);
+
+                var withdrawnColorGrid = new Grid() { Background = status.Color };
+                grid.Children.Add(withdrawnColorGrid);
+                grid.SetColumn(withdrawnColorGrid, 0);
+
+                return grid;
+            }
 
             var timeSpanLabel = new Label()
             {
-                Text = $"{measure.StartTime:dd.MM HH:mmZ} - {measure.EndTime:dd.MM HH:mmZ}",
+                Text = $"{measure.StartTime:dd.MM HH:mmZ} - {GetEndTimeString(measure.EndTime, measure.StartTime.Day)}",
                 TextColor = Colors.White,
-                Background = _darkBlue,
                 FontAttributes = FontAttributes.None,
                 FontSize = 20,
-                HorizontalTextAlignment = TextAlignment.Center,
-                VerticalTextAlignment = TextAlignment.Center
+                Margin = 5,
+                HorizontalOptions = LayoutOptions.Start
             };
+
+            contentGrid.Children.Add(timeSpanLabel);
+            contentGrid.SetRow(timeSpanLabel, 1);
+
+            var flowMeasure = measure.Measure;
+
+            var measureValueString = flowMeasure.Value.ToString();
+
+            var measureType = flowMeasure.MeasureType;
+
+            if (measureType == MeasureType.MDI || measureType == MeasureType.ADI)
+            {
+                var measureValue = flowMeasure.Value ?? throw new InvalidDataException();
+
+                measureValueString = GetTimeString(measureValue);
+            }
 
             var typeLabel = new Label()
             {
-                Text = $"{measure.Measure}",
+                Text = $"{flowMeasure.MeasureTypeString} {measureValueString}",
                 TextColor = Colors.White,
-                Background = _darkBlue,
-                FontAttributes = FontAttributes.None,
                 FontSize = 20,
-                HorizontalTextAlignment = TextAlignment.Center,
-                VerticalTextAlignment = TextAlignment.Center
+                Margin = 5,
             };
 
-            dateGrid.Children.Add(timeSpanLabel);
+            contentGrid.Children.Add(typeLabel);
+            contentGrid.SetRow(typeLabel, 2);
 
-            dateGrid.SetColumn(timeSpanLabel, 1);
+            var depAirportsFilter = measure.Filters.FirstOrDefault(x => x.Type == "ADEP") ?? throw new InvalidDataException();
 
-            contentGrid.Children.Add(dateGrid);
-            grid.SetRow(dateGrid, 1);
+            var depAirportsString = ConcatAirports(depAirportsFilter.Value.Select(x => x.ToString()).ToArray());
+
+            var depAirportsLabel = new Label()
+            {
+                Text = $"DEP: {depAirportsString}",
+                TextColor = Colors.White,
+                FontSize = 20,
+                Margin = 5,
+            };
+
+            contentGrid.Children.Add(depAirportsLabel);
+            contentGrid.SetRow(depAirportsLabel, 3);
+
+            var arrAirportsFilter = measure.Filters.FirstOrDefault(x => x.Type == "ADES") ?? throw new InvalidDataException();
+                
+            var arrAirportsString = ConcatAirports(arrAirportsFilter.Value.Select(x => x.ToString()).ToArray());
+
+            var arrAirportsLabel = new Label()
+            {
+                Text = $"ARR: {arrAirportsString}",
+                TextColor = Colors.White,
+                FontSize = 20,
+                Margin = 5,
+            };
+
+            contentGrid.Children.Add(arrAirportsLabel);
+            contentGrid.SetRow(arrAirportsLabel, 4);
 
             grid.Children.Add(contentGrid);
-            grid.SetColumn(contentGrid, 0);
+            grid.SetColumn(contentGrid, 1);
 
             var statusColorGrid = new Grid() { Background = status.Color };
             grid.Children.Add(statusColorGrid);
-            grid.SetColumn(statusColorGrid, 1);
+            grid.SetColumn(statusColorGrid, 0);
 
             return grid;
         }
+
+        private static string GetTimeString(int seconds) => seconds > 60 ? $"{seconds / 60} min." : $"{seconds} sec.";
+
+        private static string ConcatAirports(string[] airports)
+        {
+            var stringBuilder = new StringBuilder();
+
+            foreach (var airport in airports.Take(airports.Length - 1))
+            {
+                stringBuilder.Append($"{airport}, ");
+            }
+
+            stringBuilder.Append(airports.Last());
+
+            return stringBuilder.ToString();
+        }
+
+        private static string GetEndTimeString(DateTime endDateTime, int startDate) => endDateTime.Day == startDate ? endDateTime.ToString("HH:mmZ") : endDateTime.ToString("dd. HH:mmZ");
     }
 }

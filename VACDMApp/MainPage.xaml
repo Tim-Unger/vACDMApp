@@ -65,6 +65,33 @@
             </Grid>
 
             <Grid
+                x:Name="ErrorGrid"
+                Grid.Row="0"
+                IsVisible="False"
+                VerticalOptions="Center">
+                <VerticalStackLayout>
+                    <Label
+                        x:Name="DebugErrorLabel"
+                        FontSize="25"
+                        HorizontalTextAlignment="Center"
+                        IsVisible="false"
+                        Text=""
+                        VerticalOptions="Center" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="40"
+                        HorizontalTextAlignment="Center"
+                        Text="Error getting data"
+                        VerticalOptions="Center" />
+                    <Button
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        Pressed="TryAgainButton_Pressed"
+                        Text="Try Again" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <Grid
                 Grid.Row="1"
                 Padding="0,10,0,0"
                 Background="#232323">

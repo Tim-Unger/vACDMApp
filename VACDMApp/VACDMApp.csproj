@@ -86,6 +86,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<MauiAsset Update="Resources\Raw\airlines.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</MauiAsset>
 		<MauiAsset Update="Resources\Raw\airports.json">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</MauiAsset>
@@ -106,6 +109,9 @@
 		</MauiXaml>
 		<MauiXaml Update="Windows\BottomSheets\AirportsBottomSheet.xaml">
 			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Windows\BottomSheets\FlowMeasureBottomSheet.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Windows\BottomSheets\SingleFlightBottomSheet.xaml">
 			<Generator>MSBuild:Compile</Generator>

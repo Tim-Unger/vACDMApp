@@ -22,6 +22,8 @@ namespace VACDMApp
 
         private static bool _isFirstLoad = true;
 
+        private static MainPage _mainPage;
+
         public MainPage()
         {
             InitializeComponent();
@@ -29,16 +31,17 @@ namespace VACDMApp
 
         private async void ContentPage_Loaded(object sender, EventArgs e)
         {
+            _mainPage = this;
             await OnLoad();
         }
 
         private async Task OnLoad()
         {
             //TODO Fix Content getting fucked up when reloading
-            //Mainview.Content = LoadingView;
+            ErrorGrid.IsVisible = false;
+            NoInternetGrid.IsVisible = false;
 
-            //This is just Internet and Network State, but we need to request it anyways,
-            //since we are overriding the default Permissions Later on with the Push Notification Request
+            
 
             var hasUserInternet = HasUserInternet();
 
@@ -53,6 +56,8 @@ namespace VACDMApp
             Mainview.IsVisible = true;
             LoadingGrid.IsVisible = true;
 
+            //This is just Internet and Network State, but we need to request it anyways,
+            //since we are overriding the default Permissions Later on with the Push Notification Request
             var permissionsTask = Permissions.RequestAsync<DefaultPermissions>();
             permissionsTask.Wait();
 
@@ -118,7 +123,21 @@ namespace VACDMApp
 
                 LoadingView.SetLabelText(LoadingStatus.Settings);
 
-                await Task.WhenAll(settingsTask, dataSourcesTask);
+                var firstLoadTask = Task.WhenAll(settingsTask, dataSourcesTask);
+                try
+                {
+                    await firstLoadTask;
+                }
+                catch (Exception ex)
+                {
+#if DEBUG
+                    _mainPage.DebugErrorLabel.IsVisible = true;
+                    _mainPage.DebugErrorLabel.Text = ex.Message;
+#endif
+                    _mainPage.ErrorGrid.IsVisible = true;
+                    _mainPage.Mainview.IsVisible = false;
+                    return;
+                }
 
                 if (DataSources.Count == 0)
                 {
@@ -154,7 +173,22 @@ namespace VACDMApp
                 taskList.Add(waypointsTask);
             }
 
-            await Task.WhenAll(taskList);
+            var normalTasks = Task.WhenAll(taskList);
+
+            try
+            {
+                await normalTasks;
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                _mainPage.DebugErrorLabel.IsVisible = true;
+                _mainPage.DebugErrorLabel.Text = ex.Message;
+#endif
+                _mainPage.ErrorGrid.IsVisible = true;
+                _mainPage.Mainview.IsVisible = false;
+                return;
+            }
 
             VatsimPilots = dataTask.Result.pilots.ToList();
             VACDMPilots = vacdmTask.Result;

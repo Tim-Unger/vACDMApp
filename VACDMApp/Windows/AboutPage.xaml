@@ -73,7 +73,16 @@
             TextColor="White"
             VerticalOptions="Start" />
 
-        <Button
+        <Label
+            Margin="20"
+            FontAttributes="Bold"
+            FontSize="20"
+            HorizontalOptions="End"
+            Text="FLIGHT SIMULATION USE ONLY - NOT FOR REAL WORLD NAVIGATION"
+            TextColor="Red"
+            VerticalOptions="Start" />
+
+        <!--<Button
             x:Name="WaypointleButton"
             Margin="20,10,0,0"
             BackgroundColor="#1C2836"
@@ -82,6 +91,6 @@
             FontSize="30"
             HorizontalOptions="Start"
             Text="Waypointle Minigame"
-            TextColor="White" />
+            TextColor="White" />-->
     </VerticalStackLayout>
 </ContentPage>
