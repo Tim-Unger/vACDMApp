@@ -19,6 +19,10 @@
 - ECFMP Overview for Controllers and Pilots
 - VDGS with automatic Updates
 
+<p align="center">
+  <b>Flight Simulation Use Only - Not for Real World Navigation</b>
+  </p>
+
 ## Open Source Licenses
 
 - vACDM (GPL 3.0) - [GitHub Org](https://github.com/vACDM) - [GitHub Backend](https://github.com/vACDM/vacdm-server)
