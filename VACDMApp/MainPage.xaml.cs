@@ -41,8 +41,6 @@ namespace VACDMApp
             ErrorGrid.IsVisible = false;
             NoInternetGrid.IsVisible = false;
 
-            
-
             var hasUserInternet = HasUserInternet();
 
             if (!hasUserInternet)
@@ -200,6 +198,8 @@ namespace VACDMApp
                 Airports = airportsTask.Result;
                 Waypoints = waypointsTask.Result;
             }
+
+            _isFirstLoad = false;
         }
 
         private bool HasUserInternet()

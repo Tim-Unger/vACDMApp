@@ -54,32 +54,31 @@ public partial class FlightsView : ContentView
     {
         if (_isFirstLoad)
         {
-            //SetLoadingScreen(true);
-
             Routing.RegisterRoute("AboutPage", typeof(AboutPage));
 
             var flights = Pilots.Render(null, null);
             flights.ForEach(FlightsStackLayout.Children.Add);
             GetNearestTime();
+            ScrollToCurrentTime();
 
             ButtonsStackLayout.Children.Add(_airportsButton);
             _airportsButton.Clicked += async (sender, e) => await AirportsButton_Clicked(sender, e);
-            //ButtonsStackLayout.Children.Add(_stateButton);
-            //_stateButton.Clicked += DayButton_Clicked;
+
             ButtonsStackLayout.Children.Add(_timeButton);
             _timeButton.Clicked += TimeButton_Clicked;
+
             ButtonsStackLayout.Children.Add(_timeFormatButton);
             _timeFormatButton.Clicked += async (sender, e) =>
                 await TimeFormatButton_Clicked(sender, e);
 
+
+
             await UpdateDataContinuously();
 
             _isFirstLoad = false;
-            //SetLoadingScreen(false);
         }
 
         _isFirstLoad = false;
-        //SetLoadingScreen(false);
     }
 
     private void GetNearestTime()
@@ -89,6 +88,17 @@ public partial class FlightsView : ContentView
         var hourString = now.Hour < 10 ? $"0{now.Hour}" : now.Hour.ToString();
 
         _timeButton.Text = $"{hourString}:00Z";
+    }
+
+    private async void ScrollToCurrentTime()
+    {
+        var hour = DateTime.UtcNow.Hour;
+
+        var children = FlightsStackLayout.Children;
+
+        //var separatorLabels = children.Where(x => x is Border).Where(y => (Border)y );
+
+        await FlightsScrollView.ScrollToAsync(0, 200, true);
     }
 
     private async Task UpdateDataContinuously()

@@ -36,38 +36,14 @@ public partial class MyFlightView : ContentView
 
     private async void FindCidButton_Clicked(object sender, EventArgs e)
     {
-        if (Data.Settings.Cid is not null && string.IsNullOrWhiteSpace(CidText.Text))
-        {
-            CidText.Text = Data.Settings.Cid.ToString();
-        }
+        var isCid = int.TryParse(SearchText.Text, out _);
+        
+        var pilot = isCid ? await GetVatsimPilotByCid() : await GetVatsimPilotByCallsign();
 
-        var cidText = CidText.Text;
-
-        if (cidText is null)
-        {
-            await _page.DisplayAlert("No CID", "Please enter a CID", "Ok");
-            return;
-        }
-
-        if (!int.TryParse(cidText, out var cid))
-        {
-            //Should not be possible since we only allow numeric input, but just in case
-            await _page.DisplayAlert("Invalid CID", "The provided CID was not a number", "OK");
-            return;
-        }
-
-        if (!cid.IsValidCid())
-        {
-            await _page.DisplayAlert("Invalid CID", "The provided CID does not exist", "OK");
-            return;
-        }
-
-        var pilot = Data.VatsimPilots.Find(x => x.cid == cid);
-
-        if (pilot is null)
+        if(pilot is null)
         {
             await _page.DisplayAlert(
-                "CID not found",
+                "CID or Callsign not found",
                 "Looks like you don't have an active flight at the moment",
                 "OK"
             );
@@ -91,8 +67,8 @@ public partial class MyFlightView : ContentView
         }
 
         //Trick to hide the onscreen keyboard
-        CidText.IsEnabled = false;
-        CidText.IsEnabled = true;
+        SearchText.IsEnabled = false;
+        SearchText.IsEnabled = true;
 
         SingleFlightBottomSheet.SelectedCallsign = vacdmPilot.Callsign;
 
@@ -103,38 +79,14 @@ public partial class MyFlightView : ContentView
 
     private async void ShowVdgsButton_Clicked(object sender, EventArgs e)
     {
-        if (Data.Settings.Cid is not null && string.IsNullOrWhiteSpace(CidText.Text))
-        {
-            CidText.Text = Data.Settings.Cid.ToString();
-        }
+        var isCid = int.TryParse(SearchText.Text, out _);
 
-        var cidText = CidText.Text;
-
-        if (cidText is null)
-        {
-            await _page.DisplayAlert("No CID", "Please enter a CID", "Ok");
-            return;
-        }
-
-        if (!int.TryParse(cidText, out var cid))
-        {
-            //Should not be possible since we only allow numeric input, but just in case
-            await _page.DisplayAlert("Invalid CID", "The provided CID was not a number", "OK");
-            return;
-        }
-
-        if (!cid.IsValidCid())
-        {
-            await _page.DisplayAlert("Invalid CID", "The provided CID does not exist", "OK");
-            return;
-        }
-
-        var pilot = Data.VatsimPilots.Find(x => x.cid == cid);
+        var pilot = isCid ? await GetVatsimPilotByCid() : await GetVatsimPilotByCallsign();
 
         if (pilot is null)
         {
             await _page.DisplayAlert(
-                "CID not found",
+                "CID or Callsign not found",
                 "Looks like you don't have an active flight at the moment",
                 "OK"
             );
@@ -158,8 +110,8 @@ public partial class MyFlightView : ContentView
         }
 
         //Trick to hide the onscreen keyboard
-        CidText.IsEnabled = false;
-        CidText.IsEnabled = true;
+        SearchText.IsEnabled = false;
+        SearchText.IsEnabled = true;
 
         VDGSBottomSheet.SelectedCallsign = pilot.callsign;
         var vdgsSheet = new VDGSBottomSheet();
@@ -242,11 +194,61 @@ public partial class MyFlightView : ContentView
 
     private static readonly Label NoFlightLabel = new()
     {
-        Text = "You dont't have an active vACDM Flight at the moment.\r\nYou can look up another cid at the top",
+        Text = "You dont't have an active vACDM Flight at the moment.\r\nYou can look up another CID at the top",
         VerticalOptions = LayoutOptions.Center,
         HorizontalOptions = LayoutOptions.Center,
         TextColor = Colors.Grey,
         HorizontalTextAlignment = TextAlignment.Center,
         FontSize = 18,
     };
+
+    private async Task<Pilot?> GetVatsimPilotByCid()
+    {
+        if (Data.Settings.Cid is not null && string.IsNullOrWhiteSpace(SearchText.Text))
+        {
+            SearchText.Text = Data.Settings.Cid.ToString();
+        }
+
+        var searchText = SearchText.Text;
+
+        if (SearchText is null)
+        {
+            await _page.DisplayAlert("No CID", "Please enter a CID or Callsign", "Ok");
+            return null;
+        }
+
+        if (!int.TryParse(searchText, out var cid))
+        {
+            await _page.DisplayAlert("Invalid CID", "The provided CID was not a number", "OK");
+            return null;
+        }
+
+        if (!cid.IsValidCid())
+        {
+            await _page.DisplayAlert("Invalid CID", "The provided CID does not exist", "OK");
+            return null;
+        }
+
+        return Data.VatsimPilots.Find(x => x.cid == cid);
+    }
+
+    private async Task<Pilot?> GetVatsimPilotByCallsign()
+    {
+        if (Data.Settings.Cid is not null && string.IsNullOrWhiteSpace(SearchText.Text))
+        {
+            SearchText.Text = Data.Settings.Cid.ToString();
+        }
+
+        var callsign = SearchText.Text.ToUpperInvariant();
+
+        if (callsign is null)
+        {
+            await _page.DisplayAlert("No CID", "Please enter a CID or Callsign", "Ok");
+            return null;
+        }
+
+        var vatsimPilot = Data.VatsimPilots.FirstOrDefault(x => x.callsign == callsign);
+
+        return vatsimPilot is null ? null : vatsimPilot;
+    }
 }

@@ -65,7 +65,9 @@ namespace VACDMApp
                     14
                 );
                 toast.Show().ConfigureAwait(false);
+
                 _backSwipeCount++;
+
                 return true;
             }
 
@@ -76,6 +78,7 @@ namespace VACDMApp
                 return false;
             }
 
+            _backSwipeCount = 0;
             return true;
         }
     }

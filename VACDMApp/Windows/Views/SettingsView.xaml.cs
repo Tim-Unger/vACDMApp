@@ -44,6 +44,8 @@ public partial class SettingsView : ContentView
             _isFirstLoad = false;
             return;
         }
+
+        _isFirstLoad = false;
     }
 
     private async void DataSourcePicker_SelectedIndexChanged(object sender, EventArgs e)

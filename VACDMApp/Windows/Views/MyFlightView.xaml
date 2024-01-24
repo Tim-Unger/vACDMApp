@@ -32,12 +32,11 @@
                         VerticalOptions="Center" />
 
                     <Entry
-                        x:Name="CidText"
+                        x:Name="SearchText"
                         Margin="10,5,10,5"
                         BackgroundColor="#232323"
                         HeightRequest="50"
-                        Keyboard="Numeric"
-                        Placeholder="Your CID"
+                        Placeholder="CID or Callsign"
                         TextColor="#FEFEFE" />
 
                     <Grid VerticalOptions="Start">

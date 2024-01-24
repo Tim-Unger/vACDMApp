@@ -1,4 +1,3 @@
-using VACDMApp.Data;
 using VACDMApp.Data.Renderer;
 
 namespace VACDMApp.Windows.Views;
@@ -19,6 +18,8 @@ public partial class FlowMeasuresView : ContentView
             var measures = FlowMeasures.Render();
 
             measures.ForEach(FlowMeasuresStackLayout.Children.Add);
+
+            _isFirstLoad = false;
         }
 
         _isFirstLoad = false;
