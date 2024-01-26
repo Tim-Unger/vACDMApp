@@ -21,6 +21,7 @@ public partial class SingleFlightBottomSheet : BottomSheet
 
     private async void ContentView_Loaded(object sender, EventArgs e)
     {
+        await FlightsView.HideKeyboardAsync();
         await UpdateDataContinuously();
     }
 

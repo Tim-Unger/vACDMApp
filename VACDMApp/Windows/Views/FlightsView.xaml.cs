@@ -4,6 +4,7 @@ using VACDMApp.Windows.BottomSheets;
 using static VACDMApp.VACDMData.Data;
 using static VACDMApp.Data.Renderer.Pilots;
 using VACDMApp.Data;
+using CommunityToolkit.Maui.Core.Platform;
 
 namespace VACDMApp.Windows.Views;
 
@@ -70,8 +71,6 @@ public partial class FlightsView : ContentView
             ButtonsStackLayout.Children.Add(_timeFormatButton);
             _timeFormatButton.Clicked += async (sender, e) =>
                 await TimeFormatButton_Clicked(sender, e);
-
-
 
             await UpdateDataContinuously();
 
@@ -251,6 +250,18 @@ public partial class FlightsView : ContentView
             return;
         }
 
+        //Check if search is a CID
+        if (int.TryParse(searchText, out var cid))
+        {
+            FlightsStackLayout.Children.Clear();
+
+            var pilots = Pilots.Render(FilterKind.Cid, cid.ToString());
+
+            pilots.ForEach(FlightsStackLayout.Children.Add);
+
+            return;
+        }
+
         //Check if Search is an Airline ICAO
         if (searchText.Length <= 3)
         {
@@ -301,24 +312,6 @@ public partial class FlightsView : ContentView
             }
         }
 
-        //Check if search is a CID
-        if (int.TryParse(searchText, out var cid))
-        {
-            FlightsStackLayout.Children.Clear();
-
-            if (!cid.IsValidCid())
-            {
-                //TODO Nothing found screen
-                return;
-            }
-
-            var pilots = Pilots.Render(FilterKind.Cid, cid.ToString());
-
-            pilots.ForEach(FlightsStackLayout.Children.Add);
-
-            return;
-        }
-
         //Check if search is a single callsign
         if (VACDMPilots.Any(x => x.Callsign == searchText.ToUpperInvariant()))
         {
@@ -358,5 +351,10 @@ public partial class FlightsView : ContentView
     private void SetLoadingScreen(bool isLoading)
     {
         LoadingGrid.IsVisible = isLoading;
+    }
+
+    internal async Task HideKeyboardAsync()
+    {
+        await FlightsSearchBar.HideKeyboardAsync(CancellationToken.None);
     }
 }

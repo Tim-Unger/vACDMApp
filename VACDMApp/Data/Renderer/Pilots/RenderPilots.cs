@@ -84,24 +84,33 @@ namespace VACDMApp.Data.Renderer
             //TryParse is done before the function is called
             var cid = int.Parse(filterValue);
 
-            var vatsimPilotWithCid = VACDMData.Data.VatsimPilots.FirstOrDefault(x => x.cid == cid);
+            var vatsimPilotsWithCid = VACDMData.Data.VatsimPilots.Where(x => x.cid.ToString().StartsWith(cid.ToString()));
 
-            if (vatsimPilotWithCid is null)
+            if (vatsimPilotsWithCid is null)
             {
                 return new(1) { RenderNoFlightsFound() };
             }
 
-            var pilotWithCid = pilotsWithFP.FirstOrDefault(
-                x => x.Callsign == vatsimPilotWithCid.callsign
-            );
+            var pilotsWithCid = new List<VACDMPilot>();
 
-            if (pilotWithCid is null)
+            foreach (var vatsimPilot in vatsimPilotsWithCid)
+            {
+                var vacdmPilot = VACDMData.Data.VACDMPilots.FirstOrDefault(x => x.Callsign == vatsimPilot.callsign);
+
+                if (vacdmPilot is null)
+                {
+                    continue;
+                }
+
+                pilotsWithCid.Add(vacdmPilot);
+            }
+
+            if (pilotsWithCid.Count == 0)
             {
                 return new(1) { RenderNoFlightsFound() };
             }
 
-            var singleList = new List<VACDMPilot>(1) { pilotWithCid };
-            return SplitAndRenderGrid(singleList);
+            return SplitAndRenderGrid(pilotsWithCid);
         }
 
         private static List<Border> SearchByCallsign(

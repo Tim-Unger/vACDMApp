@@ -2,43 +2,46 @@
 {
     internal partial class Pilots
     {
-        private static Border RenderTimeSeperator(int value, bool isDay)
+        private static Border RenderTimeSeperator(int value)
         {
             var border = new Border()
             {
                 Stroke = Colors.Transparent,
                 BackgroundColor = Colors.Transparent
             };
-            var grid = new Grid();
-            grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(2, GridUnitType.Star)));
-            grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(10, GridUnitType.Star)));
-            grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(2, GridUnitType.Star)));
+
+            var grid = new Grid() { Margin = new Thickness(0, 20, 0, 20) };
 
             var now = DateTime.UtcNow;
 
-            var labelText = isDay ? new DateOnly(now.Year, now.Month, value).ToShortDateString() : $"{value}:00Z";
-
             var timeLabel = new Label()
             {
-                Text = labelText,
+                Text = $"{value}:00Z",
+                Margin = new Thickness(5,0,0,0),
                 Padding = new Thickness(10, 0, 0, 0),
                 TextColor = Colors.White,
                 Background = Colors.Black,
                 FontAttributes = FontAttributes.None,
                 VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Start,
                 FontSize = 17
             };
 
-            if (isDay)
+            var dateLabel = new Label()
             {
-                grid.SetColumnSpan(timeLabel, 2);
-                timeLabel.HorizontalOptions = LayoutOptions.Start;
-            }
+                Text = now.ToShortDateString(),
+                Margin = new Thickness(0, 0, 5, 0),
+                Padding = new Thickness(0, 0, 10, 0),
+                TextColor = Colors.White,
+                Background = Colors.Black,
+                FontAttributes = FontAttributes.None,
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.End,
+                FontSize = 17
+            };
 
             grid.Children.Add(timeLabel);
-
-            grid.SetColumn(timeLabel, 0);
+            grid.Children.Add(dateLabel);
 
             border.Content = grid;
 

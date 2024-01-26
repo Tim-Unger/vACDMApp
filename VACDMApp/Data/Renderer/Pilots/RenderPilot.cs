@@ -15,40 +15,46 @@ namespace VACDMApp.Data.Renderer
             var flightPlan =
                 VACDMData.Data.VatsimPilots.Find(x => x.callsign == pilot.Callsign).flight_plan
                 ?? throw new InvalidDataException("");
+
             var airlines = VACDMData.Data.Airlines;
 
             var border = new Border() { StrokeThickness = 0, Stroke = Color.FromArgb("#454545") };
+
             var parentGridContainer = new Grid() { Background = _darkBlue };
-            var grid = new Grid() { Margin = new Thickness(10) };
+
+            var grid = new Grid();
 
             grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
             grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(3, GridUnitType.Star)));
             grid.ColumnDefinitions.Add(
-                new ColumnDefinition(new GridLength(0.3, GridUnitType.Star))
+                new ColumnDefinition(new GridLength(0.8, GridUnitType.Star))
             );
-            grid.ColumnDefinitions.Add(
-                new ColumnDefinition(new GridLength(0.3, GridUnitType.Star))
-            );
+            //grid.ColumnDefinitions.Add(
+            //    new ColumnDefinition(new GridLength(0.3, GridUnitType.Star))
+            //);
 
-            var timeGrid = new Grid();
+            var timeGrid = new Grid() { Margin = new Thickness(20, 10, 10, 10) };
 
             grid.SetColumn(timeGrid, 0);
 
             var eobt = new Label()
             {
                 Text = pilot.Vacdm.Eobt.ToString("HH:mmZ"),
-                Margin = new Thickness(20, 0, 0, 0),
                 TextColor = Colors.White,
                 FontAttributes = FontAttributes.Bold,
                 FontSize = 20,
-                HorizontalTextAlignment = TextAlignment.Start,
-                VerticalTextAlignment = TextAlignment.Center
+                HorizontalOptions = LayoutOptions.Start,
+                VerticalOptions = LayoutOptions.Center
             };
 
             timeGrid.Children.Add(eobt);
             timeGrid.SetRow(eobt, 0);
 
-            var flightGrid = new Grid() { HorizontalOptions = LayoutOptions.Start };
+            var flightGrid = new Grid()
+            {
+                HorizontalOptions = LayoutOptions.Start,
+                Margin = new Thickness(30, 10, 0, 10)
+            };
             flightGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
             flightGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
             flightGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
@@ -87,6 +93,7 @@ namespace VACDMApp.Data.Renderer
             };
 
             var icao = pilot.Callsign[..3].ToUpper();
+
             var airline =
                 airlines.FirstOrDefault(x => x.icao == icao)
                 ?? new Airline()
@@ -107,9 +114,9 @@ namespace VACDMApp.Data.Renderer
 
             var arrivalIcao = pilot.FlightPlan.Arrival;
 
-            var arrAirportData = VACDMData.Data.Airports.FirstOrDefault(
-                x => x.Icao == arrivalIcao
-            ) ?? new Airport() { Iata = arrivalIcao, Icao = arrivalIcao };
+            var arrAirportData =
+                VACDMData.Data.Airports.FirstOrDefault(x => x.Icao == arrivalIcao)
+                ?? new Airport() { Iata = arrivalIcao, Icao = arrivalIcao };
 
             var flightData =
                 $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival} ({arrAirportData.Iata}), {flightPlan.aircraft_short}";
@@ -165,10 +172,10 @@ namespace VACDMApp.Data.Renderer
 
             //TODO Padding is fucked up
             //TODO Button Alignment
-            var bookmarkGrid = new Grid() { Padding = new Thickness(10)};
+            var bookmarkGrid = new Grid() { Margin = new Thickness(10) };
 
-            bookmarkGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
-            bookmarkGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
+            //bookmarkGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
+            //bookmarkGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
 
             //TODO not woking
             var isPilotBookmarked =
@@ -176,9 +183,14 @@ namespace VACDMApp.Data.Renderer
                 != null;
             var bookmarkImageSource = isPilotBookmarked ? "bookmark.svg" : "bookmark_outline.svg";
 
-            var bookmarkImage = new Image() { Source = bookmarkImageSource, Scale = 0.5};
+            var bookmarkImage = new Image() { Source = bookmarkImageSource, Scale = 0.35 };
 
-            var bookmarkButton = new Button() { Background = Colors.Transparent, Scale = 1.5 };
+            var bookmarkButton = new Button()
+            {
+                Background = Colors.Transparent,
+                Scale = 1.5,
+                HorizontalOptions = LayoutOptions.Start
+            };
 
             bookmarkButton.Clicked += async (sender, e) => await BookmarkButton_Clicked(sender, e);
 

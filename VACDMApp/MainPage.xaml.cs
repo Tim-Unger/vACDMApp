@@ -41,6 +41,11 @@ namespace VACDMApp
             ErrorGrid.IsVisible = false;
             NoInternetGrid.IsVisible = false;
 
+            //This is just Internet and Network State, but we need to request it anyways,
+            //since we are overriding the default Permissions Later on with the Push Notification Request
+            var permissionsTask = Permissions.RequestAsync<DefaultPermissions>();
+            permissionsTask.Wait();
+
             var hasUserInternet = HasUserInternet();
 
             if (!hasUserInternet)
@@ -53,11 +58,6 @@ namespace VACDMApp
             NoInternetGrid.IsVisible = false;
             Mainview.IsVisible = true;
             LoadingGrid.IsVisible = true;
-
-            //This is just Internet and Network State, but we need to request it anyways,
-            //since we are overriding the default Permissions Later on with the Push Notification Request
-            var permissionsTask = Permissions.RequestAsync<DefaultPermissions>();
-            permissionsTask.Wait();
 
             await GetAllData();
 
