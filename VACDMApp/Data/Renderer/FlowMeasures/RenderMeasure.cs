@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 
 namespace VACDMApp.Data.Renderer
 {
@@ -26,9 +27,15 @@ namespace VACDMApp.Data.Renderer
 
             var nameGrid = new Grid();
 
+            var identRegex = new Regex("([A-Z]{3,4})([0-9]{1,4})([A-Z])?");
+
+            var ident = measure.Ident;
+
+            var identString = identRegex.IsMatch(ident) ? GetIdentString(identRegex.Match(ident).Groups) : ident;
+
             var nameLabel = new Label()
             {
-                Text = measure.Ident,
+                Text = identString,
                 TextColor = Colors.White,
                 FontAttributes = FontAttributes.Bold,
                 FontSize = 20,
@@ -66,7 +73,7 @@ namespace VACDMApp.Data.Renderer
 
             var timeSpanLabel = new Label()
             {
-                Text = $"{measure.StartTime:dd.MM HH:mmZ} - {GetEndTimeString(measure.EndTime, measure.StartTime.Day)}",
+                Text = $"{measure.StartTime:dd.MM. HH:mmZ} - {GetEndTimeString(measure.EndTime, measure.StartTime.Day)}",
                 TextColor = Colors.White,
                 FontAttributes = FontAttributes.None,
                 FontSize = 20,
@@ -92,7 +99,7 @@ namespace VACDMApp.Data.Renderer
 
             var typeLabel = new Label()
             {
-                Text = $"{flowMeasure.MeasureTypeString} {measureValueString}",
+                Text = $"{flowMeasure.MeasureTypeString}: {measureValueString}",
                 TextColor = Colors.White,
                 FontSize = 20,
                 Margin = 5,
@@ -158,5 +165,7 @@ namespace VACDMApp.Data.Renderer
         }
 
         private static string GetEndTimeString(DateTime endDateTime, int startDate) => endDateTime.Day == startDate ? endDateTime.ToString("HH:mmZ") : endDateTime.ToString("dd. HH:mmZ");
+
+        private static string GetIdentString(GroupCollection groups) => $"{groups[1].Value}{groups[2].Value} - {groups[3].Value}";
     }
 }

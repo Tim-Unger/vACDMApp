@@ -18,7 +18,7 @@ namespace VACDMApp.Data.Renderer
 
             var airlines = VACDMData.Data.Airlines;
 
-            var border = new Border() { StrokeThickness = 0, Stroke = Color.FromArgb("#454545") };
+            var border = new Border() { StrokeThickness = 0, Stroke = Color.FromArgb("#454545"), Background = Colors.Transparent };
 
             var parentGridContainer = new Grid() { Background = _darkBlue };
 
@@ -27,7 +27,7 @@ namespace VACDMApp.Data.Renderer
             grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
             grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(3, GridUnitType.Star)));
             grid.ColumnDefinitions.Add(
-                new ColumnDefinition(new GridLength(0.8, GridUnitType.Star))
+                new ColumnDefinition(new GridLength(0.7, GridUnitType.Star))
             );
             //grid.ColumnDefinitions.Add(
             //    new ColumnDefinition(new GridLength(0.3, GridUnitType.Star))
@@ -126,7 +126,7 @@ namespace VACDMApp.Data.Renderer
 
             var regMatch = regRegex.Match(flightPlan.remarks)?.Groups[1].Value;
 
-            var defaultRegs = new string[] { "N172SP", "GFENX", "PMDG737", "ASXGS" };
+            var defaultRegs = new string[] { "N172SP", "GFENX", "PMDG737", "ASXGS", "PMDG73", "N320SB", "PMDG" };
 
             if (defaultRegs.Any(x => x == regMatch))
             {

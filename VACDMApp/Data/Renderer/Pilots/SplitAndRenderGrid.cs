@@ -12,7 +12,7 @@ namespace VACDMApp.Data.Renderer
 
             foreach (var hourWindow in sortByTime)
             {
-                splitGrid.Add(RenderTimeSeperator(hourWindow.Key));
+                splitGrid.Add(RenderTimeSeperator(hourWindow.First().Vacdm.Eobt));
 
                 splitGrid.AddRange(hourWindow.Select(RenderPilot));
             }

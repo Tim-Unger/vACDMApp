@@ -7,11 +7,10 @@
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
                 <RowDefinition Height="10*" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="0">
                 <RefreshView x:Name="FlowMeasuresRefreshView" Refreshing="RefreshView_Refreshing">
                     <ScrollView VerticalOptions="FillAndExpand">
                         <VerticalStackLayout x:Name="FlowMeasuresStackLayout" />

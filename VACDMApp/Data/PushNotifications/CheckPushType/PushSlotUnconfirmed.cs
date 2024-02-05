@@ -12,6 +12,12 @@ namespace VACDMApp.Data.PushNotifications
                 return;
             }
 
+            //You can only confirm you own slot, so every other flight doesn't make sense
+            if (!isOwnFlight)
+            {
+                return;
+            }
+
             var vacdm = pilot.Vacdm;
 
             //Unconfirmed Slot Push has already been given

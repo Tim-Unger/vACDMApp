@@ -77,10 +77,10 @@
             Margin="20"
             FontAttributes="Bold"
             FontSize="20"
-            HorizontalOptions="End"
-            Text="FLIGHT SIMULATION USE ONLY - NOT FOR REAL WORLD NAVIGATION"
-            TextColor="Red"
-            VerticalOptions="Start" />
+            HorizontalOptions="Center"
+            HorizontalTextAlignment="Center"
+            Text="FLIGHT SIMULATION USE ONLY&#x0a;NOT FOR REAL WORLD NAVIGATION"
+            TextColor="Red" />
 
         <!--<Button
             x:Name="WaypointleButton"

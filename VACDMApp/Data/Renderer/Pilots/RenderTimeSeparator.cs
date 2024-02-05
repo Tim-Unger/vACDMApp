@@ -2,7 +2,9 @@
 {
     internal partial class Pilots
     {
-        private static Border RenderTimeSeperator(int value)
+        internal static List<(Border Border, DateTime DateTime)> TimeValues = new();
+
+        private static Border RenderTimeSeperator(DateTime eobtTime)
         {
             var border = new Border()
             {
@@ -12,15 +14,12 @@
 
             var grid = new Grid() { Margin = new Thickness(0, 20, 0, 20) };
 
-            var now = DateTime.UtcNow;
-
             var timeLabel = new Label()
             {
-                Text = $"{value}:00Z",
-                Margin = new Thickness(5,0,0,0),
+                Text = $"{eobtTime.Hour}:00Z",
+                Margin = new Thickness(5, 0, 0, 0),
                 Padding = new Thickness(10, 0, 0, 0),
                 TextColor = Colors.White,
-                Background = Colors.Black,
                 FontAttributes = FontAttributes.None,
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Start,
@@ -29,11 +28,10 @@
 
             var dateLabel = new Label()
             {
-                Text = now.ToShortDateString(),
+                Text = eobtTime.ToShortDateString(),
                 Margin = new Thickness(0, 0, 5, 0),
                 Padding = new Thickness(0, 0, 10, 0),
                 TextColor = Colors.White,
-                Background = Colors.Black,
                 FontAttributes = FontAttributes.None,
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.End,
@@ -45,9 +43,22 @@
 
             border.Content = grid;
 
+            TimeValues.Add(
+                (
+                    border,
+                    new DateTime(
+                        eobtTime.Year,
+                        eobtTime.Month,
+                        eobtTime.Day,
+                        eobtTime.Hour,
+                        0,
+                        0,
+                        DateTimeKind.Utc
+                    )
+                )
+            );
+
             return border;
         }
-
-
     }
 }

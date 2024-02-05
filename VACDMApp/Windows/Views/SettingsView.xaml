@@ -107,6 +107,7 @@
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
 
             <Label
@@ -173,10 +174,28 @@
                     Toggled="MyFlightStartupSwitch_Toggled" />
             </Grid>
 
+            <Grid Grid.Row="4">
+                <Label
+                    Grid.Column="0"
+                    FontAttributes="None"
+                    FontSize="15"
+                    HorizontalOptions="Start"
+                    Text="Slot is not yet confirmed"
+                    VerticalOptions="Center" />
+
+                <Switch
+                    x:Name="MyFlightSlotUnconfirmedSwitch"
+                    Grid.Column="1"
+                    HorizontalOptions="End"
+                    IsEnabled="True"
+                    IsToggled="False"
+                    Toggled="MyFlightSlotChangedSwitch_Toggled" />
+            </Grid>
+
             <Grid
                 x:Name="AllowPushMyFlightGrid"
                 Grid.Row="1"
-                Grid.RowSpan="3">
+                Grid.RowSpan="4">
                 <Rectangle Background="#303030" Opacity="0.6" />
                 <Label
                     FontAttributes="Bold"

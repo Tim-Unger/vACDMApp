@@ -140,6 +140,12 @@ namespace VACDMApp
                 if (DataSources.Count == 0)
                 {
                     DataSources = dataSourcesTask.Result;
+
+                    //TODO add back
+//#if RELEASE
+//                    var testDataIndex = DataSources.FindIndex(x => x.ShortName == "TEST");
+//                    DataSources.RemoveAt(testDataIndex);
+//#endif
                 }
 
                 if (VACDMData.Data.Settings is null)

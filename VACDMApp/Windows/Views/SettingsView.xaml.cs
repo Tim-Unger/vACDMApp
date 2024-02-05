@@ -115,7 +115,6 @@ public partial class SettingsView : ContentView
             AllowPushBookmarkGrid.IsVisible = true;
             AllowPushMyFlightGrid.IsVisible = true;
             Preferences.Set("allow_push", false);
-
             return;
         }
 
@@ -197,10 +196,12 @@ public partial class SettingsView : ContentView
         MyFlightTsatSwitch.IsEnabled = true;
         MyFlightChangedSwitch.IsEnabled = true;
         MyFlightStartupSwitch.IsEnabled = true;
+        MyFlightSlotUnconfirmedSwitch.IsEnabled = true;
 
         MyFlightTsatSwitch.IsToggled = _settings.SendPushMyFlightInsideWindow;
         MyFlightChangedSwitch.IsToggled = _settings.SendPushMyFlightTsatChanged;
         MyFlightStartupSwitch.IsToggled = _settings.SendPushMyFlightInsideWindow;
+        MyFlightSlotUnconfirmedSwitch.IsToggled = _settings.SendPushMyFlightSlotUnconfirmed;
 
         BookmarkFlightTsatSwitch.IsEnabled = true;
         BookmarkFlightChangedSwitch.IsEnabled = true;
@@ -209,5 +210,14 @@ public partial class SettingsView : ContentView
         BookmarkFlightTsatSwitch.IsToggled = _settings.SendPushBookmarkFlightInsideWindow;
         BookmarkFlightChangedSwitch.IsToggled = _settings.SendPushBookmarkTsatChanged;
         BookmarkFlightStartupSwitch.IsToggled = _settings.SendPushBookmarkStartup;
+    }
+
+    private void MyFlightSlotUnconfirmedSwitch_Toggled(object sender, ToggledEventArgs e)
+    {
+            var isToggled = ((Switch)sender).IsToggled;
+
+            VACDMData.Data.Settings.SendPushBookmarkStartup = isToggled;
+
+            Preferences.Set("push_my_flight_slot_unconfirmed", isToggled);
     }
 }

@@ -19,5 +19,7 @@
         public bool SendPushBookmarkTsatChanged { get; set; } = false;
 
         public bool SendPushBookmarkStartup { get; set; } = false;
+
+        public bool SendPushMyFlightSlotUnconfirmed { get; set; } = false;
     }
 }

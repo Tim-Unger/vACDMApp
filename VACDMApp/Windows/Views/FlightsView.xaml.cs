@@ -91,13 +91,19 @@ public partial class FlightsView : ContentView
 
     private async void ScrollToCurrentTime()
     {
-        var hour = DateTime.UtcNow.Hour;
+        var now = DateTime.UtcNow;
 
-        var children = FlightsStackLayout.Children;
+        var currentTimeSeparator = TimeValues.FirstOrDefault(x => x.DateTime.Day == now.Day && x.DateTime.Hour == now.Hour);
 
-        //var separatorLabels = children.Where(x => x is Border).Where(y => (Border)y );
+        //TODO coordinates not working yet
+        if(currentTimeSeparator.Border is null)
+        {
+            return;
+        }
 
-        await FlightsScrollView.ScrollToAsync(0, 200, true);
+        (var x, var y) = (currentTimeSeparator.Border.X, currentTimeSeparator.Border.Y);
+
+        await FlightsScrollView.ScrollToAsync(x, y, true);
     }
 
     private async Task UpdateDataContinuously()
