@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Drawing;
+using System.Text.RegularExpressions;
 using VACDMApp.VACDMData;
 
 namespace VACDMApp.Data.Renderer
@@ -27,10 +28,11 @@ namespace VACDMApp.Data.Renderer
             var callsignLabel = new Label()
             {
                 Text = pilot.Callsign,
+                Margin = new Thickness(20, 0, 0, 10),
                 TextColor = Colors.White,
-                Background = _darkBlue,
+                Background = Colors.Transparent,
                 FontAttributes = FontAttributes.Bold,
-                FontSize = 25,
+                FontSize = 30,
                 HorizontalTextAlignment = TextAlignment.End,
                 VerticalTextAlignment = TextAlignment.Center
             };
@@ -82,7 +84,7 @@ namespace VACDMApp.Data.Renderer
             {
                 Text = flightData,
                 TextColor = Colors.White,
-                Background = _darkBlue,
+                Background = Colors.Transparent,
                 FontSize = 17,
                 HorizontalTextAlignment = TextAlignment.End,
                 VerticalTextAlignment = TextAlignment.Center
@@ -91,9 +93,10 @@ namespace VACDMApp.Data.Renderer
             //TODO Different Background Color
             var statusLabel = new Label()
             {
+                Margin = new Thickness(0, 10, 0, 10),
                 Text = Pilots.GetFlightStatus(pilot),
                 TextColor = Colors.White,
-                Background = _darkBlue,
+                Background = Colors.Transparent,
                 FontSize = 20,
                 HorizontalTextAlignment = TextAlignment.End,
                 VerticalTextAlignment = TextAlignment.Center

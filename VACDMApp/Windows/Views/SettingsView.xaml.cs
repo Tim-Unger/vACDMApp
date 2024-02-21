@@ -66,6 +66,8 @@ public partial class SettingsView : ContentView
 
         Preferences.Default.Set("data_source", settings.DataSource);
 
+        //FlowMeasureFirs.ForEach(x => FlowMesureFirsCollectionView.AddLogicalChild(new Label() { Text = x.Name }));
+
         await VACDMData.Data.FlightsView.RefreshDataAndView();
     }
 
@@ -219,5 +221,10 @@ public partial class SettingsView : ContentView
             VACDMData.Data.Settings.SendPushBookmarkStartup = isToggled;
 
             Preferences.Set("push_my_flight_slot_unconfirmed", isToggled);
+    }
+
+    private void AllowEcfmpPushSwitch_Toggled(object sender, ToggledEventArgs e)
+    {
+
     }
 }

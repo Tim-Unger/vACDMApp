@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:Microsoft.Maui.Controls.Compatibility;assembly=Microsoft.Maui.Controls.Compatibility"
+    xmlns:local="clr-namespace:VACDMApp.Windows.Views"
     Loaded="ContentView_Loaded">
     <Grid>
         <Grid.RowDefinitions>
@@ -14,8 +15,7 @@
             <RowDefinition Height="3*" />
             <RowDefinition Height="3*" />
             <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
+            <RowDefinition Height="2*" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
@@ -50,6 +50,7 @@
             x:Name="ValidCidLabel"
             Grid.Row="1"
             Margin="20,0,0,0"
+            FontAttributes="Bold"
             Text=""
             VerticalOptions="Start" />
 
@@ -189,7 +190,7 @@
                     HorizontalOptions="End"
                     IsEnabled="True"
                     IsToggled="False"
-                    Toggled="MyFlightSlotChangedSwitch_Toggled" />
+                    Toggled="MyFlightSlotUnconfirmedSwitch_Toggled" />
             </Grid>
 
             <Grid
@@ -294,5 +295,29 @@
                     VerticalOptions="Center" />
             </Grid>
         </Grid>
+
+        <Label
+            Grid.Row="6"
+            Grid.Column="0"
+            Margin="20,0,0,0"
+            FontAttributes="None"
+            FontSize="20"
+            HorizontalOptions="Start"
+            Text="Enable ECFMP Push Notifications"
+            VerticalOptions="Center" />
+
+        <Switch
+            x:Name="AllowEcfmpPushSwitch"
+            Grid.Row="6"
+            Grid.Column="1"
+            HorizontalOptions="End"
+            IsEnabled="True"
+            IsToggled="False"
+            Toggled="AllowEcfmpPushSwitch_Toggled" />
+
+        <!--<CollectionView
+            x:Name="FlowMesureFirsCollectionView"
+            Grid.Row="7"
+            SelectionMode="Multiple" />-->
     </Grid>
 </ContentView>

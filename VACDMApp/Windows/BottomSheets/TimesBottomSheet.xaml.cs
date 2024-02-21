@@ -36,7 +36,7 @@ public partial class TimesBottomSheet : BottomSheet
             .DistinctBy(x => x.Hour) //Only get each value once
             .Select(x => x.Hour) //Only get the hour
             .Order() //Order by time
-            .Select(x => x.ToString()) //We can't Cast<string> the Collection, so we have to run ToString()
+            .Select(x => x.ToString()) //We can't .Cast<string> the Collection, so we have to run ToString() on each item
             .ToList();
 
         var handleBar = new RoundRectangle()

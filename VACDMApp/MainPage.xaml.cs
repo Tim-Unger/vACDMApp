@@ -41,6 +41,9 @@ namespace VACDMApp
             ErrorGrid.IsVisible = false;
             NoInternetGrid.IsVisible = false;
 
+            SetButtons(false);
+            Mainview.Content = null;
+
             //This is just Internet and Network State, but we need to request it anyways,
             //since we are overriding the default Permissions Later on with the Push Notification Request
             var permissionsTask = Permissions.RequestAsync<DefaultPermissions>();
@@ -63,6 +66,7 @@ namespace VACDMApp
 
             LoadingGrid.IsVisible = false;
             Mainview.Content = FlightsView;
+            SetButtons(true);
 
             await PushNotificationHandler.StartGlobalHandler();
 
@@ -196,7 +200,8 @@ namespace VACDMApp
 
             VatsimPilots = dataTask.Result.pilots.ToList();
             VACDMPilots = vacdmTask.Result;
-            FlowMeasures = measuresTask.Result;
+            FlowMeasures = measuresTask.Result.FlowMeasures;
+            FlowMeasureFirs = measuresTask.Result.Firs;
 
             if (_isFirstLoad)
             {
@@ -233,6 +238,14 @@ namespace VACDMApp
         private async void TryAgainButton_Pressed(object sender, EventArgs e)
         {
             await OnLoad();
+        }
+
+        private void SetButtons(bool isEnabled)
+        {
+            MyFlightButton.IsEnabled = isEnabled;
+            AllFlightsButton.IsEnabled = isEnabled;
+            FlowMeasuresButton.IsEnabled = isEnabled;
+            SettingsButton.IsEnabled = isEnabled;
         }
     }
 }

@@ -92,7 +92,9 @@ namespace VACDMApp.Data.Renderer
 
             if (measureType == MeasureType.MDI || measureType == MeasureType.ADI)
             {
-                var measureValue = flowMeasure.Value ?? throw new InvalidDataException();
+                var measureValueRaw = flowMeasure.Value ?? throw new InvalidDataException();
+
+                var measureValue = int.Parse(measureValueRaw.ToString());
 
                 measureValueString = GetTimeString(measureValue);
             }
@@ -110,7 +112,11 @@ namespace VACDMApp.Data.Renderer
 
             var depAirportsFilter = measure.Filters.FirstOrDefault(x => x.Type == "ADEP") ?? throw new InvalidDataException();
 
-            var depAirportsString = ConcatAirports(depAirportsFilter.Value.Select(x => x.ToString()).ToArray());
+            var depValuesRaw = depAirportsFilter.Value.ToString();
+
+            var depValues = JsonSerializer.Deserialize<List<string>>(depValuesRaw);
+
+            var depAirportsString = ConcatAirports(depValues.Select(x => x.ToString()).ToArray());
 
             var depAirportsLabel = new Label()
             {
@@ -124,8 +130,12 @@ namespace VACDMApp.Data.Renderer
             contentGrid.SetRow(depAirportsLabel, 3);
 
             var arrAirportsFilter = measure.Filters.FirstOrDefault(x => x.Type == "ADES") ?? throw new InvalidDataException();
-                
-            var arrAirportsString = ConcatAirports(arrAirportsFilter.Value.Select(x => x.ToString()).ToArray());
+
+            var arrValuesRaw = arrAirportsFilter.Value.ToString();
+
+            var arrValues = JsonSerializer.Deserialize<List<string>>(arrValuesRaw);
+
+            var arrAirportsString = ConcatAirports(arrValues.Select(x => x.ToString()).ToArray());
 
             var arrAirportsLabel = new Label()
             {

@@ -13,7 +13,7 @@ namespace VACDMApp.Data.Renderer
         internal static Grid RenderGrid(string callsign)
         {
             var flightPlan =
-                VACDMData.Data.VatsimPilots.FirstOrDefault(x => x.callsign == callsign).flight_plan
+                VACDMData.Data.VatsimPilots.FirstOrDefault(x => x.callsign == callsign)?.flight_plan
                 ?? throw new Exception();
             var airlines = VACDMData.Data.Airlines;
 
@@ -21,33 +21,61 @@ namespace VACDMApp.Data.Renderer
 
             var grid = new Grid { BackgroundColor = _darkGrey };
 
-            grid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(0.5, GridUnitType.Star)));
             grid.RowDefinitions.Add(new RowDefinition(new GridLength(2, GridUnitType.Star)));
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star))); //Flight Info
             grid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
-            grid.RowDefinitions.Add(new RowDefinition(new GridLength(2, GridUnitType.Star)));
             grid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star)));
-            grid.RowDefinitions.Add(new RowDefinition(new GridLength(2, GridUnitType.Star)));
-            grid.RowDefinitions.Add(new RowDefinition(new GridLength(5, GridUnitType.Star))); //Placeholder bottom
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star))); //Times Info
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star))); 
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(1, GridUnitType.Star))); 
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(2, GridUnitType.Star))); //Flight Position
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(4, GridUnitType.Star))); //Placeholder bottom
 
             var placeholderRectangle = new Rectangle()
             {
                 BackgroundColor = _darkGrey,
-                HeightRequest = 300
+                HeightRequest = 200
             };
 
             grid.Children.Add(placeholderRectangle);
-            grid.SetRow(placeholderRectangle, 6);
+            grid.SetRow(placeholderRectangle, 9);
 
-            var airport = new Label()
+            var airportData = VACDMData.Data.Airports.FirstOrDefault(
+                x => x.Icao == pilot.FlightPlan.Departure
+            );
+
+            var airportText =
+                $"From {airportData?.Icao ?? pilot.FlightPlan.Departure} ({airportData?.Iata ?? ""})";
+
+            var airportLabel = new Label()
             {
-                Text = $"From: {pilot.FlightPlan.Departure}",
+                Text = airportText,
                 TextColor = Colors.White,
-                Background = _darkBlue,
-                FontAttributes = FontAttributes.None,
-                FontSize = 15
+                FontSize = 20,
+                Margin = new Thickness(10, 0, 0, 0)
             };
-            grid.Children.Add(airport);
-            grid.SetRow(airport, 0);
+
+            var timesLabel = new Label()
+            {
+                Text = "Times",
+                TextColor = Colors.White,
+                FontSize = 20,
+                Margin = new Thickness(10, 0, 0, 0)
+            };
+
+            var resourcesLabel = new Label()
+            {
+                Text = "Resources",
+                TextColor = Colors.White,
+                FontSize = 20,
+                Margin = new Thickness(10, 0, 0, 0)
+            };
+
+            grid.Children.Add(airportLabel);
+            grid.SetRow(airportLabel, 1);
+
+            var topBarGrid = TopBarGrid(pilot);
 
             var flightInfoGrid = FlightInfoGrid(pilot);
 
@@ -60,38 +88,21 @@ namespace VACDMApp.Data.Renderer
 
             var flightPositionGrid = FlightPositionGrid(pilot, pilot.Vacdm);
 
-            var placeholderRectangleOne = new Rectangle()
-            {
-                Background = _darkGrey,
-                HeightRequest = 25
-            };
-            var placeholderRectangleTwo = new Rectangle()
-            {
-                Background = _darkGrey,
-                HeightRequest = 25
-            };
-            var placeholderRectangleThree = new Rectangle()
-            {
-                Background = _darkGrey,
-                HeightRequest = 25
-            };
-
-            grid.Children.Add(placeholderRectangleOne);
-            grid.Children.Add(placeholderRectangleTwo);
-            grid.Children.Add(placeholderRectangleThree);
-
-            grid.SetRow(placeholderRectangleOne, 0);
-            grid.SetRow(placeholderRectangleTwo, 2);
-            grid.SetRow(placeholderRectangleThree, 4);
+            grid.Children.Add(topBarGrid);
+            grid.SetRow(topBarGrid, 0);
 
             grid.Children.Add(flightInfoGrid);
-            grid.SetRow(flightInfoGrid, 1);
+            grid.SetRow(flightInfoGrid, 2);
 
+            grid.Children.Add(timesLabel);
+            grid.SetRow(timesLabel, 4);
             grid.Children.Add(timesInfoGrid);
-            grid.SetRow(timesInfoGrid, 3);
+            grid.SetRow(timesInfoGrid, 5);
 
+            grid.Children.Add(resourcesLabel);
+            grid.SetRow(resourcesLabel, 6);
             grid.Children.Add(flightPositionGrid);
-            grid.SetRow(flightPositionGrid, 5);
+            grid.SetRow(flightPositionGrid, 7);
 
             return grid;
         }

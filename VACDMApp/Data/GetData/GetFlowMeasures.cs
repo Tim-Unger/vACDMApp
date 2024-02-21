@@ -8,7 +8,7 @@ namespace VACDMApp.VACDMData
 {
     public class FlowMeasuresData
     {
-        public static async Task<List<FlowMeasure>> GetFlowMeasuresAsync()
+        public static async Task<(List<FlowMeasure> FlowMeasures, List<Fir> Firs)> GetFlowMeasuresAsync()
         {
             Data.LoadingView.SetLabelText(LoadingStatus.FlowMeasures);
 
@@ -27,8 +27,7 @@ namespace VACDMApp.VACDMData
             measures.ForEach(
                 x =>
                 {
-                    x.Measure.MeasureType = GetMeasureType(x.Measure.TypeRaw);
-                    x.Measure.MeasureTypeString = GetMeasureTypeString(x.Measure.TypeRaw);
+                    (x.Measure.MeasureType, x.Measure.MeasureTypeString) = GetMeasureType(x.Measure.TypeRaw);
                 }
             );
 
@@ -39,7 +38,9 @@ namespace VACDMApp.VACDMData
 
             measures.ForEach(x => x.MeasureStatus = FlowMeasures.GetStatus(x).Status);
 
-            return measures.OrderBy(x => x.MeasureStatus).ToList();
+            var sortedMeasures = measures.OrderBy(x => x.MeasureStatus).ToList();
+
+            return (sortedMeasures, firs);
         }
 
         //TODO
@@ -48,37 +49,20 @@ namespace VACDMApp.VACDMData
                 "https://ecfmp.vatsim.net/api/v1/flight-information-region"
             );
 
-        private static MeasureType GetMeasureType(string measureTypeRaw) =>
+        private static (MeasureType MeasureType, string MeasureTypeString) GetMeasureType(string measureTypeRaw) =>
             measureTypeRaw switch
             {
-                "minimum_departure_interval" => MeasureType.MDI,
-                "average_departure_interval" => MeasureType.ADI,
-                "per_hour" => MeasureType.FlightsPerHour,
-                "miles_in_trail" => MeasureType.MIT,
-                "max_ias" => MeasureType.MaxIas,
-                "max_mach" => MeasureType.MaxMach,
-                "ias_reduction" => MeasureType.IasReduction,
-                "mach_reduction" => MeasureType.MachReduction,
-                "prohibit" => MeasureType.Prohibit,
-                "ground_stop" => MeasureType.GroundStop,
-                "mandatory_route" => MeasureType.MandatoryRoute,
-                _ => throw new ArgumentOutOfRangeException(nameof(measureTypeRaw))
-            };
-
-        private static string GetMeasureTypeString(string measureTypeRaw) =>
-            measureTypeRaw switch
-            {
-                "minimum_departure_interval" => "MDI",
-                "average_departure_interval" => "ADI",
-                "per_hour" => "Flights per Hour",
-                "miles_in_trail" => "Miles in Trail",
-                "max_ias" => "Max Indicated Airspeed",
-                "max_mach" => "Max Mach Number",
-                "ias_reduction" => "Reduce IAS by",
-                "mach_reduction" => "Reduce Mach Number by",
-                "prohibit" => "Prohibit",
-                "ground_stop" => "Ground Stop",
-                "mandatory_route" => "Mandatory Route",
+                "minimum_departure_interval" => (MeasureType.MDI, "MDI"),
+                "average_departure_interval" => (MeasureType.ADI, "ADI"),
+                "per_hour" => (MeasureType.FlightsPerHour, "Flights per Hour"),
+                "miles_in_trail" => (MeasureType.MIT, "Miles in Trail"),
+                "max_ias" => (MeasureType.MaxIas, "Max Indicated Airspeed"),
+                "max_mach" => (MeasureType.MaxMach, "Max Mach Number"),
+                "ias_reduction" => (MeasureType.IasReduction, "Reduce IAS by"),
+                "mach_reduction" => (MeasureType.MachReduction, "Reduce Mach Number by"),
+                "prohibit" => (MeasureType.Prohibit, "Prohibit"),
+                "ground_stop" => (MeasureType.GroundStop, "Ground Stop"),
+                "mandatory_route" => (MeasureType.MandatoryRoute, "Mandatory Route"),
                 _ => throw new ArgumentOutOfRangeException(nameof(measureTypeRaw))
             };
     }

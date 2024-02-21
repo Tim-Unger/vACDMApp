@@ -72,7 +72,7 @@
         public string MeasureTypeString { get; set; }
 
         [JsonPropertyName("value")]
-        public int? Value { get; set; }
+        public object? Value { get; set; }
     }
 
     public class Filter
@@ -81,7 +81,7 @@
         public string Type { get; set; }
 
         [JsonPropertyName("value")]
-        public object[] Value { get; set; }
+        public object Value { get; set; }
     }
 
     public class Fir

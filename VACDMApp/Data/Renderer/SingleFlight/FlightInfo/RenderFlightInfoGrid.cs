@@ -10,7 +10,7 @@ namespace VACDMApp.Data.Renderer
             {
                 Padding = 10,
                 Margin = 10,
-                BackgroundColor = _darkBlue
+                BackgroundColor = Color.FromArgb("#323f5c")
             };
 
             flightInfoGrid.ColumnDefinitions.Add(
@@ -33,7 +33,7 @@ namespace VACDMApp.Data.Renderer
             {
                 Text = pilot.Vacdm.Eobt.ToString("HH:mmZ"),
                 TextColor = Colors.White,
-                Background = _darkBlue,
+                Background = Colors.Transparent,
                 FontAttributes = FontAttributes.Bold,
                 FontSize = 25,
                 VerticalTextAlignment = TextAlignment.Center
@@ -41,11 +41,12 @@ namespace VACDMApp.Data.Renderer
             var dateLabel = new Label()
             {
                 Text = DateOnly.FromDateTime(DateTime.UtcNow).ToShortDateString(),
+                Margin = new Thickness(0, 5, 0, 0),
                 TextColor = Colors.White,
-                Background = _darkBlue,
+                Background = Colors.Transparent,
                 FontAttributes = FontAttributes.None,
-                FontSize = 25,
-                VerticalTextAlignment = TextAlignment.Center
+                FontSize = 15,
+                VerticalTextAlignment = TextAlignment.Start
             };
 
             timeDateGrid.Children.Add(eobtLabel);

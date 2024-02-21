@@ -1,10 +1,8 @@
-﻿using static VACDMApp.VACDMData.Data;
-
-namespace VACDMApp.Data.Renderer
+﻿namespace VACDMApp.Data.Renderer
 {
     internal partial class FlowMeasures
     {
-        internal static List<Grid> Render()
+        internal static List<Grid> Render(bool showActive, bool showNotified, bool showExpired, bool showWithdrawn)
         {
             //TODO Update Data
             var measures = VACDMData.Data.FlowMeasures;
@@ -14,7 +12,33 @@ namespace VACDMApp.Data.Renderer
                 return new() { RenderNoMeasuresFound() };
             }
 
-            return measures.Select(RenderMeasure).ToList();
+            var allowedStatuses = new List<MeasureStatus>();
+
+            if (showActive)
+            {
+                allowedStatuses.Add(MeasureStatus.Active);
+            }
+
+            if(showNotified)
+            {
+                allowedStatuses.Add(MeasureStatus.Notified);
+            }
+
+            if (showExpired)
+            {
+                allowedStatuses.Add(MeasureStatus.Expired);
+            }
+
+            if (showWithdrawn)
+            {
+                allowedStatuses.Add(MeasureStatus.Withdrawn);
+            }
+
+            var filteredMeasures = FilterMeasures(allowedStatuses);
+
+            return filteredMeasures.Select(RenderMeasure).ToList();
         }
+
+        private static List<FlowMeasure> FilterMeasures(List<MeasureStatus> allowedStatuses) => VACDMData.Data.FlowMeasures.Where(x => allowedStatuses.Any(y => x.MeasureStatus == y)).ToList();
     }
 }

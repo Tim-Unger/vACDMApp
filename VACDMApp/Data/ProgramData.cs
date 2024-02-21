@@ -19,6 +19,8 @@ namespace VACDMApp.VACDMData
 
         internal static List<FlowMeasure> FlowMeasures = new();
 
+        internal static List<Fir> FlowMeasureFirs = new();
+
         internal static List<Pilot> VatsimPilots = new();
 
         internal static List<Airline> Airlines = new();
