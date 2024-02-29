@@ -23,6 +23,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="2*" />
             </Grid.ColumnDefinitions>
 
             <Label
@@ -37,12 +38,24 @@
             <Entry
                 x:Name="CidEntry"
                 Grid.Column="1"
-                Margin="0,0,0,20"
+                Margin="0,0,0,0"
                 BackgroundColor="#232323"
                 FontAttributes="None"
                 FontSize="20"
                 Keyboard="Numeric"
                 TextChanged="CidEntry_TextChanged"
+                VerticalOptions="Center" />
+
+            <Label
+                x:Name="CidData"
+                Grid.Column="2"
+                Margin="0"
+                Padding="0"
+                Background="Transparent"
+                FontAttributes="None"
+                FontSize="15"
+                HorizontalOptions="Start"
+                Text=""
                 VerticalOptions="Center" />
         </Grid>
 
@@ -296,28 +309,47 @@
             </Grid>
         </Grid>
 
-        <Label
-            Grid.Row="6"
-            Grid.Column="0"
-            Margin="20,0,0,0"
-            FontAttributes="None"
-            FontSize="20"
-            HorizontalOptions="Start"
-            Text="Enable ECFMP Push Notifications"
-            VerticalOptions="Center" />
+        <Grid Grid.Row="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
 
-        <Switch
-            x:Name="AllowEcfmpPushSwitch"
-            Grid.Row="6"
-            Grid.Column="1"
-            HorizontalOptions="End"
-            IsEnabled="True"
-            IsToggled="False"
-            Toggled="AllowEcfmpPushSwitch_Toggled" />
+            <Label
+                Grid.Column="0"
+                Margin="20,0,0,0"
+                FontAttributes="None"
+                FontSize="20"
+                HorizontalOptions="Start"
+                Text="Enable ECFMP Push Notifications"
+                VerticalOptions="Center" />
 
-        <!--<CollectionView
-            x:Name="FlowMesureFirsCollectionView"
-            Grid.Row="7"
-            SelectionMode="Multiple" />-->
+            <Button
+                x:Name="EditFlowFirsButton"
+                Grid.Column="1"
+                Margin="0,10,0,10"
+                Clicked="EditFlowFirsButton_Clicked"
+                FontSize="15"
+                HorizontalOptions="Center"
+                Text="FIRs"
+                VerticalOptions="Center" />
+
+            <Switch
+                x:Name="FlowMeasuresSwitch"
+                Grid.Column="2"
+                HorizontalOptions="End"
+                IsEnabled="True"
+                IsToggled="False"
+                Toggled="FlowMeasuresSwitch_Toggled" />
+
+            <ActivityIndicator
+                x:Name="FlowMeasuresBusyIndicator"
+                Grid.Column="2"
+                HorizontalOptions="End"
+                IsRunning="True"
+                IsVisible="False"
+                Color="White" />
+        </Grid>
     </Grid>
 </ContentView>

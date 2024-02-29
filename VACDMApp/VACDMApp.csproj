@@ -110,6 +110,9 @@
 		<MauiXaml Update="Windows\BottomSheets\AirportsBottomSheet.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Windows\BottomSheets\FirBottomSheet.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Windows\BottomSheets\FlowMeasureBottomSheet.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

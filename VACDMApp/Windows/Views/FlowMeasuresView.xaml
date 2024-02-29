@@ -11,7 +11,7 @@
                 <RowDefinition Height="10*" />
             </Grid.RowDefinitions>
 
-            <Grid
+            <!--<Grid
                 x:Name="ButtonsGrid"
                 Grid.Row="0"
                 Margin="10">
@@ -69,7 +69,7 @@
                     HorizontalOptions="Center"
                     Text="Withdrawn"
                     TextColor="White" />
-            </Grid>
+            </Grid>-->
 
             <Grid Grid.Row="1">
                 <RefreshView x:Name="FlowMeasuresRefreshView" Refreshing="RefreshView_Refreshing">

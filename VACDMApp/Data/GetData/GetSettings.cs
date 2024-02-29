@@ -26,6 +26,12 @@ namespace VACDMApp.Data
 
             var pushBookmarkStartup = Preferences.Get("push_bookmark_startup", false);
 
+            var pushMyFlightSlotUnconfirmed = Preferences.Get("push_my_flight_slot_unconfirmed", false);
+
+            var pushFlowMeasures = Preferences.Get("push_flow_measures", false);
+
+            var flowMesurePushFirs = Preferences.Get("flow_measure_push_firs", "");
+
             return new Settings()
             {
                 Cid = cid != 0 ? cid : null,
@@ -37,6 +43,9 @@ namespace VACDMApp.Data
                 SendPushBookmarkFlightInsideWindow = pushBookmarkWindow,
                 SendPushBookmarkTsatChanged = pushBookmarkTsatChanged,
                 SendPushBookmarkStartup = pushBookmarkStartup,
+                SendPushMyFlightSlotUnconfirmed = pushMyFlightSlotUnconfirmed,
+                SendPushFlowMeasures = pushFlowMeasures,
+                FlowMeasurePushFirs = flowMesurePushFirs
             };
         }
     }

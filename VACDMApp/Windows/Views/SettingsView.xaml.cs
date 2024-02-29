@@ -1,9 +1,30 @@
+using Android.Provider;
+using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Views;
+using Javax.Security.Auth;
+using System.Net.Http.Json;
 using VACDMApp.Data;
 using VACDMApp.Data.OverridePermissions;
 using VACDMApp.VACDMData;
+using VACDMApp.Windows.BottomSheets;
 using static VACDMApp.VACDMData.Data;
+using static VACDMApp.VACDMData.VACDMData;
 
 namespace VACDMApp.Windows.Views;
+
+public class Rating
+{
+    public string id { get; set; }
+    public int rating { get; set; }
+    public int pilotrating { get; set; }
+    public int militaryrating { get; set; }
+    public object susp_date { get; set; }
+    public DateTime reg_date { get; set; }
+    public string region { get; set; }
+    public string division { get; set; }
+    public string subdivision { get; set; }
+    public DateTime lastratingchange { get; set; }
+}
 
 public partial class SettingsView : ContentView
 {
@@ -15,6 +36,10 @@ public partial class SettingsView : ContentView
     private static bool _isFirstLoad = true;
 
     private VACDMData.Settings _settings = new();
+
+    private static bool _pushFirModal = false;
+
+    private static CancellationTokenSource _cancellationTokenSource = new();
 
     private async void ContentView_Loaded(object sender, EventArgs e)
     {
@@ -71,12 +96,18 @@ public partial class SettingsView : ContentView
         await VACDMData.Data.FlightsView.RefreshDataAndView();
     }
 
-    private void CidEntry_TextChanged(object sender, TextChangedEventArgs e)
+    private async void CidEntry_TextChanged(object sender, TextChangedEventArgs e)
     {
+        _cancellationTokenSource.Cancel();
+
+        //Reset the token once it has been fired
+        _cancellationTokenSource = new CancellationTokenSource();
+
         if (string.IsNullOrWhiteSpace(CidEntry.Text))
         {
             ValidCidLabel.TextColor = Colors.Red;
             ValidCidLabel.Text = "CID is invalid";
+            CidData.Text = "Invalid";
             return;
         }
 
@@ -86,13 +117,53 @@ public partial class SettingsView : ContentView
         {
             ValidCidLabel.TextColor = Colors.Red;
             ValidCidLabel.Text = "CID is invalid";
+            CidData.Text = "Invalid";
             return;
         }
 
         ValidCidLabel.TextColor = Colors.Green;
         ValidCidLabel.Text = "CID is valid";
 
-        Preferences.Set("cid", cid);
+        var ratingUrl = $"https://api.vatsim.net/api/ratings/{cid}";
+
+        CidData.Text = "Loading";
+
+        try
+        {
+            var cidData = await Client.GetFromJsonAsync<Rating>(
+                ratingUrl,
+                _cancellationTokenSource.Token
+            );
+
+            Preferences.Set("cid", cid);
+
+            var rating = GetRatingString(cidData.rating);
+
+            CidData.Text = rating;
+
+            var subdivision = cidData.subdivision;
+
+            //if (string.IsNullOrWhiteSpace(subdivision))
+            //{
+            //    var division = cidData.division;
+
+            //    if (string.IsNullOrWhiteSpace(division))
+            //    {
+            //        CidData.Text = rating;
+            //        return;
+            //    }
+
+            //    CidData.Text = $"{rating} - {division}";
+            //    return;
+            //}
+
+            //CidData.Text = $"{rating} - {subdivision}";
+        }
+        catch
+        {
+            ValidCidLabel.TextColor = Colors.Red;
+            ValidCidLabel.Text = "CID is invalid";
+        }
     }
 
     private async void EnablePushNotificationsSwitch_Toggled(object sender, ToggledEventArgs e)
@@ -185,7 +256,7 @@ public partial class SettingsView : ContentView
         {
             AllowPushBookmarkGrid.IsVisible = true;
             AllowPushMyFlightGrid.IsVisible = true;
-            
+
             MyFlightPushGrid.IsEnabled = false;
             BookmarkedFlightsPushGrid.IsEnabled = false;
 
@@ -212,19 +283,87 @@ public partial class SettingsView : ContentView
         BookmarkFlightTsatSwitch.IsToggled = _settings.SendPushBookmarkFlightInsideWindow;
         BookmarkFlightChangedSwitch.IsToggled = _settings.SendPushBookmarkTsatChanged;
         BookmarkFlightStartupSwitch.IsToggled = _settings.SendPushBookmarkStartup;
+
+        FlowMeasuresSwitch.IsToggled = _settings.SendPushFlowMeasures;
     }
 
     private void MyFlightSlotUnconfirmedSwitch_Toggled(object sender, ToggledEventArgs e)
     {
-            var isToggled = ((Switch)sender).IsToggled;
+        var isToggled = ((Switch)sender).IsToggled;
 
-            VACDMData.Data.Settings.SendPushBookmarkStartup = isToggled;
+        VACDMData.Data.Settings.SendPushBookmarkStartup = isToggled;
 
-            Preferences.Set("push_my_flight_slot_unconfirmed", isToggled);
+        Preferences.Set("push_my_flight_slot_unconfirmed", isToggled);
     }
 
-    private void AllowEcfmpPushSwitch_Toggled(object sender, ToggledEventArgs e)
+    private async void FlowMeasuresSwitch_Toggled(object sender, ToggledEventArgs e)
     {
+        var isToggled = ((Switch)sender).IsToggled;
 
+        VACDMData.Data.Settings.SendPushFlowMeasures = isToggled;
+
+        EditFlowFirsButton.IsVisible = isToggled;
+
+        Preferences.Set("push_flow_measures", isToggled);
+
+        if (!isToggled)
+        {
+            return;
+        }
+
+        if (!_pushFirModal)
+        {
+            _pushFirModal = !_pushFirModal;
+            return;
+        }
+
+        FlowMeasuresSwitch.IsVisible = false;
+        FlowMeasuresBusyIndicator.IsVisible = true;
+
+        if (!string.IsNullOrWhiteSpace(Preferences.Get("flow_measure_push_firs", "")))
+        {
+            _cancellationTokenSource.Cancel();
+            var firBottomSheet = new FirBottomSheet();
+
+            firBottomSheet.Closed += FirBottomSheet_Closed;
+
+            await App.Current.MainPage.ShowPopupAsync(firBottomSheet);
+        }
+    }
+
+    private void FirBottomSheet_Closed(object sender, PopupClosedEventArgs e)
+    {
+        FlowMeasuresSwitch.IsVisible = true;
+        FlowMeasuresBusyIndicator.IsVisible = false;
+    }
+
+    private string GetRatingString(int index) =>
+        index switch
+        {
+            -1 => "INA",
+            0 => "SUS",
+            1 => "OBS",
+            2 => "S1",
+            3 => "S2",
+            4 => "S3",
+            5 => "C1",
+            6 => "C2",
+            7 => "C3",
+            8 => "I1",
+            9 => "I2",
+            10 => "I3",
+            11 => "SUP",
+            12 => "ADM"
+        };
+
+    private async void EditFlowFirsButton_Clicked(object sender, EventArgs e)
+    {
+        _cancellationTokenSource.Cancel();
+
+        var firBottomSheet = new FirBottomSheet();
+
+        firBottomSheet.Closed += FirBottomSheet_Closed;
+
+        await App.Current.MainPage.ShowPopupAsync(firBottomSheet);
     }
 }

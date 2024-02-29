@@ -21,5 +21,9 @@
         public bool SendPushBookmarkStartup { get; set; } = false;
 
         public bool SendPushMyFlightSlotUnconfirmed { get; set; } = false;
+
+        public bool SendPushFlowMeasures { get; set; } = false;
+
+        public string FlowMeasurePushFirs { get; set; } = "";
     }
 }
