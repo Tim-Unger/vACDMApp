@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Maui.Alerts;
-using VACDMApp.Data.PushNotifications;
-using VACDMApp.Windows.Views;
+using VacdmApp.Data.PushNotifications;
+using VacdmApp.Windows.Views;
 
-namespace VACDMApp.Data.Renderer
+namespace VacdmApp.Data.Renderer
 {
     internal partial class Pilots
     {
@@ -14,8 +14,8 @@ namespace VACDMApp.Data.Renderer
             var callsignLabel = (Label)callsignGrid.Children[1];
             var callsign = callsignLabel.Text;
 
-            var pilot = VACDMData.Data.VACDMPilots.First(x => x.Callsign == callsign);
-            var bookmarks = VACDMData.Data.BookmarkedPilots;
+            var pilot = Data.VacdmPilots.First(x => x.Callsign == callsign);
+            var bookmarks = Data.BookmarkedPilots;
 
             var image = (Image)((Grid)((Button)sender).Parent).Children[1];
 
@@ -25,7 +25,7 @@ namespace VACDMApp.Data.Renderer
 
                 var removeIndex = bookmarks.FindIndex(x => x.Callsign == pilot.Callsign);
 
-                VACDMData.Data.BookmarkedPilots.RemoveAt(removeIndex);
+                Data.BookmarkedPilots.RemoveAt(removeIndex);
 
                 var removedToast = Toast.Make(
                     $"Removed Flight {callsign} from your Bookmarks",
@@ -35,14 +35,14 @@ namespace VACDMApp.Data.Renderer
 
                 PushNotificationHandler.Unsubscribe(pilot);
                 await removedToast.Show();
-                //VACDMData.Data.MyFlightView.RenderBookmarks();
+                //Data.Data.MyFlightView.RenderBookmarks();
 
                 return;
             }
 
             image.Source = "bookmark.svg";
 
-            VACDMData.Data.BookmarkedPilots.Add(pilot);
+            Data.BookmarkedPilots.Add(pilot);
 
             var savedToast = Toast.Make(
                 $"Saved Flight {callsign} to your Bookmarks",
@@ -52,7 +52,7 @@ namespace VACDMApp.Data.Renderer
 
             await savedToast.Show();
             await PushNotificationHandler.SubscribeAsync(pilot);
-            //VACDMData.Data.MyFlightView.RenderBookmarks();
+            //Data.Data.MyFlightView.RenderBookmarks();
         }
     }
 }

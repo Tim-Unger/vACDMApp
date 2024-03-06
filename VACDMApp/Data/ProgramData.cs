@@ -1,7 +1,7 @@
-﻿using VACDMApp.Data;
-using VACDMApp.Windows.Views;
+﻿using VacdmApp.Data;
+using VacdmApp.Windows.Views;
 
-namespace VACDMApp.VACDMData
+namespace VacdmApp.Data
 {
     internal enum SenderPage
     {
@@ -16,7 +16,7 @@ namespace VACDMApp.VACDMData
 
     internal class Data
     {
-        internal static List<VACDMPilot> VACDMPilots = new();
+        internal static List<VacdmPilot> VacdmPilots = new();
 
         internal static List<FlowMeasure> FlowMeasures = new();
 
@@ -42,7 +42,7 @@ namespace VACDMApp.VACDMData
 
         internal static AboutPage AboutPage = new();
 
-        internal static List<VACDMPilot> BookmarkedPilots = new();
+        internal static List<VacdmPilot> BookmarkedPilots = new();
 
         internal static List<string> Waypoints = new();
 

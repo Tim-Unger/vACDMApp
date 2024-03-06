@@ -1,10 +1,10 @@
 ﻿using System.Net.Http.Json;
-using VACDMApp.Data;
-using VACDMApp.Data.Renderer;
-using static VACDMApp.VACDMData.VACDMData;
-using static VACDMApp.Windows.Views.LoadingView;
+using VacdmApp.Data;
+using VacdmApp.Data.Renderer;
+using static VacdmApp.Data.Data;
+using static VacdmApp.Windows.Views.LoadingView;
 
-namespace VACDMApp.VACDMData
+namespace VacdmApp.Data
 {
     public class FlowMeasuresData
     {
@@ -15,7 +15,7 @@ namespace VACDMApp.VACDMData
             //TODO
             var firs = await GetFirsAsync();
 
-            var measures = await Client.GetFromJsonAsync<List<FlowMeasure>>(
+            var measures = await VacdmData.Client.GetFromJsonAsync<List<FlowMeasure>>(
                 "https://ecfmp.vatsim.net/api/v1/flow-measure"
             );
 
@@ -36,7 +36,7 @@ namespace VACDMApp.VACDMData
                 .ToList()
                 .ForEach(x => x.IsWithdrawn = true);
 
-            measures.ForEach(x => x.MeasureStatus = FlowMeasures.GetStatus(x).Status);
+            measures.ForEach(x => x.MeasureStatus = Renderer.FlowMeasures.GetStatus(x).Status);
 
             var sortedMeasures = measures.OrderBy(x => x.MeasureStatus).ToList();
 
@@ -45,7 +45,7 @@ namespace VACDMApp.VACDMData
 
         //TODO
         private static async Task<List<Fir>> GetFirsAsync() =>
-            await Client.GetFromJsonAsync<List<Fir>>(
+            await VacdmData.Client.GetFromJsonAsync<List<Fir>>(
                 "https://ecfmp.vatsim.net/api/v1/flight-information-region"
             );
 

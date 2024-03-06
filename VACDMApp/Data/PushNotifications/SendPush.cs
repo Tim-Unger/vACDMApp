@@ -1,8 +1,8 @@
 ﻿using Plugin.LocalNotification;
-using static VACDMApp.Data.PushNotifications.PushNotificationHandler;
-using VACDMApp.VACDMData;
+using static VacdmApp.Data.PushNotifications.PushNotificationHandler;
+using VacdmApp.Data;
 
-namespace VACDMApp.Data.PushNotifications
+namespace VacdmApp.Data.PushNotifications
 {
     internal class PushSender
     {
@@ -10,7 +10,7 @@ namespace VACDMApp.Data.PushNotifications
             new();
 
         internal static async Task SendPushNotificationAsync(
-            VACDMPilot pilot,
+            VacdmPilot pilot,
             NotificationType notificationType
         )
         {
@@ -54,7 +54,7 @@ namespace VACDMApp.Data.PushNotifications
             await LocalNotificationCenter.Current.Show(request);
         }
 
-        private static int TimeToExpire(VACDMPilot pilot)
+        private static int TimeToExpire(VacdmPilot pilot)
         {
             var timeDifference = pilot.Vacdm.Tsat.AddMinutes(5) - DateTime.UtcNow;
 

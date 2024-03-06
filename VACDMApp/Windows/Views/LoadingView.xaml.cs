@@ -1,4 +1,4 @@
-namespace VACDMApp.Windows.Views;
+namespace VacdmApp.Windows.Views;
 
 public partial class LoadingView : ContentView
 {

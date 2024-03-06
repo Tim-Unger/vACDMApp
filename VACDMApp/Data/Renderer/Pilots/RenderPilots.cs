@@ -1,6 +1,6 @@
-﻿using VACDMApp.VACDMData;
+﻿using VacdmApp.Data;
 
-namespace VACDMApp.Data.Renderer
+namespace VacdmApp.Data.Renderer
 {
     internal partial class Pilots
     {
@@ -17,15 +17,15 @@ namespace VACDMApp.Data.Renderer
 
         public static List<Border> Render(FilterKind? filterKind, string? filterValue)
         {
-            var pilots = VACDMData.Data.VACDMPilots;
+            var pilots = Data.VacdmPilots;
 
-            var pilotsWithFP = VACDMData.Data.VACDMPilots
+            var pilotsWithFP = Data.VacdmPilots
                 //Only Pilots that have are in the Vatsim Datafeed
-                .Where(x => VACDMData.Data.VatsimPilots.Exists(y => y.callsign == x.Callsign))
+                .Where(x => Data.VatsimPilots.Exists(y => y.callsign == x.Callsign))
                 //Only Pilots that have filed a flight plan
                 .Where(
                     x =>
-                        VACDMData.Data.VatsimPilots.First(y => y.callsign == x.Callsign).flight_plan
+                        Data.VatsimPilots.First(y => y.callsign == x.Callsign).flight_plan
                         != null
                 );
             //Only pilots whose Eobt and TSAT lie within the future or max 5 minutes ago
@@ -57,7 +57,7 @@ namespace VACDMApp.Data.Renderer
         }
 
         private static List<Border> SearchByAirport(
-            IEnumerable<VACDMPilot> pilotsWithFP,
+            IEnumerable<VacdmPilot> pilotsWithFP,
             string filterValue
         )
         {
@@ -66,7 +66,7 @@ namespace VACDMApp.Data.Renderer
         }
 
         private static List<Border> SearchByAirline(
-            IEnumerable<VACDMPilot> pilotsWithFP,
+            IEnumerable<VacdmPilot> pilotsWithFP,
             string filterValue
         )
         {
@@ -77,25 +77,25 @@ namespace VACDMApp.Data.Renderer
         }
 
         private static List<Border> SearchByCid(
-            IEnumerable<VACDMPilot> pilotsWithFP,
+            IEnumerable<VacdmPilot> pilotsWithFP,
             string filterValue
         )
         {
             //TryParse is done before the function is called
             var cid = int.Parse(filterValue);
 
-            var vatsimPilotsWithCid = VACDMData.Data.VatsimPilots.Where(x => x.cid.ToString().StartsWith(cid.ToString()));
+            var vatsimPilotsWithCid = Data.VatsimPilots.Where(x => x.cid.ToString().StartsWith(cid.ToString()));
 
             if (vatsimPilotsWithCid is null)
             {
                 return new(1) { RenderNoFlightsFound() };
             }
 
-            var pilotsWithCid = new List<VACDMPilot>();
+            var pilotsWithCid = new List<VacdmPilot>();
 
             foreach (var vatsimPilot in vatsimPilotsWithCid)
             {
-                var vacdmPilot = VACDMData.Data.VACDMPilots.FirstOrDefault(x => x.Callsign == vatsimPilot.callsign);
+                var vacdmPilot = Data.VacdmPilots.FirstOrDefault(x => x.Callsign == vatsimPilot.callsign);
 
                 if (vacdmPilot is null)
                 {
@@ -114,18 +114,18 @@ namespace VACDMApp.Data.Renderer
         }
 
         private static List<Border> SearchByCallsign(
-            IEnumerable<VACDMPilot> pilotsWithFP,
+            IEnumerable<VacdmPilot> pilotsWithFP,
             string filterValue
         )
         {
             var pilot = pilotsWithFP.First(x => x.Callsign == filterValue.ToUpperInvariant());
 
-            var singleList = new List<VACDMPilot>(1) { pilot };
+            var singleList = new List<VacdmPilot>(1) { pilot };
             return SplitAndRenderGrid(singleList);
         }
 
         private static List<Border> SearchByTime(
-            IEnumerable<VACDMPilot> pilotsWithFp,
+            IEnumerable<VacdmPilot> pilotsWithFp,
             string filterValue
         )
         {

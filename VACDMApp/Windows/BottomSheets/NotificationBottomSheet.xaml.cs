@@ -1,4 +1,4 @@
-namespace VACDMApp.Windows.BottomSheets;
+namespace VacdmApp.Windows.BottomSheets;
 
 public partial class NotificationBottomSheet : ContentView
 {

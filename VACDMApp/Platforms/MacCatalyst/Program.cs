@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace VACDMApp
+namespace VacdmApp
 {
     public class Program
     {

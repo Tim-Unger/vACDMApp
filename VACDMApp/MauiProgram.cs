@@ -3,7 +3,7 @@ using The49.Maui.BottomSheet;
 using CommunityToolkit.Maui;
 using Plugin.LocalNotification;
 
-namespace VACDMApp
+namespace VacdmApp
 {
     public static class MauiProgram
     {

@@ -1,9 +1,8 @@
 using Microsoft.Maui.Controls.Shapes;
 using The49.Maui.BottomSheet;
-using VACDMApp.VACDMData;
-using static VACDMApp.VACDMData.Data;
+using static VacdmApp.Data.Data;
 
-namespace VACDMApp.Windows.BottomSheets;
+namespace VacdmApp.Windows.BottomSheets;
 
 public partial class AirportsBottomSheet : BottomSheet
 {
@@ -19,7 +18,7 @@ public partial class AirportsBottomSheet : BottomSheet
 
     private void GetAirports()
     {
-        var pilotsWithFP = VACDMPilots
+        var pilotsWithFP = VacdmPilots
                //Only Pilots that have are in the Vatsim Datafeed
                .Where(x => VatsimPilots.Exists(y => y.callsign == x.Callsign))
                //Only Pilots that have filed a flight plan
@@ -117,6 +116,6 @@ public partial class AirportsBottomSheet : BottomSheet
     {
         Sender = this;
 
-        VACDMData.Data.SenderPage = VACDMData.SenderPage.Airport;
+        Data.Data.SenderPage = Data.SenderPage.Airport;
     }
 }

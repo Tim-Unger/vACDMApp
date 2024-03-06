@@ -3,9 +3,9 @@ using Java.Nio.Channels;
 using Java.Security;
 using JetBrains.Annotations;
 using Microsoft.Maui.Controls.Shapes;
-using VACDMApp.VACDMData;
+using VacdmApp.Data;
 
-namespace VACDMApp;
+namespace VacdmApp;
 
 public partial class WaypointlePage : ContentPage
 {
@@ -48,7 +48,7 @@ public partial class WaypointlePage : ContentPage
         //Get the day amounts between today and the reference (first day with a waypoint and a possible game)
         var difference = today.DayNumber - baseDate.DayNumber;
 
-        var waypoints = VACDMData.Data.Waypoints;
+        var waypoints = Data.Data.Waypoints;
 
         if (difference > waypoints.Count)
         {

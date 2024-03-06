@@ -1,14 +1,14 @@
 ﻿using Plugin.LocalNotification;
 using System.Net.NetworkInformation;
-using VACDMApp.Data;
-using VACDMApp.Data.GetData;
-using VACDMApp.Data.OverridePermissions;
-using VACDMApp.Data.PushNotifications;
-using VACDMApp.VACDMData;
-using static VACDMApp.VACDMData.Data;
-using static VACDMApp.Windows.Views.LoadingView;
+using VacdmApp.Data;
+using VacdmApp.Data.GetData;
+using VacdmApp.Data.OverridePermissions;
+using VacdmApp.Data.PushNotifications;
+using VacdmApp.Data;
+using static VacdmApp.Data.Data;
+using static VacdmApp.Windows.Views.LoadingView;
 
-namespace VACDMApp
+namespace VacdmApp
 {
     public partial class MainPage : ContentPage
     {
@@ -154,10 +154,10 @@ namespace VACDMApp
 //#endif
                 }
 
-                if (VACDMData.Data.Settings is null)
+                if (Data.Data.Settings is null)
                 {
-                    VACDMData.Data.Settings = settingsTask.Result;
-                    VACDMData.VACDMData.SetApiUrl();
+                    Data.Data.Settings = settingsTask.Result;
+                    VacdmData.SetApiUrl();
                 }
             }
 
@@ -201,7 +201,7 @@ namespace VACDMApp
             }
 
             VatsimPilots = dataTask.Result.pilots.ToList();
-            VACDMPilots = vacdmTask.Result;
+            VacdmPilots = vacdmTask.Result;
             FlowMeasures = measuresTask.Result.FlowMeasures;
             FlowMeasureFirs = measuresTask.Result.Firs;
 

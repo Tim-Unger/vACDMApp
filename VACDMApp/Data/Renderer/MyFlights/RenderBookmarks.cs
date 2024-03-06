@@ -1,10 +1,10 @@
-﻿using VACDMApp.VACDMData;
+﻿using VacdmApp.Data;
 
-namespace VACDMApp.Data.Renderer
+namespace VacdmApp.Data.Renderer
 {
     internal partial class Bookmarks
     {
-        internal static List<Grid> Render(List<VACDMPilot> pilots) =>
+        internal static List<Grid> Render(List<VacdmPilot> pilots) =>
             pilots.Select(RenderBookmark).ToList();
     }
 }

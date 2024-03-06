@@ -3,14 +3,13 @@ using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Views;
 using Javax.Security.Auth;
 using System.Net.Http.Json;
-using VACDMApp.Data;
-using VACDMApp.Data.OverridePermissions;
-using VACDMApp.VACDMData;
-using VACDMApp.Windows.BottomSheets;
-using static VACDMApp.VACDMData.Data;
-using static VACDMApp.VACDMData.VACDMData;
+using VacdmApp.Data;
+using VacdmApp.Data.OverridePermissions;
+using VacdmApp.Data;
+using VacdmApp.Windows.BottomSheets;
+using static VacdmApp.Data.Data;
 
-namespace VACDMApp.Windows.Views
+namespace VacdmApp.Windows.Views
 {
     internal class Rating
     {
@@ -28,8 +27,6 @@ namespace VACDMApp.Windows.Views
 
     public partial class SettingsView : ContentView
     {
-
-
         public SettingsView()
         {
             InitializeComponent();
@@ -37,7 +34,7 @@ namespace VACDMApp.Windows.Views
 
         private bool _isFirstLoad = true;
 
-        private VACDMData.Settings _settings = new();
+        private Data.Settings _settings = new();
 
         private bool _pushFirModal = false;
 
@@ -47,24 +44,24 @@ namespace VACDMApp.Windows.Views
         {
             if (_isFirstLoad)
             {
-                if (VACDMData.Data.Settings.Cid is not null)
+                if (Data.Data.Settings.Cid is not null)
                 {
-                    CidEntry.Text = VACDMData.Data.Settings.Cid!.ToString();
+                    CidEntry.Text = Data.Data.Settings.Cid!.ToString();
                 }
 
                 DataSources.ForEach(x => DataSourcePicker.Items.Add(x.Name));
 
-                if (VACDMData.Data.Settings.DataSource is not null)
+                if (Data.Data.Settings.DataSource is not null)
                 {
                     var selectedSourceIndex = DataSources.FindIndex(
-                        x => x.ShortName == VACDMData.Data.Settings.DataSource
+                        x => x.ShortName == Data.Data.Settings.DataSource
                     );
                     var dataSources = DataSources;
-                    var source = VACDMData.Data.Settings.DataSource;
+                    var source = Data.Data.Settings.DataSource;
                     DataSourcePicker.SelectedIndex = selectedSourceIndex;
                 }
 
-                _settings = VACDMData.Data.Settings;
+                _settings = Data.Data.Settings;
 
                 await SetToggleStates();
 
@@ -81,21 +78,21 @@ namespace VACDMApp.Windows.Views
 
             var shortName = DataSources.First(x => x.Name == selectedDataSourceName).ShortName;
 
-            VACDMData.Data.Settings.DataSource = shortName;
+            Data.Data.Settings.DataSource = shortName;
 
             var pilotTask = await VACDMPilotsData.GetVACDMPilotsAsync();
 
-            VACDMPilots = pilotTask;
+            VacdmPilots = pilotTask;
 
-            VACDMData.VACDMData.SetApiUrl();
+           Data.VacdmData.SetApiUrl();
 
-            var settings = VACDMData.Data.Settings;
+            var settings = Data.Data.Settings;
 
             Preferences.Default.Set("data_source", settings.DataSource);
 
             //FlowMeasureFirs.ForEach(x => FlowMesureFirsCollectionView.AddLogicalChild(new Label() { Text = x.Name }));
 
-            await VACDMData.Data.FlightsView.RefreshDataAndView();
+            await Data.Data.FlightsView.RefreshDataAndView();
         }
 
         private async void CidEntry_TextChanged(object sender, TextChangedEventArgs e)
@@ -132,7 +129,7 @@ namespace VACDMApp.Windows.Views
 
             try
             {
-                var cidData = await Client.GetFromJsonAsync<Rating>(
+                var cidData = await VacdmData.Client.GetFromJsonAsync<Rating>(
                     ratingUrl,
                     _cancellationTokenSource.Token
                 );
@@ -163,7 +160,7 @@ namespace VACDMApp.Windows.Views
                 //AllowPushBookmarkGrid.IsVisible = true;
                 //AllowPushMyFlightGrid.IsVisible = true;
                 //AllowPushFlowRect.IsVisible = true;
-                VACDMData.Data.Settings.AllowPushNotifications = false;
+                Data.Data.Settings.AllowPushNotifications = false;
                 PushSettingsGrid.IsVisible = false;
                 Preferences.Set("allow_push", false);
                 return;
@@ -178,14 +175,14 @@ namespace VACDMApp.Windows.Views
                 //AllowPushMyFlightGrid.IsVisible = true;
                 //AllowPushFlowRect.IsVisible = true;
                 PushSettingsGrid.IsVisible = false;
-                VACDMData.Data.Settings.AllowPushNotifications = false;
+                Data.Data.Settings.AllowPushNotifications = false;
                 Preferences.Set("allow_push", false);
                 return;
             }
 
             PushSettingsGrid.IsVisible = true;
             EnablePushNotificationsSwitch.IsToggled = true;
-            VACDMData.Data.Settings.AllowPushNotifications = true;
+            Data.Data.Settings.AllowPushNotifications = true;
             AllowPushBookmarkGrid.IsVisible = false;
             AllowPushMyFlightGrid.IsVisible = false;
             AllowPushFlowRect.IsVisible = false;
@@ -196,7 +193,7 @@ namespace VACDMApp.Windows.Views
         {
             var isToggled = ((Switch)sender).IsToggled;
 
-            VACDMData.Data.Settings.SendPushMyFlightTsatChanged = isToggled;
+            Data.Data.Settings.SendPushMyFlightTsatChanged = isToggled;
             Preferences.Set("push_my_flight_window", isToggled);
         }
 
@@ -204,7 +201,7 @@ namespace VACDMApp.Windows.Views
         {
             var isToggled = ((Switch)sender).IsToggled;
 
-            VACDMData.Data.Settings.SendPushMyFlightTsatChanged = isToggled;
+            Data.Data.Settings.SendPushMyFlightTsatChanged = isToggled;
             Preferences.Set("push_my_flight_tsat", isToggled);
         }
 
@@ -212,7 +209,7 @@ namespace VACDMApp.Windows.Views
         {
             var isToggled = ((Switch)sender).IsToggled;
 
-            VACDMData.Data.Settings.SendPushMyFlightInsideWindow = isToggled;
+            Data.Data.Settings.SendPushMyFlightInsideWindow = isToggled;
             Preferences.Set("push_my_flight_startup", isToggled);
         }
 
@@ -220,7 +217,7 @@ namespace VACDMApp.Windows.Views
         {
             var isToggled = ((Switch)sender).IsToggled;
 
-            VACDMData.Data.Settings.SendPushBookmarkFlightInsideWindow = isToggled;
+            Data.Data.Settings.SendPushBookmarkFlightInsideWindow = isToggled;
             Preferences.Set("push_bookmark_window", isToggled);
         }
 
@@ -228,7 +225,7 @@ namespace VACDMApp.Windows.Views
         {
             var isToggled = ((Switch)sender).IsToggled;
 
-            VACDMData.Data.Settings.SendPushBookmarkTsatChanged = isToggled;
+            Data.Data.Settings.SendPushBookmarkTsatChanged = isToggled;
             Preferences.Set("push_bookmark_tsat", isToggled);
         }
 
@@ -236,7 +233,7 @@ namespace VACDMApp.Windows.Views
         {
             var isToggled = ((Switch)sender).IsToggled;
 
-            VACDMData.Data.Settings.SendPushBookmarkStartup = isToggled;
+            Data.Data.Settings.SendPushBookmarkStartup = isToggled;
             Preferences.Set("push_bookmark_startup", isToggled);
         }
 
@@ -299,7 +296,7 @@ namespace VACDMApp.Windows.Views
         {
             var isToggled = ((Switch)sender).IsToggled;
 
-            VACDMData.Data.Settings.SendPushBookmarkStartup = isToggled;
+            Data.Data.Settings.SendPushBookmarkStartup = isToggled;
 
             Preferences.Set("push_my_flight_slot_unconfirmed", isToggled);
         }
@@ -308,7 +305,7 @@ namespace VACDMApp.Windows.Views
         {
             var isToggled = ((Switch)sender).IsToggled;
 
-            VACDMData.Data.Settings.SendPushFlowMeasures = isToggled;
+            Data.Data.Settings.SendPushFlowMeasures = isToggled;
 
             EditFlowFirsButton.IsVisible = isToggled;
 

@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Maui.Alerts;
-using VACDMApp.VACDMData;
-using VACDMApp.Windows.BottomSheets;
+using VacdmApp.Data;
+using VacdmApp.Windows.BottomSheets;
 
-namespace VACDMApp
+namespace VacdmApp
 {
     public partial class AppShell : Shell
     {
@@ -15,53 +15,53 @@ namespace VACDMApp
 
         protected override bool OnBackButtonPressed()
         {
-            var sender = VACDMData.Data.SenderPage;
+            var sender = Data.Data.SenderPage;
 
             if (sender == SenderPage.SingleFlight)
             {
-                ((SingleFlightBottomSheet)VACDMData.Data.Sender).DismissAsync();
-                VACDMData.Data.Sender = VACDMData.Data.FlightsView;
-                VACDMData.Data.SenderPage = SenderPage.Default;
+                ((SingleFlightBottomSheet)Data.Data.Sender).DismissAsync();
+                Data.Data.Sender = Data.Data.FlightsView;
+                Data.Data.SenderPage = SenderPage.Default;
                 return true;
             }
 
             if (sender == SenderPage.Vdgs)
             {
-                ((VDGSBottomSheet)VACDMData.Data.Sender).DismissAsync();
-                VACDMData.Data.Sender = VACDMData.Data.FlightsView;
-                VACDMData.Data.SenderPage = SenderPage.Default;
+                ((VDGSBottomSheet)Data.Data.Sender).DismissAsync();
+                Data.Data.Sender = Data.Data.FlightsView;
+                Data.Data.SenderPage = SenderPage.Default;
                 return true;
             }
 
             if (sender == SenderPage.Airport)
             {
-                ((AirportsBottomSheet)VACDMData.Data.Sender).DismissAsync();
-                VACDMData.Data.Sender = VACDMData.Data.FlightsView;
-                VACDMData.Data.SenderPage = SenderPage.Default;
+                ((AirportsBottomSheet)Data.Data.Sender).DismissAsync();
+                Data.Data.Sender = Data.Data.FlightsView;
+                Data.Data.SenderPage = SenderPage.Default;
                 return true;
             }
 
             if (sender == SenderPage.About)
             {
                 Current.GoToAsync("..", true);
-                VACDMData.Data.Sender = VACDMData.Data.FlightsView;
-                VACDMData.Data.SenderPage = SenderPage.Default;
+                Data.Data.Sender = Data.Data.FlightsView;
+                Data.Data.SenderPage = SenderPage.Default;
                 return true;
             }
 
             if (sender == SenderPage.Time)
             {
-                ((TimesBottomSheet)VACDMData.Data.Sender).DismissAsync();
-                VACDMData.Data.Sender = VACDMData.Data.FlightsView;
-                VACDMData.Data.SenderPage = SenderPage.Default;
+                ((TimesBottomSheet)Data.Data.Sender).DismissAsync();
+                Data.Data.Sender = Data.Data.FlightsView;
+                Data.Data.SenderPage = SenderPage.Default;
                 return true;
             }
 
             if(sender == SenderPage.FirSettings)
             {
-                ((FirBottomSheet)VACDMData.Data.Sender).CloseAsync();
-                VACDMData.Data.Sender = VACDMData.Data.FlightsView;
-                VACDMData.Data.SenderPage = SenderPage.Default;
+                ((FirBottomSheet)Data.Data.Sender).CloseAsync();
+                Data.Data.Sender = Data.Data.FlightsView;
+                Data.Data.SenderPage = SenderPage.Default;
                 return true;
             }
 
@@ -82,7 +82,7 @@ namespace VACDMApp
             if (_backSwipeCount == 1)
             {
                 _backSwipeCount = 0;
-                VACDMData.Data.SenderPage = SenderPage.Default;
+                Data.Data.SenderPage = SenderPage.Default;
                 return false;
             }
 

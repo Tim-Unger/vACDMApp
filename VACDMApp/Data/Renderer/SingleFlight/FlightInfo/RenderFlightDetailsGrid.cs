@@ -1,13 +1,13 @@
 ﻿using System.Drawing;
 using System.Text.RegularExpressions;
-using VACDMApp.VACDMData;
+using VacdmApp.Data;
 
-namespace VACDMApp.Data.Renderer
+namespace VacdmApp.Data.Renderer
 {
     internal partial class SingleFlight
     {
         private static Grid FlightDetailsGrid(
-            VACDMPilot pilot,
+            VacdmPilot pilot,
             List<Airline> airlines,
             Flight_Plan flightPlan
         )
@@ -58,7 +58,7 @@ namespace VACDMApp.Data.Renderer
 
             var arrivalIcao = pilot.FlightPlan.Arrival;
 
-            var arrAirportData = VACDMData.Data.Airports.FirstOrDefault(
+            var arrAirportData = Data.Airports.FirstOrDefault(
                 x => x.Icao == arrivalIcao
             ) ?? new Airport() { Iata = arrivalIcao, Icao = arrivalIcao };
 

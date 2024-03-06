@@ -1,4 +1,4 @@
-﻿namespace VACDMApp.Data.OverridePermissions
+﻿namespace VacdmApp.Data.OverridePermissions
 {
     public class SendNotifications : Permissions.BasePlatformPermission
     {

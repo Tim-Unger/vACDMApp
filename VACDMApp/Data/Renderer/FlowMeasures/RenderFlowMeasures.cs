@@ -1,11 +1,11 @@
-﻿namespace VACDMApp.Data.Renderer
+﻿namespace VacdmApp.Data.Renderer
 {
     internal partial class FlowMeasures
     {
         internal static List<Grid> Render(bool showActive, bool showNotified, bool showExpired, bool showWithdrawn)
         {
             //TODO Update Data
-            var measures = VACDMData.Data.FlowMeasures;
+            var measures = Data.FlowMeasures;
 
             if (measures.Count == 0)
             {
@@ -39,6 +39,6 @@
             return filteredMeasures.Select(RenderMeasure).ToList();
         }
 
-        private static List<FlowMeasure> FilterMeasures(List<MeasureStatus> allowedStatuses) => VACDMData.Data.FlowMeasures.Where(x => allowedStatuses.Any(y => x.MeasureStatus == y)).ToList();
+        private static List<FlowMeasure> FilterMeasures(List<MeasureStatus> allowedStatuses) => Data.FlowMeasures.Where(x => allowedStatuses.Any(y => x.MeasureStatus == y)).ToList();
     }
 }

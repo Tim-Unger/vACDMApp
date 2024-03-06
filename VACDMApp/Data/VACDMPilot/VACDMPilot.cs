@@ -1,6 +1,6 @@
-﻿namespace VACDMApp.VACDMData
+﻿namespace VacdmApp.Data
 {
-    public class VACDMPilot
+    public class VacdmPilot
     {
         [JsonPropertyName("position")]
         public Position Position { get; set; }

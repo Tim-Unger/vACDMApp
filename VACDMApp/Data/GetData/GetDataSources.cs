@@ -1,7 +1,7 @@
-﻿using static VACDMApp.VACDMData.VACDMData;
+﻿using static VacdmApp.Data.Data;
 using System.Net.Http.Json;
 
-namespace VACDMApp.Data
+namespace VacdmApp.Data
 {
     public class DataSource
     {
@@ -21,7 +21,7 @@ namespace VACDMApp.Data
         {
             var options = new JsonSerializerOptions() { AllowTrailingCommas = true };
 
-            var sources = Client.GetFromJsonAsync<List<DataSource>>(
+            var sources = VacdmData.Client.GetFromJsonAsync<List<DataSource>>(
                 "https://raw.githubusercontent.com/Tim-Unger/vACDMDataSources/main/datasources.json",
                 options
             );

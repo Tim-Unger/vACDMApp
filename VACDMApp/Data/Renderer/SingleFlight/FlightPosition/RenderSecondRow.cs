@@ -1,10 +1,10 @@
-﻿using VACDMApp.VACDMData;
+﻿using VacdmApp.Data;
 
-namespace VACDMApp.Data.Renderer
+namespace VacdmApp.Data.Renderer
 {
     internal partial class SingleFlight
     {
-        private static Grid FlightPositionSecondRowGrid(VACDMPilot pilot, Vacdm vacdm)
+        private static Grid FlightPositionSecondRowGrid(VacdmPilot pilot, Vacdm vacdm)
         {
             var flightPositionSecondGrid = new Grid();
             flightPositionSecondGrid.ColumnDefinitions.Add(

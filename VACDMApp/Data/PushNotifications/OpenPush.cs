@@ -1,7 +1,7 @@
 ﻿using Plugin.LocalNotification.EventArgs;
-using VACDMApp.Windows.BottomSheets;
+using VacdmApp.Windows.BottomSheets;
 
-namespace VACDMApp.Data.PushNotifications
+namespace VacdmApp.Data.PushNotifications
 {
     internal class OpenPush
     {
@@ -18,7 +18,7 @@ namespace VACDMApp.Data.PushNotifications
                 return;
             }
 
-            var concernedPilot = VACDMData.Data.VACDMPilots.FirstOrDefault(
+            var concernedPilot = Data.VacdmPilots.FirstOrDefault(
                 x => x.Callsign == concernedNotification.callsign
             );
 

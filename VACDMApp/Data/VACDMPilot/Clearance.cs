@@ -1,4 +1,4 @@
-﻿namespace VACDMApp.VACDMData
+﻿namespace VacdmApp.Data
 {
     public class Clearance
     {

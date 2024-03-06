@@ -1,10 +1,10 @@
 using CommunityToolkit.Maui.Views;
 using Java.Lang;
 using Javax.Security.Auth;
-using VACDMApp.Data;
-using VACDMApp.Windows.Views;
+using VacdmApp.Data;
+using VacdmApp.Windows.Views;
 
-namespace VACDMApp.Windows.BottomSheets;
+namespace VacdmApp.Windows.BottomSheets;
 
 public partial class FirBottomSheet : Popup
 {
@@ -27,16 +27,16 @@ public partial class FirBottomSheet : Popup
 
     private void Popup_Opened(object sender, CommunityToolkit.Maui.Core.PopupOpenedEventArgs e)
     {
-        VACDMData.Data.Sender = this;
+        Data.Data.Sender = this;
 
-        VACDMData.Data.SenderPage = VACDMData.SenderPage.FirSettings;
+        Data.Data.SenderPage = Data.SenderPage.FirSettings;
 
         RenderFirs();
     }
 
     private void RenderFirs()
     {
-        var firs = VACDMData.Data.FlowMeasureFirs;
+        var firs = Data.Data.FlowMeasureFirs;
 
         var addedFirsRaw = Preferences.Get("flow_measure_push_firs", "");
 
@@ -274,7 +274,7 @@ public partial class FirBottomSheet : Popup
 
     private IEnumerable<Fir> GetAndOrderFirs(SortType sortType)
     {
-        var firs = VACDMData.Data.FlowMeasureFirs.Where(
+        var firs = Data.Data.FlowMeasureFirs.Where(
             x => !_addedFirs.Any(y => y == x.Identifier)
         );
 

@@ -1,10 +1,10 @@
-﻿using VACDMApp.VACDMData;
+﻿using VacdmApp.Data;
 
-namespace VACDMApp.Data.Renderer
+namespace VacdmApp.Data.Renderer
 {
     internal partial class SingleFlight
     {
-        private static Grid TimesInfoGrid(VACDMPilot pilot)
+        private static Grid TimesInfoGrid(VacdmPilot pilot)
         {
             var timesInfoGrid = new Grid()
             {

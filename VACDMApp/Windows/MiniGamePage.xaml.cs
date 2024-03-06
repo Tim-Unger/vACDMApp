@@ -1,4 +1,4 @@
-namespace VACDMApp.Windows;
+namespace VacdmApp.Windows;
 
 public partial class MiniGamePage : ContentPage
 {

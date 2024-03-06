@@ -1,8 +1,8 @@
 ﻿using System.Text.RegularExpressions;
-using VACDMApp.VACDMData;
-using VACDMApp.Windows.BottomSheets;
+using VacdmApp.Data;
+using VacdmApp.Windows.BottomSheets;
 
-namespace VACDMApp.Data.Renderer
+namespace VacdmApp.Data.Renderer
 {
     internal partial class Bookmarks
     {
@@ -10,7 +10,7 @@ namespace VACDMApp.Data.Renderer
 
         private static readonly GridLength _oneStar = new(3, GridUnitType.Star);
 
-        internal static Grid RenderBookmark(VACDMPilot pilot)
+        internal static Grid RenderBookmark(VacdmPilot pilot)
         {
             var grid = new Grid() { Background = _darkBlue, Margin = new Thickness(10) };
 
@@ -78,7 +78,7 @@ namespace VACDMApp.Data.Renderer
 
             grid.SetColumn(flightGrid, 1);
 
-            var airportData = VACDMData.Data.Airports.FirstOrDefault(
+            var airportData = Data.Airports.FirstOrDefault(
                 x => x.Icao == pilot.FlightPlan.Departure
             );
 
@@ -104,8 +104,8 @@ namespace VACDMApp.Data.Renderer
                 FontSize = 25
             };
 
-            var airlines = VACDMData.Data.Airlines;
-            var flightPlan = VACDMData.Data.VatsimPilots
+            var airlines = Data.Airlines;
+            var flightPlan = Data.VatsimPilots
                 .First(x => x.callsign == pilot.Callsign)
                 .flight_plan;
 
