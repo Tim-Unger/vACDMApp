@@ -14,15 +14,15 @@ public partial class VDGSBottomSheet : BottomSheet
 
     public static string SelectedCallsign = "";
 
-    public static Color Orange = Color.FromArgb("ae7237");
+    public readonly Color Orange = Color.FromArgb("ae7237");
 
-    private static DateTime _tsat;
+    private DateTime _tsat;
 
-    private static Label _tobtLabel;
+    private Label _tobtLabel;
 
-    private static Label _tsatLabel;
+    private Label _tsatLabel;
 
-    private static Label _timeToGoLabel;
+    private Label _timeToGoLabel;
 
     private async void BottomSheet_Loaded(object sender, EventArgs e)
     {
@@ -62,9 +62,17 @@ public partial class VDGSBottomSheet : BottomSheet
 
         _tsat = vacdmPilot.Vacdm.Tsat;
         var timeToGo = Math.Round((DateTime.UtcNow - _tsat).TotalMinutes, 0);
+
+        var timeToGoString = timeToGo.ToString();
+
+        if(timeToGo > 60 || timeToGo < -60)
+        {
+            timeToGoString = ">60";
+        }
+
         _timeToGoLabel = new Label()
         {
-            Text = timeToGo.ToString(),
+            Text = timeToGoString,
             TextColor = Orange,
             FontFamily = "AdvancedDot",
             FontAttributes = FontAttributes.None,
@@ -110,8 +118,17 @@ public partial class VDGSBottomSheet : BottomSheet
         while (true)
         {
             var timeToGoLabel = (Label)VDGSStackLayout.Children[4];
+            
+            var timeToGo = Math.Round((DateTime.UtcNow - _tsat).TotalMinutes, 0);
 
-            timeToGoLabel.Text = Math.Round((DateTime.UtcNow - _tsat).TotalMinutes, 0).ToString();
+            var timeToGoString = timeToGo.ToString();
+
+            if (timeToGo > 60 || timeToGo < -60)
+            {
+                timeToGoString = ">60";
+            }
+
+            timeToGoLabel.Text = timeToGoString;
 
             await Task.Delay(TimeSpan.FromSeconds(30));
         }
@@ -122,8 +139,6 @@ public partial class VDGSBottomSheet : BottomSheet
         //TODO Pause on lost focus/Cancellation Token
         while (true)
         {
-            await MainPage.GetAllData();
-
             var vacdmPilot = VACDMPilots.First(x => x.Callsign == SelectedCallsign);
 
             _tobtLabel.Text = $"TOBT {vacdmPilot.Vacdm.Tobt.ToShortTimeString()} UTC";

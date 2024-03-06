@@ -112,244 +112,263 @@
             Toggled="EnablePushNotificationsSwitch_Toggled" />
 
         <Grid
-            x:Name="MyFlightPushGrid"
+            x:Name="PushSettingsGrid"
             Grid.Row="4"
-            Margin="20,0,0,0">
+            Grid.RowSpan="3">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="3*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
 
-            <Label
+            <Grid
+                x:Name="MyFlightPushGrid"
                 Grid.Row="0"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                FontAttributes="None"
-                FontSize="20"
-                HorizontalOptions="Start"
-                Text="Push Notifications about My Flight"
-                VerticalOptions="Center" />
+                Margin="20,0,0,0">
 
-            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+
                 <Label
+                    Grid.Row="0"
                     Grid.Column="0"
+                    Grid.ColumnSpan="2"
                     FontAttributes="None"
-                    FontSize="15"
+                    FontSize="20"
                     HorizontalOptions="Start"
-                    Text="Flight is inside TSAT Window"
+                    Text="Push Notifications about My Flight"
                     VerticalOptions="Center" />
 
-                <Switch
-                    x:Name="MyFlightTsatSwitch"
-                    Grid.Column="1"
-                    HorizontalOptions="End"
-                    IsEnabled="True"
-                    IsToggled="True"
-                    Toggled="MyFlightTsatSwitch_Toggled" />
-            </Grid>
+                <Grid Grid.Row="1">
+                    <Label
+                        Grid.Column="0"
+                        FontAttributes="None"
+                        FontSize="15"
+                        HorizontalOptions="Start"
+                        Text="Flight is inside TSAT Window"
+                        VerticalOptions="Center" />
 
-            <Grid Grid.Row="2">
-                <Label
-                    Grid.Column="0"
-                    FontAttributes="None"
-                    FontSize="15"
-                    HorizontalOptions="Start"
-                    Text="TSAT/Slot has been changed"
-                    VerticalOptions="Center" />
+                    <Switch
+                        x:Name="MyFlightTsatSwitch"
+                        Grid.Column="1"
+                        HorizontalOptions="End"
+                        IsEnabled="True"
+                        IsToggled="True"
+                        Toggled="MyFlightTsatSwitch_Toggled" />
+                </Grid>
 
-                <Switch
-                    x:Name="MyFlightChangedSwitch"
-                    Grid.Column="1"
-                    HorizontalOptions="End"
-                    IsEnabled="True"
-                    IsToggled="False"
-                    Toggled="MyFlightChangedSwitch_Toggled" />
-            </Grid>
+                <Grid Grid.Row="2">
+                    <Label
+                        Grid.Column="0"
+                        FontAttributes="None"
+                        FontSize="15"
+                        HorizontalOptions="Start"
+                        Text="TSAT/Slot has been changed"
+                        VerticalOptions="Center" />
 
-            <Grid Grid.Row="3">
-                <Label
-                    Grid.Column="0"
-                    FontAttributes="None"
-                    FontSize="15"
-                    HorizontalOptions="Start"
-                    Text="Startup received"
-                    VerticalOptions="Center" />
+                    <Switch
+                        x:Name="MyFlightChangedSwitch"
+                        Grid.Column="1"
+                        HorizontalOptions="End"
+                        IsEnabled="True"
+                        IsToggled="False"
+                        Toggled="MyFlightChangedSwitch_Toggled" />
+                </Grid>
 
-                <Switch
-                    x:Name="MyFlightStartupSwitch"
-                    Grid.Column="1"
-                    HorizontalOptions="End"
-                    IsEnabled="True"
-                    IsToggled="False"
-                    Toggled="MyFlightStartupSwitch_Toggled" />
-            </Grid>
+                <Grid Grid.Row="3">
+                    <Label
+                        Grid.Column="0"
+                        FontAttributes="None"
+                        FontSize="15"
+                        HorizontalOptions="Start"
+                        Text="Startup received"
+                        VerticalOptions="Center" />
 
-            <Grid Grid.Row="4">
-                <Label
-                    Grid.Column="0"
-                    FontAttributes="None"
-                    FontSize="15"
-                    HorizontalOptions="Start"
-                    Text="Slot is not yet confirmed"
-                    VerticalOptions="Center" />
+                    <Switch
+                        x:Name="MyFlightStartupSwitch"
+                        Grid.Column="1"
+                        HorizontalOptions="End"
+                        IsEnabled="True"
+                        IsToggled="False"
+                        Toggled="MyFlightStartupSwitch_Toggled" />
+                </Grid>
 
-                <Switch
-                    x:Name="MyFlightSlotUnconfirmedSwitch"
-                    Grid.Column="1"
-                    HorizontalOptions="End"
-                    IsEnabled="True"
-                    IsToggled="False"
-                    Toggled="MyFlightSlotUnconfirmedSwitch_Toggled" />
+                <Grid Grid.Row="4">
+                    <Label
+                        Grid.Column="0"
+                        FontAttributes="None"
+                        FontSize="15"
+                        HorizontalOptions="Start"
+                        Text="Slot is not yet confirmed"
+                        VerticalOptions="Center" />
+
+                    <Switch
+                        x:Name="MyFlightSlotUnconfirmedSwitch"
+                        Grid.Column="1"
+                        HorizontalOptions="End"
+                        IsEnabled="True"
+                        IsToggled="False"
+                        Toggled="MyFlightSlotUnconfirmedSwitch_Toggled" />
+                </Grid>
+
+                <Grid
+                    x:Name="AllowPushMyFlightGrid"
+                    Grid.Row="1"
+                    Grid.RowSpan="4">
+                    <Rectangle Background="#303030" Opacity="0.6" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="20"
+                        HorizontalOptions="Center"
+                        Text="Please allow Push Notifications to enable this"
+                        VerticalOptions="Center" />
+                </Grid>
             </Grid>
 
             <Grid
-                x:Name="AllowPushMyFlightGrid"
+                x:Name="BookmarkedFlightsPushGrid"
                 Grid.Row="1"
-                Grid.RowSpan="4">
-                <Rectangle Background="#303030" Opacity="0.6" />
+                Margin="20,0,0,0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+
                 <Label
-                    FontAttributes="Bold"
-                    FontSize="20"
-                    HorizontalOptions="Center"
-                    Text="Please allow Push Notifications to enable this"
-                    VerticalOptions="Center" />
-            </Grid>
-        </Grid>
-
-        <Grid
-            x:Name="BookmarkedFlightsPushGrid"
-            Grid.Row="5"
-            Margin="20,0,0,0">
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-            </Grid.RowDefinitions>
-
-            <Label
-                Grid.Row="0"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                FontAttributes="None"
-                FontSize="20"
-                HorizontalOptions="Start"
-                Text="Push Notifications about Bookmarked Flights"
-                VerticalOptions="Center" />
-
-            <Grid Grid.Row="1">
-                <Label
+                    Grid.Row="0"
                     Grid.Column="0"
+                    Grid.ColumnSpan="2"
                     FontAttributes="None"
-                    FontSize="15"
+                    FontSize="20"
                     HorizontalOptions="Start"
-                    Text="Flight is inside TSAT Window"
+                    Text="Push Notifications about Bookmarked Flights"
                     VerticalOptions="Center" />
 
-                <Switch
-                    x:Name="BookmarkFlightTsatSwitch"
-                    Grid.Column="1"
-                    HorizontalOptions="End"
-                    IsEnabled="True"
-                    IsToggled="True"
-                    Toggled="BookmarkFlightTsatSwitch_Toggled" />
+                <Grid Grid.Row="1">
+                    <Label
+                        Grid.Column="0"
+                        FontAttributes="None"
+                        FontSize="15"
+                        HorizontalOptions="Start"
+                        Text="Flight is inside TSAT Window"
+                        VerticalOptions="Center" />
+
+                    <Switch
+                        x:Name="BookmarkFlightTsatSwitch"
+                        Grid.Column="1"
+                        HorizontalOptions="End"
+                        IsEnabled="True"
+                        IsToggled="True"
+                        Toggled="BookmarkFlightTsatSwitch_Toggled" />
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <Label
+                        Grid.Column="0"
+                        FontAttributes="None"
+                        FontSize="15"
+                        HorizontalOptions="Start"
+                        Text="TSAT/Slot has been changed"
+                        VerticalOptions="Center" />
+
+                    <Switch
+                        x:Name="BookmarkFlightChangedSwitch"
+                        Grid.Column="1"
+                        HorizontalOptions="End"
+                        IsToggled="True"
+                        Toggled="BookmarkFlightChangedSwitch_Toggled" />
+                </Grid>
+
+                <Grid Grid.Row="3">
+                    <Label
+                        Grid.Column="0"
+                        FontAttributes="None"
+                        FontSize="15"
+                        HorizontalOptions="Start"
+                        Text="Startup received"
+                        VerticalOptions="Center" />
+
+                    <Switch
+                        x:Name="BookmarkFlightStartupSwitch"
+                        Grid.Column="1"
+                        HorizontalOptions="End"
+                        IsEnabled="True"
+                        IsToggled="False"
+                        Toggled="BookmarkFlightStartupSwitch_Toggled" />
+                </Grid>
+
+                <Grid
+                    x:Name="AllowPushBookmarkGrid"
+                    Grid.Row="1"
+                    Grid.RowSpan="3">
+                    <Rectangle Background="#303030" Opacity="0.6" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="20"
+                        HorizontalOptions="Center"
+                        Text="Please allow Push Notifications to enable this"
+                        VerticalOptions="Center" />
+                </Grid>
             </Grid>
 
             <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+
                 <Label
                     Grid.Column="0"
+                    Margin="20,0,0,0"
                     FontAttributes="None"
-                    FontSize="15"
+                    FontSize="20"
                     HorizontalOptions="Start"
-                    Text="TSAT/Slot has been changed"
+                    Text="Enable ECFMP Push Notifications"
+                    VerticalOptions="Center" />
+
+                <Button
+                    x:Name="EditFlowFirsButton"
+                    Grid.Column="1"
+                    Margin="0,10,0,10"
+                    Clicked="EditFlowFirsButton_Clicked"
+                    FontSize="15"
+                    HorizontalOptions="Center"
+                    IsVisible="False"
+                    Text="FIRs"
                     VerticalOptions="Center" />
 
                 <Switch
-                    x:Name="BookmarkFlightChangedSwitch"
-                    Grid.Column="1"
-                    HorizontalOptions="End"
-                    IsToggled="True"
-                    Toggled="BookmarkFlightChangedSwitch_Toggled" />
-            </Grid>
-
-            <Grid Grid.Row="3">
-                <Label
-                    Grid.Column="0"
-                    FontAttributes="None"
-                    FontSize="15"
-                    HorizontalOptions="Start"
-                    Text="Startup received"
-                    VerticalOptions="Center" />
-
-                <Switch
-                    x:Name="BookmarkFlightStartupSwitch"
-                    Grid.Column="1"
+                    x:Name="FlowMeasuresSwitch"
+                    Grid.Column="2"
                     HorizontalOptions="End"
                     IsEnabled="True"
                     IsToggled="False"
-                    Toggled="BookmarkFlightStartupSwitch_Toggled" />
+                    Toggled="FlowMeasuresSwitch_Toggled" />
+
+                <ActivityIndicator
+                    x:Name="FlowMeasuresBusyIndicator"
+                    Grid.Column="2"
+                    HorizontalOptions="End"
+                    IsRunning="True"
+                    IsVisible="False"
+                    Color="White" />
+
+                <Rectangle
+                    x:Name="AllowPushFlowRect"
+                    Grid.ColumnSpan="4"
+                    Background="#303030"
+                    Opacity="0.6" />
             </Grid>
-
-            <Grid
-                x:Name="AllowPushBookmarkGrid"
-                Grid.Row="1"
-                Grid.RowSpan="3">
-                <Rectangle Background="#303030" Opacity="0.6" />
-                <Label
-                    FontAttributes="Bold"
-                    FontSize="20"
-                    HorizontalOptions="Center"
-                    Text="Please allow Push Notifications to enable this"
-                    VerticalOptions="Center" />
-            </Grid>
-        </Grid>
-
-        <Grid Grid.Row="6">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="4*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
-
-            <Label
-                Grid.Column="0"
-                Margin="20,0,0,0"
-                FontAttributes="None"
-                FontSize="20"
-                HorizontalOptions="Start"
-                Text="Enable ECFMP Push Notifications"
-                VerticalOptions="Center" />
-
-            <Button
-                x:Name="EditFlowFirsButton"
-                Grid.Column="1"
-                Margin="0,10,0,10"
-                Clicked="EditFlowFirsButton_Clicked"
-                FontSize="15"
-                HorizontalOptions="Center"
-                Text="FIRs"
-                VerticalOptions="Center" />
-
-            <Switch
-                x:Name="FlowMeasuresSwitch"
-                Grid.Column="2"
-                HorizontalOptions="End"
-                IsEnabled="True"
-                IsToggled="False"
-                Toggled="FlowMeasuresSwitch_Toggled" />
-
-            <ActivityIndicator
-                x:Name="FlowMeasuresBusyIndicator"
-                Grid.Column="2"
-                HorizontalOptions="End"
-                IsRunning="True"
-                IsVisible="False"
-                Color="White" />
         </Grid>
     </Grid>
 </ContentView>

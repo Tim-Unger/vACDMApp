@@ -36,8 +36,6 @@ public partial class SingleFlightBottomSheet : BottomSheet
                 _isFirstLoad = false;
             }
 
-            await MainPage.GetAllData();
-
             SingleFlightGrid.Children.Clear();
 
             var content = SingleFlight.RenderGrid(SelectedCallsign);

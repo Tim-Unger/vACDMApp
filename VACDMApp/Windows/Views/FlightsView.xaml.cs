@@ -113,14 +113,9 @@ public partial class FlightsView : ContentView
         {
             if (_isFirstLoad)
             {
-                //SetLoadingScreen(false);
                 _isFirstLoad = false;
                 await Task.Delay(TimeSpan.FromSeconds(30));
             }
-
-            //SetLoadingScreen(true);
-
-            await MainPage.GetAllData();
 
             var selectedAirport = AirportsBottomSheet.GetClickedAirport();
 
@@ -133,8 +128,6 @@ public partial class FlightsView : ContentView
             var allFlights = Pilots.Render(FilterKind.Airport, selectedAirport);
             allFlights.ForEach(FlightsStackLayout.Children.Add);
             FlightsScrollView.Content = FlightsStackLayout;
-
-            //SetLoadingScreen(false);
 
             await Task.Delay(TimeSpan.FromMinutes(1));
         }

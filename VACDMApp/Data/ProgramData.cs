@@ -11,6 +11,7 @@ namespace VACDMApp.VACDMData
         About,
         Airport,
         Time,
+        FirSettings
     }
 
     internal class Data

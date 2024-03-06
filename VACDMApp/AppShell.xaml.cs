@@ -57,6 +57,14 @@ namespace VACDMApp
                 return true;
             }
 
+            if(sender == SenderPage.FirSettings)
+            {
+                ((FirBottomSheet)VACDMData.Data.Sender).CloseAsync();
+                VACDMData.Data.Sender = VACDMData.Data.FlightsView;
+                VACDMData.Data.SenderPage = SenderPage.Default;
+                return true;
+            }
+
             if (_backSwipeCount == 0)
             {
                 var toast = Toast.Make(

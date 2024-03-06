@@ -37,7 +37,6 @@ namespace VACDMApp
 
         private async Task OnLoad()
         {
-            //TODO Fix Content getting fucked up when reloading
             ErrorGrid.IsVisible = false;
             NoInternetGrid.IsVisible = false;
 
@@ -68,11 +67,14 @@ namespace VACDMApp
             Mainview.Content = FlightsView;
             SetButtons(true);
 
+            await DataHandler.RunAsync();
+
             await PushNotificationHandler.StartGlobalHandler();
 
             await PushNotificationHandler.InitializeNotificationEvents(
                LocalNotificationCenter.Current
            );
+
         }
 
         private void MyFlightButton_Clicked(object sender, EventArgs e)

@@ -1,6 +1,8 @@
 using CommunityToolkit.Maui.Views;
+using Java.Lang;
 using Javax.Security.Auth;
 using VACDMApp.Data;
+using VACDMApp.Windows.Views;
 
 namespace VACDMApp.Windows.BottomSheets;
 
@@ -15,7 +17,7 @@ public partial class FirBottomSheet : Popup
 
     private int _allFirsStartIndex = 0;
 
-    private enum SortType 
+    private enum SortType
     {
         NameAZ,
         NameZA,
@@ -25,6 +27,10 @@ public partial class FirBottomSheet : Popup
 
     private void Popup_Opened(object sender, CommunityToolkit.Maui.Core.PopupOpenedEventArgs e)
     {
+        VACDMData.Data.Sender = this;
+
+        VACDMData.Data.SenderPage = VACDMData.SenderPage.FirSettings;
+
         RenderFirs();
     }
 
@@ -49,10 +55,12 @@ public partial class FirBottomSheet : Popup
             );
 
             var addedFirGrids = _addedFirs
-                .Select(x => RenderFir(firs.First(y => y.Identifier == x), true))
+                .Select(x => RenderFir(firs.First(y => y.Identifier == x), isAdded: true))
                 .ToList();
 
             addedFirGrids.ForEach(FirStackLayout.Children.Add);
+
+            FirStackLayout.Children.Add(new Label() { FontSize = 20, Text = "" });
 
             FirStackLayout.Children.Add(
                 new Label()
@@ -71,7 +79,7 @@ public partial class FirBottomSheet : Popup
 
         var nonAddedFirs = GetAndOrderFirs(SortType.NameAZ);
 
-        var firGrids = nonAddedFirs.Select(x => RenderFir(x, false)).ToList();
+        var firGrids = nonAddedFirs.Select(x => RenderFir(x, isAdded: false)).ToList();
 
         firGrids.ForEach(FirStackLayout.Children.Add);
     }
@@ -139,7 +147,52 @@ public partial class FirBottomSheet : Popup
 
     private void FirSearchEntry_TextChanged(object sender, TextChangedEventArgs e)
     {
-        var entry = (Entry)sender;
+        var entryText = ((Entry)sender).Text;
+
+        var nonAddedFirs = GetAndOrderFirs(SortType.NameAZ);
+
+        if (string.IsNullOrWhiteSpace(entryText))
+        {
+            FirStackLayout.Children.Add(CreateOrderButtonsStackLayout());
+
+            _allFirsStartIndex = FirStackLayout.Children.Count;
+
+            var firGrids = nonAddedFirs.Select(x => RenderFir(x, isAdded: false)).ToList();
+
+            firGrids.ForEach(FirStackLayout.Children.Add);
+
+            return;
+        }
+
+        var count = FirStackLayout.Children.Count;
+
+        for (var i = _allFirsStartIndex - 2; i <= count; i++)
+        {
+            //we are removing the first item of the list as long as there are still items left
+            FirStackLayout.Children.RemoveAt(_allFirsStartIndex - 2);
+        }
+
+        FirStackLayout.Children.Add(new Label() { FontSize = 20, Text = "" });
+
+        FirStackLayout.Children.Add(
+            new Label()
+            {
+                FontSize = 20,
+                FontAttributes = FontAttributes.Bold,
+                HorizontalOptions = LayoutOptions.Start,
+                Text = "Search Results"
+            }
+        );
+
+        var concernedFirs = nonAddedFirs.Where(
+            x => x.Identifier.Contains(entryText, StringComparison.InvariantCultureIgnoreCase) || x.Name.Contains(entryText, StringComparison.InvariantCultureIgnoreCase)
+        );
+
+        var ccount = concernedFirs.Count();
+
+        var resultFirGrids = concernedFirs.Select(x => RenderFir(x, isAdded: false)).ToList();
+
+        resultFirGrids.ForEach(FirStackLayout.Children.Add);
     }
 
     private HorizontalStackLayout CreateOrderButtonsStackLayout()
@@ -150,6 +203,9 @@ public partial class FirBottomSheet : Popup
         var nameZAButton = CreateOrderButton("Name Z>A");
         var identAZButton = CreateOrderButton("ICAO A>Z");
         var identZAButton = CreateOrderButton("ICAO Z>A");
+
+        nameAZButton.Background = Colors.White;
+        nameAZButton.TextColor = Color.FromArgb("#404040");
 
         stackLayout.Children.Add(nameAZButton);
         stackLayout.Children.Add(nameZAButton);
@@ -182,7 +238,13 @@ public partial class FirBottomSheet : Popup
 
         var buttons = ((HorizontalStackLayout)button.Parent).Children.OfType<Button>().ToList();
 
-        buttons.ForEach(x => { x.Background = Color.FromArgb("#404040"); x.TextColor = Colors.White; });
+        buttons.ForEach(
+            x =>
+            {
+                x.Background = Color.FromArgb("#404040");
+                x.TextColor = Colors.White;
+            }
+        );
 
         button.Background = Colors.White;
         button.TextColor = Color.FromArgb("#404040");
@@ -195,9 +257,12 @@ public partial class FirBottomSheet : Popup
             "ICAO Z>A" => SortType.IdentZA,
         };
 
-        for(var i = _allFirsStartIndex; i <= FirStackLayout.Children.Count; i++)
+        var count = FirStackLayout.Children.Count;
+
+        for (var i = _allFirsStartIndex; i <= count; i++)
         {
-            FirStackLayout.Children.RemoveAt(i);
+            //we are removing the first item of the list as long as there are still items left
+            FirStackLayout.Children.RemoveAt(_allFirsStartIndex);
         }
 
         var nonAddedFirs = GetAndOrderFirs(sortType);
@@ -207,28 +272,30 @@ public partial class FirBottomSheet : Popup
         firGrids.ForEach(FirStackLayout.Children.Add);
     }
 
-    private List<Fir> GetAndOrderFirs(SortType sortType)
+    private IEnumerable<Fir> GetAndOrderFirs(SortType sortType)
     {
-        var firs = VACDMData.Data.FlowMeasureFirs.Where(x => !_addedFirs.Any(y => y == x.Identifier));
+        var firs = VACDMData.Data.FlowMeasureFirs.Where(
+            x => !_addedFirs.Any(y => y == x.Identifier)
+        );
 
-        if(sortType == SortType.NameAZ)
+        if (sortType == SortType.NameAZ)
         {
-            return firs.OrderBy(x => x.Name).ToList();
+            return firs.OrderBy(x => x.Name);
         }
 
-        if(sortType == SortType.NameZA)
+        if (sortType == SortType.NameZA)
         {
-            return firs.OrderByDescending(x => x.Name).ToList();
+            return firs.OrderByDescending(x => x.Name);
         }
 
-        if(sortType == SortType.IdentAZ)
+        if (sortType == SortType.IdentAZ)
         {
-            return firs.OrderBy(x => x.Identifier).ToList();
+            return firs.OrderBy(x => x.Identifier);
         }
 
-        if(sortType == SortType.IdentZA)
+        if (sortType == SortType.IdentZA)
         {
-            return firs.OrderByDescending(x => x.Identifier).ToList();
+            return firs.OrderByDescending(x => x.Identifier);
         }
 
         throw new ArgumentOutOfRangeException(nameof(SortType));
