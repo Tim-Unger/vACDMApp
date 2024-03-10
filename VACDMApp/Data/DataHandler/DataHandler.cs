@@ -1,7 +1,6 @@
-﻿using VACDMApp.VACDMData;
-using static VACDMApp.VACDMData.Data;
+﻿using static VacdmApp.Data.Data;
 
-namespace VACDMApp.Data
+namespace VacdmApp.Data
 {
     internal partial class DataHandler
     {
@@ -35,7 +34,7 @@ namespace VACDMApp.Data
                 }
 
                 VatsimPilots = dataTask.Result.pilots.ToList();
-                VACDMPilots = vacdmTask.Result;
+                VacdmPilots = vacdmTask.Result;
                 FlowMeasures = measuresTask.Result.FlowMeasures;
                 FlowMeasureFirs = measuresTask.Result.Firs;
 

@@ -1,10 +1,10 @@
-namespace VACDMApp.Windows.Views;
+namespace VacdmApp.Windows.Views;
 
 using Microsoft.Maui.Controls;
-using VACDMApp.VACDMData;
-using VACDMApp.Data.Renderer;
-using VACDMApp.Windows.BottomSheets;
-using VACDMApp.Data;
+using VacdmApp.Data;
+using VacdmApp.Data.Renderer;
+using VacdmApp.Windows.BottomSheets;
+using VacdmApp.Data;
 
 public partial class MyFlightView : ContentView
 {
@@ -51,7 +51,7 @@ public partial class MyFlightView : ContentView
             return;
         }
 
-        var vacdmPilot = Data.VACDMPilots.Find(
+        var vacdmPilot = Data.VacdmPilots.Find(
             x => x.Callsign.Equals(pilot.callsign, StringComparison.InvariantCultureIgnoreCase)
         );
 
@@ -94,7 +94,7 @@ public partial class MyFlightView : ContentView
             return;
         }
 
-        var vacdmPilot = Data.VACDMPilots.Find(
+        var vacdmPilot = Data.VacdmPilots.Find(
             x => x.Callsign.Equals(pilot.callsign, StringComparison.InvariantCultureIgnoreCase)
         );
 
@@ -152,7 +152,7 @@ public partial class MyFlightView : ContentView
         OwnFlightGrid.Children.Clear();
 
         var vatsimPilots = Data.VatsimPilots;
-        var vacdmPilots = Data.VACDMPilots;
+        var vacdmPilots = Data.VacdmPilots;
         var cid = Data.Settings.Cid;
         
         if(vatsimPilots.Find(x => x.cid == cid) is null)

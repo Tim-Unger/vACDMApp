@@ -1,8 +1,8 @@
-﻿using static VACDMApp.VACDMData.Data;
+﻿using static VacdmApp.Data.Data;
 
-namespace VACDMApp.VACDMData
+namespace VacdmApp.Data
 {
-    internal class VACDMData
+    internal class VacdmData
     {
         internal static readonly HttpClient Client = new() { Timeout = TimeSpan.FromSeconds(10) };
 

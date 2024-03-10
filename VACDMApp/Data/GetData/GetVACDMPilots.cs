@@ -1,21 +1,21 @@
-﻿using static VACDMApp.VACDMData.VACDMData;
-using static VACDMApp.Windows.Views.LoadingView;
+﻿using static VacdmApp.Data.Data;
+using static VacdmApp.Windows.Views.LoadingView;
 
-namespace VACDMApp.VACDMData
+namespace VacdmApp.Data
 {
     public class VACDMPilotsData
     {
-        public static async Task<List<VACDMPilot>> GetVACDMPilotsAsync()
+        public static async Task<List<VacdmPilot>> GetVACDMPilotsAsync()
         {
             Data.LoadingView.SetLabelText(LoadingStatus.VacdmData);
 
-            var data = await Client.GetStringAsync(VacdmApiUrl);
+            var data = await VacdmData.Client.GetStringAsync(VacdmData.VacdmApiUrl);
 
-            var dataList = JsonSerializer.Deserialize<List<VACDMPilot>>(data);
+            var dataList = JsonSerializer.Deserialize<List<VacdmPilot>>(data);
 
             if (dataList.Count == 0)
             {
-                return Enumerable.Empty<VACDMPilot>().ToList();
+                return Enumerable.Empty<VacdmPilot>().ToList();
             }
 
             //Remove VFR Flights

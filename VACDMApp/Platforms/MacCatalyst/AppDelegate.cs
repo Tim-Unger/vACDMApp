@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace VACDMApp
+namespace VacdmApp
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

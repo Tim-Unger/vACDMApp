@@ -1,9 +1,9 @@
 using Microsoft.Maui.Controls.Shapes;
 using The49.Maui.BottomSheet;
-using VACDMApp.Data.Renderer;
-using static VACDMApp.VACDMData.Data;
+using VacdmApp.Data.Renderer;
+using static VacdmApp.Data.Data;
 
-namespace VACDMApp.Windows.BottomSheets;
+namespace VacdmApp.Windows.BottomSheets;
 
 public partial class VDGSBottomSheet : BottomSheet
 {
@@ -27,8 +27,8 @@ public partial class VDGSBottomSheet : BottomSheet
     private async void BottomSheet_Loaded(object sender, EventArgs e)
     {
         Sender = this;
-        SenderPage = VACDMData.SenderPage.Vdgs;
-        var vacdmPilot = VACDMPilots.First(x => x.Callsign == SelectedCallsign);
+        SenderPage = Data.SenderPage.Vdgs;
+        var vacdmPilot = VacdmPilots.First(x => x.Callsign == SelectedCallsign);
 
         var callsignLabel = new Label()
         {
@@ -139,7 +139,7 @@ public partial class VDGSBottomSheet : BottomSheet
         //TODO Pause on lost focus/Cancellation Token
         while (true)
         {
-            var vacdmPilot = VACDMPilots.First(x => x.Callsign == SelectedCallsign);
+            var vacdmPilot = VacdmPilots.First(x => x.Callsign == SelectedCallsign);
 
             _tobtLabel.Text = $"TOBT {vacdmPilot.Vacdm.Tobt.ToShortTimeString()} UTC";
             _tsatLabel.Text = $"TSAT {vacdmPilot.Vacdm.Tsat.ToShortTimeString()} UTC";

@@ -1,14 +1,14 @@
 ﻿using Plugin.LocalNotification;
 using Plugin.LocalNotification.EventArgs;
-using VACDMApp.VACDMData;
+using VacdmApp.Data;
 
-namespace VACDMApp.Data.PushNotifications
+namespace VacdmApp.Data.PushNotifications
 {
     internal partial class PushNotificationHandler
     {
         //private static List<(string callsign, DateTime pushedTime)> PushedPilots = new();
 
-        private static List<VACDMPilot> _subscribedPilots = new();
+        private static List<VacdmPilot> _subscribedPilots = new();
 
         internal enum NotificationType
         {
@@ -42,14 +42,14 @@ namespace VACDMApp.Data.PushNotifications
             }
         }
 
-        internal static async Task SubscribeAsync(VACDMPilot pilot)
+        internal static async Task SubscribeAsync(VacdmPilot pilot)
         {
             _subscribedPilots.Add(pilot);
 
             await CheckPilotAsync(pilot);
         }
 
-        internal static bool Unsubscribe(VACDMPilot pilot)
+        internal static bool Unsubscribe(VacdmPilot pilot)
         {
             var concernedPilot = _subscribedPilots.FirstOrDefault(
                 x => x.Callsign == pilot.Callsign

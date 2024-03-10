@@ -1,6 +1,6 @@
-﻿using VACDMApp.Data.Renderer;
+﻿using VacdmApp.Data.Renderer;
 
-namespace VACDMApp.Windows.Views;
+namespace VacdmApp.Windows.Views;
 
 public partial class FlowMeasuresView : ContentView
 {

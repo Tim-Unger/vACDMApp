@@ -1,6 +1,6 @@
-using VACDMApp.VACDMData;
+using VacdmApp.Data;
 
-namespace VACDMApp;
+namespace VacdmApp;
 
 public partial class AboutPage : ContentPage
 {
@@ -21,7 +21,7 @@ public partial class AboutPage : ContentPage
         }
 
         TitleLabel.Text = "VATSIM\nAirport\nCollaborative\nDecision\nMaking";
-        VACDMData.Data.SenderPage = SenderPage.About;
+        Data.Data.SenderPage = SenderPage.About;
         VersionLabel.Text = $"Tim Unger (1468997) -- V {AppInfo.Current.VersionString}";
     }
 

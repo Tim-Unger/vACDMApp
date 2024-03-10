@@ -1,9 +1,7 @@
-﻿using System.Net.Http.Json;
-using System.Text;
-using VACDMApp.VACDMData;
-using static VACDMApp.Windows.Views.LoadingView;
+﻿using System.Text;
+using static VacdmApp.Windows.Views.LoadingView;
 
-namespace VACDMApp.VACDMData
+namespace VacdmApp.Data
 {
     public class AirlinesData
     {

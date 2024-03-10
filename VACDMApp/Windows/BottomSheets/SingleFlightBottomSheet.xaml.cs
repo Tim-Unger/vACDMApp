@@ -1,8 +1,8 @@
 using The49.Maui.BottomSheet;
-using VACDMApp.Data.Renderer;
-using static VACDMApp.VACDMData.Data;
+using VacdmApp.Data.Renderer;
+using static VacdmApp.Data.Data;
 
-namespace VACDMApp.Windows.BottomSheets;
+namespace VacdmApp.Windows.BottomSheets;
 
 public partial class SingleFlightBottomSheet : BottomSheet
 {
@@ -15,7 +15,7 @@ public partial class SingleFlightBottomSheet : BottomSheet
         InitializeComponent();
         LoadContent();
 
-        SenderPage = VACDMData.SenderPage.SingleFlight;
+        SenderPage = Data.SenderPage.SingleFlight;
         Sender = this;
     }
 
@@ -40,7 +40,7 @@ public partial class SingleFlightBottomSheet : BottomSheet
 
             var content = SingleFlight.RenderGrid(SelectedCallsign);
 
-            SenderPage = VACDMData.SenderPage.SingleFlight;
+            SenderPage = Data.SenderPage.SingleFlight;
             Sender = this;
 
             SingleFlightGrid.Children.Add(content);

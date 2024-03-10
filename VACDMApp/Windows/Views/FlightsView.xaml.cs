@@ -1,12 +1,11 @@
-using VACDMApp.VACDMData;
-using VACDMApp.Data.Renderer;
-using VACDMApp.Windows.BottomSheets;
-using static VACDMApp.VACDMData.Data;
-using static VACDMApp.Data.Renderer.Pilots;
-using VACDMApp.Data;
+using VacdmApp.Data;
+using VacdmApp.Data.Renderer;
+using VacdmApp.Windows.BottomSheets;
+using static VacdmApp.Data.Data;
+using static VacdmApp.Data.Renderer.Pilots;
 using CommunityToolkit.Maui.Core.Platform;
 
-namespace VACDMApp.Windows.Views;
+namespace VacdmApp.Windows.Views;
 
 public partial class FlightsView : ContentView
 {
@@ -139,8 +138,8 @@ public partial class FlightsView : ContentView
 
         await airportsSheet.ShowAsync();
 
-        VACDMData.Data.SenderPage = VACDMData.SenderPage.Airport;
-        VACDMData.Data.Sender = airportsSheet;
+        Data.Data.SenderPage = Data.SenderPage.Airport;
+        Data.Data.Sender = airportsSheet;
     }
 
     private void DayButton_Clicked(object sender, EventArgs e)
@@ -214,7 +213,7 @@ public partial class FlightsView : ContentView
         await Task.WhenAll(dataTask, vacdmTask);
 
         VatsimPilots = dataTask.Result.pilots.ToList();
-        VACDMPilots = vacdmTask.Result;
+        VacdmPilots = vacdmTask.Result;
 
         var selectedAirport = AirportsBottomSheet.GetClickedAirport();
 
@@ -286,12 +285,12 @@ public partial class FlightsView : ContentView
         //Check if search is an airport
         if (searchText.Length <= 4)
         {
-            var depAirports = VACDMPilots
+            var depAirports = VacdmPilots
                 .Select(x => x.FlightPlan.Departure)
                 .DistinctBy(x => x.ToUpper())
                 .ToList();
 
-            var arrAirports = VACDMPilots
+            var arrAirports = VacdmPilots
                 .Select(x => x.FlightPlan.Arrival)
                 .DistinctBy(x => x.ToUpper())
                 .ToList();
@@ -312,7 +311,7 @@ public partial class FlightsView : ContentView
         }
 
         //Check if search is a single callsign
-        if (VACDMPilots.Any(x => x.Callsign == searchText.ToUpperInvariant()))
+        if (VacdmPilots.Any(x => x.Callsign == searchText.ToUpperInvariant()))
         {
             FlightsStackLayout.Children.Clear();
 

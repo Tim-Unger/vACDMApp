@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
-using VACDMApp.VACDMData;
+using VacdmApp.Data;
 
-namespace VACDMApp.Data.Renderer
+namespace VacdmApp.Data.Renderer
 {
     internal partial class Pilots
     {
@@ -9,14 +9,14 @@ namespace VACDMApp.Data.Renderer
 
         private static readonly GridLength _oneStar = new(3, GridUnitType.Star);
 
-        private static Border RenderPilot(VACDMPilot pilot)
+        private static Border RenderPilot(VacdmPilot pilot)
         {
             //TODO Error handling here when ACDM FP not found
             var flightPlan =
-                VACDMData.Data.VatsimPilots.Find(x => x.callsign == pilot.Callsign).flight_plan
+                Data.VatsimPilots.Find(x => x.callsign == pilot.Callsign).flight_plan
                 ?? throw new InvalidDataException("");
 
-            var airlines = VACDMData.Data.Airlines;
+            var airlines = Data.Airlines;
 
             var border = new Border() { StrokeThickness = 0, Stroke = Color.FromArgb("#454545"), Background = Colors.Transparent };
 
@@ -62,7 +62,7 @@ namespace VACDMApp.Data.Renderer
 
             grid.SetColumn(flightGrid, 1);
 
-            var airportData = VACDMData.Data.Airports.FirstOrDefault(
+            var airportData = Data.Airports.FirstOrDefault(
                 x => x.Icao == pilot.FlightPlan.Departure
             );
 
@@ -115,7 +115,7 @@ namespace VACDMApp.Data.Renderer
             var arrivalIcao = pilot.FlightPlan.Arrival;
 
             var arrAirportData =
-                VACDMData.Data.Airports.FirstOrDefault(x => x.Icao == arrivalIcao)
+                Data.Airports.FirstOrDefault(x => x.Icao == arrivalIcao)
                 ?? new Airport() { Iata = arrivalIcao, Icao = arrivalIcao };
 
             var flightData =
@@ -179,7 +179,7 @@ namespace VACDMApp.Data.Renderer
 
             //TODO not woking
             var isPilotBookmarked =
-                VACDMData.Data.BookmarkedPilots.FirstOrDefault(x => x.Callsign == pilot.Callsign)
+                Data.BookmarkedPilots.FirstOrDefault(x => x.Callsign == pilot.Callsign)
                 != null;
             var bookmarkImageSource = isPilotBookmarked ? "bookmark.svg" : "bookmark_outline.svg";
 

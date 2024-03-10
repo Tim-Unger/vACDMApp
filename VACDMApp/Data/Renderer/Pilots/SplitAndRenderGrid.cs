@@ -1,10 +1,10 @@
-﻿using VACDMApp.VACDMData;
+﻿using VacdmApp.Data;
 
-namespace VACDMApp.Data.Renderer
+namespace VacdmApp.Data.Renderer
 {
     internal partial class Pilots
     {
-        private static List<Border> SplitAndRenderGrid(IEnumerable<VACDMPilot> pilots)
+        private static List<Border> SplitAndRenderGrid(IEnumerable<VacdmPilot> pilots)
         {
             var sortByTime = pilots.OrderBy(x => x.Vacdm.Eobt).GroupBy(x => x.Vacdm.Eobt.Hour);
 

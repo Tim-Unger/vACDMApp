@@ -1,8 +1,8 @@
 using Microsoft.Maui.Controls.Shapes;
 using The49.Maui.BottomSheet;
-using static VACDMApp.VACDMData.Data;
+using static VacdmApp.Data.Data;
 
-namespace VACDMApp.Windows.BottomSheets;
+namespace VacdmApp.Windows.BottomSheets;
 
 public partial class TimesBottomSheet : BottomSheet
 {
@@ -15,14 +15,14 @@ public partial class TimesBottomSheet : BottomSheet
 
         Sender = this;
 
-        VACDMData.Data.SenderPage = VACDMData.SenderPage.Time;
+        Data.Data.SenderPage = Data.SenderPage.Time;
     }
 
     public static int SelectedTime = 0;
 
     private void GetTimes()
     {
-        var pilotsWithFP = VACDMPilots
+        var pilotsWithFP = VacdmPilots
             //Only Pilots that have are in the Vatsim Datafeed
             .Where(x => VatsimPilots.Exists(y => y.callsign == x.Callsign))
             //Only Pilots that have filed a flight plan

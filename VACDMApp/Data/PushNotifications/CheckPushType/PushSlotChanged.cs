@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VACDMApp.VACDMData;
-using static VACDMApp.Data.PushNotifications.PushNotificationHandler;
+using VacdmApp.Data;
+using static VacdmApp.Data.PushNotifications.PushNotificationHandler;
 
-namespace VACDMApp.Data.PushNotifications
+namespace VacdmApp.Data.PushNotifications
 {
     internal partial class PushType
     {
-        internal static async Task PushSlotChangedAsync(VACDMPilot pilot, bool isOwnFlight, TimeOnly pushTime)
+        internal static async Task PushSlotChangedAsync(VacdmPilot pilot, bool isOwnFlight, TimeOnly pushTime)
         {
             var vacdm = pilot.Vacdm;
 

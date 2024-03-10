@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace VACDMApp
+namespace VacdmApp
 {
     [Application]
     public class MainApplication : MauiApplication

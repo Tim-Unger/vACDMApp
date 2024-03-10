@@ -2,7 +2,7 @@
 using Android.Content.PM;
 using Android.OS;
 
-namespace VACDMApp
+namespace VacdmApp
 {
     [Activity(
         Theme = "@style/Maui.SplashTheme",

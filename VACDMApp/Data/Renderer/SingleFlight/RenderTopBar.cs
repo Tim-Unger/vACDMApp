@@ -1,14 +1,14 @@
 ﻿using Android.Gms.Common.Api.Internal;
 using CommunityToolkit.Maui.Alerts;
-using VACDMApp.Data.PushNotifications;
-using VACDMApp.VACDMData;
-using VACDMApp.Windows.BottomSheets;
+using VacdmApp.Data.PushNotifications;
+using VacdmApp.Data;
+using VacdmApp.Windows.BottomSheets;
 
-namespace VACDMApp.Data.Renderer
+namespace VacdmApp.Data.Renderer
 {
     internal partial class SingleFlight
     {
-        internal static Grid TopBarGrid(VACDMPilot pilot)
+        internal static Grid TopBarGrid(VacdmPilot pilot)
         {
             var grid = new Grid() { Background = Colors.Transparent };
 
@@ -19,7 +19,7 @@ namespace VACDMApp.Data.Renderer
             grid.ColumnDefinitions.Add(oneStarWidth);
 
             var isPilotBookmarked =
-                VACDMData.Data.BookmarkedPilots.FirstOrDefault(x => x.Callsign == pilot.Callsign)
+                Data.BookmarkedPilots.FirstOrDefault(x => x.Callsign == pilot.Callsign)
                 != null;
 
             var bookmarkImageSource = isPilotBookmarked ? "bookmark.svg" : "bookmark_outline.svg";
@@ -86,11 +86,11 @@ namespace VACDMApp.Data.Renderer
         private static async Task BookmarkButton_Clicked(
             object sender,
             EventArgs e,
-            VACDMPilot pilot,
+            VacdmPilot pilot,
             Image image
         )
         {
-            var bookmarks = VACDMData.Data.BookmarkedPilots;
+            var bookmarks = Data.BookmarkedPilots;
 
             if (bookmarks.Exists(x => x.Callsign == pilot.Callsign))
             {
@@ -98,7 +98,7 @@ namespace VACDMApp.Data.Renderer
 
                 var removeIndex = bookmarks.FindIndex(x => x.Callsign == pilot.Callsign);
 
-                VACDMData.Data.BookmarkedPilots.RemoveAt(removeIndex);
+                Data.BookmarkedPilots.RemoveAt(removeIndex);
 
                 var removedToast = Toast.Make(
                     $"Removed Flight {pilot.Callsign} from your Bookmarks",
@@ -108,14 +108,14 @@ namespace VACDMApp.Data.Renderer
 
                 PushNotificationHandler.Unsubscribe(pilot);
                 await removedToast.Show();
-                //VACDMData.Data.MyFlightView.RenderBookmarks();
+                //Data.Data.MyFlightView.RenderBookmarks();
 
                 return;
             }
 
             image.Source = "bookmark.svg";
 
-            VACDMData.Data.BookmarkedPilots.Add(pilot);
+            Data.BookmarkedPilots.Add(pilot);
 
             var savedToast = Toast.Make(
                 $"Saved Flight {pilot.Callsign} to your Bookmarks",
@@ -125,12 +125,12 @@ namespace VACDMApp.Data.Renderer
 
             await savedToast.Show();
             await PushNotificationHandler.SubscribeAsync(pilot);
-            //VACDMData.Data.MyFlightView.RenderBookmarks();
+            //Data.Data.MyFlightView.RenderBookmarks();
         }
 
         private static void CloseButton_Clicked(object sender, EventArgs e)
         {
-            ((SingleFlightBottomSheet)VACDMData.Data.Sender).DismissAsync();
+            ((SingleFlightBottomSheet)Data.Sender).DismissAsync();
         }
     }
 }

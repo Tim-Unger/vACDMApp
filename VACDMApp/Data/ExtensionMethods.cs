@@ -1,4 +1,4 @@
-﻿namespace VACDMApp.Data
+﻿namespace VacdmApp.Data
 {
     public static class ExtensionMethods
     {

@@ -1,4 +1,4 @@
-﻿namespace VACDMApp
+﻿namespace VacdmApp
 {
     public partial class App : Application
     {

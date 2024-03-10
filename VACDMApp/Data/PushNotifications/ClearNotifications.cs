@@ -1,6 +1,6 @@
 ﻿using Plugin.LocalNotification;
 
-namespace VACDMApp.Data.PushNotifications
+namespace VacdmApp.Data.PushNotifications
 {
     internal class ClearPush
     {

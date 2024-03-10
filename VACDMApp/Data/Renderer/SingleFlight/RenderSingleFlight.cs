@@ -1,6 +1,6 @@
 ﻿using Microsoft.Maui.Controls.Shapes;
 
-namespace VACDMApp.Data.Renderer
+namespace VacdmApp.Data.Renderer
 {
     internal partial class SingleFlight
     {
@@ -13,11 +13,11 @@ namespace VACDMApp.Data.Renderer
         internal static Grid RenderGrid(string callsign)
         {
             var flightPlan =
-                VACDMData.Data.VatsimPilots.FirstOrDefault(x => x.callsign == callsign)?.flight_plan
+                Data.VatsimPilots.FirstOrDefault(x => x.callsign == callsign)?.flight_plan
                 ?? throw new Exception();
-            var airlines = VACDMData.Data.Airlines;
+            var airlines = Data.Airlines;
 
-            var pilot = VACDMData.Data.VACDMPilots.First(x => x.Callsign == callsign);
+            var pilot = Data.VacdmPilots.First(x => x.Callsign == callsign);
 
             var grid = new Grid { BackgroundColor = _darkGrey };
 
@@ -41,7 +41,7 @@ namespace VACDMApp.Data.Renderer
             grid.Children.Add(placeholderRectangle);
             grid.SetRow(placeholderRectangle, 9);
 
-            var airportData = VACDMData.Data.Airports.FirstOrDefault(
+            var airportData = Data.Airports.FirstOrDefault(
                 x => x.Icao == pilot.FlightPlan.Departure
             );
 

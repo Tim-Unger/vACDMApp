@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView
-    x:Class="VACDMApp.Windows.Views.LoadingView"
+    x:Class="VacdmApp.Windows.Views.LoadingView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <VerticalStackLayout VerticalOptions="Center">
@@ -10,7 +10,7 @@
             FontAttributes="Bold"
             FontSize="30"
             HorizontalOptions="Center"
-            Text="Loading, just a second"
+            Text=""
             TextColor="White" />
     </VerticalStackLayout>
 </ContentView>

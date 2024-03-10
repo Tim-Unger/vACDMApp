@@ -1,18 +1,18 @@
-﻿using VACDMApp.Data.OverridePermissions;
-using VACDMApp.VACDMData;
+﻿using VacdmApp.Data.OverridePermissions;
+using VacdmApp.Data;
 
-namespace VACDMApp.Data.PushNotifications
+namespace VacdmApp.Data.PushNotifications
 {
     internal partial class PushNotificationHandler
     {
         internal static List<(string callsign, NotificationType notificationType, TimeOnly pushTime, DateTime? pushedTsat)> PushedNotifications =
             new();
 
-        internal static readonly Settings CurrentSettings = VACDMData.Data.Settings;
+        internal static readonly Settings CurrentSettings = Data.Settings;
 
         internal static List<(string callsign, DateTime lastTsat)> LastTsats = new();
 
-        internal static async Task CheckPilotAsync(VACDMPilot pilot)
+        internal static async Task CheckPilotAsync(VacdmPilot pilot)
         {
             var grantState = await Permissions.CheckStatusAsync<SendNotifications>();
 
@@ -22,13 +22,13 @@ namespace VACDMApp.Data.PushNotifications
                 return;
             }
 
-            var ownFlight = VACDMData.Data.VatsimPilots.FirstOrDefault(x => x.cid == CurrentSettings.Cid);
+            var ownFlight = Data.VatsimPilots.FirstOrDefault(x => x.cid == CurrentSettings.Cid);
 
             var isOwnFlight = false;
 
             if (
                 ownFlight is not null
-                && VACDMData.Data.VACDMPilots.Any(x => x.Callsign == ownFlight.callsign)
+                && Data.VacdmPilots.Any(x => x.Callsign == ownFlight.callsign)
             )
             {
                 isOwnFlight = true;

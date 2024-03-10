@@ -1,6 +1,6 @@
-﻿using VACDMApp.VACDMData;
+﻿using VacdmApp.Data;
 
-namespace VACDMApp.Data
+namespace VacdmApp.Data
 {
     public partial class SettingsData
     {
@@ -8,7 +8,7 @@ namespace VACDMApp.Data
         {
             var cid = Preferences.Get("cid", 0);
 
-            var dataSources = VACDMData.Data.DataSources;
+            var dataSources = Data.DataSources;
 
             var dataSource = Preferences.Get("data_source", "VATGER");
 

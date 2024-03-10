@@ -1,4 +1,4 @@
-﻿namespace VACDMApp.Data.PushNotifications 
+﻿namespace VacdmApp.Data.PushNotifications 
 {
     internal partial class PushNotificationHandler
     {

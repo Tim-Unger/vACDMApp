@@ -1,6 +1,6 @@
-﻿using VACDMApp.Windows.BottomSheets;
+﻿using VacdmApp.Windows.BottomSheets;
 
-namespace VACDMApp.Data.Renderer
+namespace VacdmApp.Data.Renderer
 {
     internal partial class Pilots
     {

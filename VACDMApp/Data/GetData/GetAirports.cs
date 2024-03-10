@@ -1,14 +1,14 @@
 ﻿using System.Text;
-using static VACDMApp.Windows.Views.LoadingView;
+using static VacdmApp.Windows.Views.LoadingView;
 
 
-namespace VACDMApp.Data.GetData
+namespace VacdmApp.Data.GetData
 {
     internal class AirportsData
     {
         internal static async Task<List<Airport>> GetAirportsAsync()
         {
-            VACDMData.Data.LoadingView.SetLabelText(LoadingStatus.Airports);
+            Data.LoadingView.SetLabelText(LoadingStatus.Airports);
 
             var dataRaw = await FileSystem.Current.OpenAppPackageFileAsync("airports.json");
 

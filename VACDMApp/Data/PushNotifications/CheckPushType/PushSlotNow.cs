@@ -1,11 +1,11 @@
-﻿using static VACDMApp.Data.PushNotifications.PushNotificationHandler;
-using VACDMApp.VACDMData;
+﻿using static VacdmApp.Data.PushNotifications.PushNotificationHandler;
+using VacdmApp.Data;
 
-namespace VACDMApp.Data.PushNotifications
+namespace VacdmApp.Data.PushNotifications
 {
     internal partial class PushType
     {
-        internal static async Task PushSlotNowAsync(VACDMPilot pilot, bool isOwnFlight, TimeOnly pushTime)
+        internal static async Task PushSlotNowAsync(VacdmPilot pilot, bool isOwnFlight, TimeOnly pushTime)
         {
             if (!IsAllowedToSendPush(NotificationType.SlotNow, isOwnFlight))
             {
