@@ -56,10 +56,11 @@
                 <VerticalStackLayout>
                     <ActivityIndicator IsRunning="True" Color="White" />
                     <Label
+                        x:Name="LoadingLabel"
                         FontAttributes="Bold"
                         FontSize="30"
                         HorizontalTextAlignment="Center"
-                        Text="Loading, just a second"
+                        Text=""
                         VerticalOptions="Center" />
                 </VerticalStackLayout>
             </Grid>

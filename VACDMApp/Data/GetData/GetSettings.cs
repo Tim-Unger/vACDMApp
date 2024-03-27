@@ -32,6 +32,8 @@ namespace VacdmApp.Data
 
             var flowMesurePushFirs = Preferences.Get("flow_measure_push_firs", "");
 
+            var updateAutomatically = Preferences.Get("update_automatically", true);
+
             return new Settings()
             {
                 Cid = cid != 0 ? cid : null,
@@ -45,7 +47,8 @@ namespace VacdmApp.Data
                 SendPushBookmarkStartup = pushBookmarkStartup,
                 SendPushMyFlightSlotUnconfirmed = pushMyFlightSlotUnconfirmed,
                 SendPushFlowMeasures = pushFlowMeasures,
-                FlowMeasurePushFirs = flowMesurePushFirs
+                FlowMeasurePushFirs = flowMesurePushFirs,
+                UpdateAutomatically = updateAutomatically
             };
         }
     }

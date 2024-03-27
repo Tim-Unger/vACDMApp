@@ -1,10 +1,27 @@
-﻿namespace VacdmApp.Data.PushNotifications 
+﻿using static VacdmApp.Data.PushNotifications.PushNotificationHandler;
+
+namespace VacdmApp.Data.PushNotifications 
 {
     internal partial class PushNotificationHandler
     {
-        internal static bool IsAllowedToSendPush(NotificationType notificationType, bool isOwnFlight)
+        internal static bool IsAllowedToSendPush(NotificationType notificationType, bool isOwnFlight) => AllowedToSendPush(notificationType, isOwnFlight);
+
+        internal static bool IsAllowedToSendPush(NotificationType notificationType) => AllowedToSendPush(notificationType, null);
+
+        //If we name this IsAllowedToSendPush as well, we create a recursion, even though it shouldn't
+        private static bool AllowedToSendPush(NotificationType notificationType, bool? isOwnFlight)
         {
-            if (isOwnFlight)
+            if(notificationType == NotificationType.FlowMeasure)
+            {
+                return CurrentSettings.SendPushFlowMeasures;
+            }
+
+            if(isOwnFlight is null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(notificationType));
+            }
+
+            if (isOwnFlight == true)
             {
                 return notificationType switch
                 {

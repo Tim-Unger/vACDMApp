@@ -1,6 +1,5 @@
 ﻿using Plugin.LocalNotification;
 using Plugin.LocalNotification.EventArgs;
-using VacdmApp.Data;
 
 namespace VacdmApp.Data.PushNotifications
 {
@@ -8,7 +7,9 @@ namespace VacdmApp.Data.PushNotifications
     {
         //private static List<(string callsign, DateTime pushedTime)> PushedPilots = new();
 
-        private static List<VacdmPilot> _subscribedPilots = new();
+        private static readonly List<VacdmPilot> _subscribedPilots = new();
+
+        private static readonly List<FlowMeasure> _checkedMeasures = new();
 
         internal enum NotificationType
         {
@@ -16,7 +17,7 @@ namespace VacdmApp.Data.PushNotifications
             SlotChanged,
             StartupGiven,
             SlotSoonUnconfirmed,
-            NewFlowMeasure //TODO Flow Measure Push
+            FlowMeasure //TODO Flow Measure Push
         }
 
         //TODO implement
@@ -34,12 +35,36 @@ namespace VacdmApp.Data.PushNotifications
         {
             while (true)
             {
-                var tasks = _subscribedPilots.Select(CheckPilotAsync);
+                var tasks = _subscribedPilots.Select(CheckPilotAsync).ToList();
+                tasks.Add(CheckFlowMeasuresAsyc());
 
                 await Task.WhenAll(tasks);
 
-                await Task.Delay(TimeSpan.FromSeconds(30));
+                await Task.Delay(TimeSpan.FromSeconds(60));
             }
+        }
+
+        //TODO
+        private static async Task CheckFlowMeasuresAsyc()
+        {
+            var measures = Data.FlowMeasures;
+
+            var differences = _checkedMeasures.Where(
+                w =>
+                    !measures.Any(
+                        x =>
+                            w.NotifiedFirs.Any(
+                                y => x.NotifiedFirs.Any(z => z.Identifier == y.Identifier)
+                            )
+                    )
+            );
+
+            if (!differences.Any())
+            {
+                return;
+            }
+
+            await Task.Delay(10);
         }
 
         internal static async Task SubscribeAsync(VacdmPilot pilot)

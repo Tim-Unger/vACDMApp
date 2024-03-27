@@ -72,7 +72,11 @@
             </Grid>-->
 
             <Grid Grid.Row="1">
-                <RefreshView x:Name="FlowMeasuresRefreshView" Refreshing="RefreshView_Refreshing">
+                <RefreshView
+                    x:Name="FlowMeasuresRefreshView"
+                    Background="#232323"
+                    RefreshColor="White"
+                    Refreshing="RefreshView_Refreshing">
                     <ScrollView x:Name="FlowMeasuresScrollView" VerticalOptions="FillAndExpand">
                         <VerticalStackLayout x:Name="FlowMeasuresStackLayout" />
                     </ScrollView>

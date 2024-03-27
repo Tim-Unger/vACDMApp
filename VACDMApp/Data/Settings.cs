@@ -25,5 +25,7 @@
         public bool SendPushFlowMeasures { get; set; } = false;
 
         public string FlowMeasurePushFirs { get; set; } = "";
+
+        public bool UpdateAutomatically { get; set; } = true;
     }
 }

@@ -15,7 +15,8 @@
             <RowDefinition Height="3*" />
             <RowDefinition Height="3*" />
             <RowDefinition Height="1*" />
-            <RowDefinition Height="2*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
@@ -361,7 +362,7 @@
                     HorizontalOptions="End"
                     IsRunning="True"
                     IsVisible="False"
-                    Color="White" />
+                    Color="Red" />
 
                 <Rectangle
                     x:Name="AllowPushFlowRect"
@@ -369,6 +370,39 @@
                     Background="#303030"
                     Opacity="0.6" />
             </Grid>
+        </Grid>
+
+        <Grid Grid.Row="7">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Grid.Column="0"
+                Margin="20,0,0,0"
+                FontAttributes="None"
+                FontSize="20"
+                HorizontalOptions="Start"
+                Text="Update Data Automatically"
+                VerticalOptions="Center" />
+
+            <ActivityIndicator
+                x:Name="UpdateAutomaticallyActivityIndicator"
+                Grid.Column="1"
+                Margin="5,5,0,5"
+                HorizontalOptions="End"
+                IsRunning="True"
+                IsVisible="False"
+                Color="White" />
+
+            <Switch
+                x:Name="UpdateAutomaticallySwitch"
+                Grid.Column="1"
+                HorizontalOptions="End"
+                IsEnabled="True"
+                IsToggled="True"
+                Toggled="UpdateAutomaticallySwitch_Toggled" />
         </Grid>
     </Grid>
 </ContentView>

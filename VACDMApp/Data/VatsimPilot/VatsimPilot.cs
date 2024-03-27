@@ -2,16 +2,16 @@
 {
     public class VatsimData
     {
-        public General general { get; set; }
-        public Pilot[] pilots { get; set; }
-        public Controller[] controllers { get; set; }
-        public Ati[] atis { get; set; }
-        public Server[] servers { get; set; }
-        public Prefile[] prefiles { get; set; }
-        public Facility[] facilities { get; set; }
-        public Rating[] ratings { get; set; }
-        public Pilot_Ratings[] pilot_ratings { get; set; }
-        public Military_Ratings[] military_ratings { get; set; }
+            public General general { get; set; }
+            public Pilot[] pilots { get; set; }
+            public Controller[] controllers { get; set; }
+            public Ati[] atis { get; set; }
+            public Server[] servers { get; set; }
+            public Prefile[] prefiles { get; set; }
+            public Facility[] facilities { get; set; }
+            public Rating[] ratings { get; set; }
+            public Pilot_Ratings[] pilot_ratings { get; set; }
+            public Military_Ratings[] military_ratings { get; set; }
     }
 
     public class General

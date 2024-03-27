@@ -1,8 +1,4 @@
 ﻿using System.Net.Http.Json;
-using VacdmApp.Data;
-using VacdmApp.Data.Renderer;
-using static VacdmApp.Data.Data;
-using static VacdmApp.Windows.Views.LoadingView;
 
 namespace VacdmApp.Data
 {
@@ -10,9 +6,6 @@ namespace VacdmApp.Data
     {
         public static async Task<(List<FlowMeasure> FlowMeasures, List<Fir> Firs)> GetFlowMeasuresAsync()
         {
-            Data.LoadingView.SetLabelText(LoadingStatus.FlowMeasures);
-
-            //TODO
             var firs = await GetFirsAsync();
 
             var measures = await VacdmData.Client.GetFromJsonAsync<List<FlowMeasure>>(

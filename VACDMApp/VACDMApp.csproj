@@ -146,9 +146,6 @@
 		<MauiXaml Update="Windows\Views\SettingsView.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Windows\WaypointlePage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -156,6 +153,10 @@
 		<MauiPlatformSpecificFolder Remove="Platforms\MacCatalyst\" />
 		<MauiPlatformSpecificFolder Remove="Platforms\Tizen\" />
 		<MauiPlatformSpecificFolder Remove="Platforms\Windows\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <AndroidResource Include="Platforms\Android\Resources\drawable\maui_splash.xml.dis" />
 	</ItemGroup>
 
 	<ProjectExtensions>

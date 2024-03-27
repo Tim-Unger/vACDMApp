@@ -36,6 +36,11 @@ public partial class MyFlightView : ContentView
 
     private async void FindCidButton_Clicked(object sender, EventArgs e)
     {
+        if (string.IsNullOrWhiteSpace(SearchText.Text) && string.IsNullOrWhiteSpace(Data.Settings.Cid.ToString()))
+        {
+            return;
+        }
+
         var isCid = int.TryParse(SearchText.Text, out _);
         
         var pilot = isCid ? await GetVatsimPilotByCid() : await GetVatsimPilotByCallsign();
@@ -79,6 +84,11 @@ public partial class MyFlightView : ContentView
 
     private async void ShowVdgsButton_Clicked(object sender, EventArgs e)
     {
+        if (string.IsNullOrWhiteSpace(SearchText.Text) && string.IsNullOrWhiteSpace(Data.Settings.Cid.ToString()))
+        {
+            return;
+        }
+
         var isCid = int.TryParse(SearchText.Text, out _);
 
         var pilot = isCid ? await GetVatsimPilotByCid() : await GetVatsimPilotByCallsign();
@@ -94,7 +104,7 @@ public partial class MyFlightView : ContentView
             return;
         }
 
-        var vacdmPilot = Data.VacdmPilots.Find(
+        var vacdmPilot = VacdmApp.Data.Data.VacdmPilots.Find(
             x => x.Callsign.Equals(pilot.callsign, StringComparison.InvariantCultureIgnoreCase)
         );
 
@@ -125,7 +135,7 @@ public partial class MyFlightView : ContentView
         {
             var now = DateTime.UtcNow;
 
-            TimeLabel.Text = $"{now:T}Z";
+            TimeLabel.Text = $"{now:T}" + "Z";
 
             await Task.Delay(200);
         }

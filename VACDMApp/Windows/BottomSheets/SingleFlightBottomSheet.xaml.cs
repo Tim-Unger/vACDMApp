@@ -28,7 +28,7 @@ public partial class SingleFlightBottomSheet : BottomSheet
     private async Task UpdateDataContinuously()
     {
         //TODO Pause on lost focus/Cancellation Token
-        while (true)
+        while (Settings.UpdateAutomatically)
         {
             if (_isFirstLoad)
             {

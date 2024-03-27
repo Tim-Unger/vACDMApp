@@ -108,8 +108,10 @@ public partial class FlightsView : ContentView
     private async Task UpdateDataContinuously()
     {
         //TODO Pause on lost focus
-        while (true)
+        while (Data.Data.Settings.UpdateAutomatically)
         {
+            FlightsRefreshView.IsRefreshing = true;
+
             if (_isFirstLoad)
             {
                 _isFirstLoad = false;
@@ -127,6 +129,8 @@ public partial class FlightsView : ContentView
             var allFlights = Pilots.Render(FilterKind.Airport, selectedAirport);
             allFlights.ForEach(FlightsStackLayout.Children.Add);
             FlightsScrollView.Content = FlightsStackLayout;
+
+            FlightsRefreshView.IsRefreshing = false;
 
             await Task.Delay(TimeSpan.FromMinutes(1));
         }

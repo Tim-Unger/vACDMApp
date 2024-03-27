@@ -4,9 +4,7 @@ using VacdmApp.Data;
 using VacdmApp.Data.GetData;
 using VacdmApp.Data.OverridePermissions;
 using VacdmApp.Data.PushNotifications;
-using VacdmApp.Data;
 using static VacdmApp.Data.Data;
-using static VacdmApp.Windows.Views.LoadingView;
 
 namespace VacdmApp
 {
@@ -20,9 +18,15 @@ namespace VacdmApp
             Settings
         }
 
-        private static bool _isFirstLoad = true;
+        private bool _isFirstLoad = true;
 
-        private static MainPage _mainPage;
+        private MainPage _mainPage;
+
+        private List<Task> _taskList = new();
+
+        private CancellationTokenSource _progressCancellationTokenSource = new();
+
+        private bool _isLoadSuccessfull = false;
 
         public MainPage()
         {
@@ -67,14 +71,20 @@ namespace VacdmApp
             Mainview.Content = FlightsView;
             SetButtons(true);
 
-            await DataHandler.RunAsync();
+            if (!_isLoadSuccessfull)
+            {
+                return;
+            }
 
-            await PushNotificationHandler.StartGlobalHandler();
+            await Task.Run(async () => 
+            { 
+                await DataHandler.RunAsync(); 
+                await PushNotificationHandler.StartGlobalHandler(); 
+            });
 
             await PushNotificationHandler.InitializeNotificationEvents(
-               LocalNotificationCenter.Current
-           );
-
+                LocalNotificationCenter.Current
+            );
         }
 
         private void MyFlightButton_Clicked(object sender, EventArgs e)
@@ -115,7 +125,7 @@ namespace VacdmApp
                 currentPage == CurrentPage.Settings ? "settings.svg" : "settings_outline.svg";
         }
 
-        internal static async Task GetAllData()
+        internal async Task GetAllData()
         {
             var permissionsTask = Permissions.RequestAsync<DefaultPermissions>();
             permissionsTask.Wait();
@@ -124,8 +134,6 @@ namespace VacdmApp
             {
                 var dataSourcesTask = VaccDataSources.GetDataSourcesAsync();
                 var settingsTask = SettingsData.ReadSettingsAsync();
-
-                LoadingView.SetLabelText(LoadingStatus.Settings);
 
                 var firstLoadTask = Task.WhenAll(settingsTask, dataSourcesTask);
                 try
@@ -140,6 +148,8 @@ namespace VacdmApp
 #endif
                     _mainPage.ErrorGrid.IsVisible = true;
                     _mainPage.Mainview.IsVisible = false;
+
+                    _isLoadSuccessfull = false;
                     return;
                 }
 
@@ -148,10 +158,10 @@ namespace VacdmApp
                     DataSources = dataSourcesTask.Result;
 
                     //TODO add back
-//#if RELEASE
-//                    var testDataIndex = DataSources.FindIndex(x => x.ShortName == "TEST");
-//                    DataSources.RemoveAt(testDataIndex);
-//#endif
+                    //#if RELEASE
+                    //                    var testDataIndex = DataSources.FindIndex(x => x.ShortName == "TEST");
+                    //                    DataSources.RemoveAt(testDataIndex);
+                    //#endif
                 }
 
                 if (Data.Data.Settings is null)
@@ -161,32 +171,35 @@ namespace VacdmApp
                 }
             }
 
-            var taskList = new List<Task>();
+            if (_taskList.Count != 0)
+            {
+                _taskList.Clear();
+            }
 
             var dataTask = GetVatsimData.GetVatsimDataAsync();
-            taskList.Add(dataTask);
+            _taskList.Add(dataTask);
 
             var vacdmTask = VACDMPilotsData.GetVACDMPilotsAsync();
-            taskList.Add(vacdmTask);
+            _taskList.Add(vacdmTask);
 
             var measuresTask = FlowMeasuresData.GetFlowMeasuresAsync();
-            taskList.Add(measuresTask);
+            _taskList.Add(measuresTask);
 
             var airlinesTask = AirlinesData.GetAirlinesAsync();
             var airportsTask = AirportsData.GetAirportsAsync();
-            var waypointsTask = GameWaypoints.GetWaypointsAsync();
 
             if (_isFirstLoad)
             {
-                taskList.Add(airlinesTask);
-                taskList.Add(airportsTask);
-                taskList.Add(waypointsTask);
+                _taskList.Add(airlinesTask);
+                _taskList.Add(airportsTask);
             }
 
-            var normalTasks = Task.WhenAll(taskList);
+            var normalTasks = Task.WhenAll(_taskList);
+            var progressTask = GetProgressCountAsync();
 
             try
             {
+                await progressTask;
                 await normalTasks;
             }
             catch (Exception ex)
@@ -197,8 +210,13 @@ namespace VacdmApp
 #endif
                 _mainPage.ErrorGrid.IsVisible = true;
                 _mainPage.Mainview.IsVisible = false;
+
+                _isLoadSuccessfull = false;
+
                 return;
             }
+
+            _taskList.Clear();
 
             VatsimPilots = dataTask.Result.pilots.ToList();
             VacdmPilots = vacdmTask.Result;
@@ -209,24 +227,25 @@ namespace VacdmApp
             {
                 Airlines = airlinesTask.Result;
                 Airports = airportsTask.Result;
-                Waypoints = waypointsTask.Result;
             }
+
+            _isLoadSuccessfull = true;
 
             _isFirstLoad = false;
         }
 
-        private bool HasUserInternet()
+        private static bool HasUserInternet()
         {
             var ping = new Ping();
 
             var cloudflarePing = ping.Send("1.1.1.1");
 
-            if(cloudflarePing.Status != IPStatus.Success)
+            if (cloudflarePing.Status != IPStatus.Success)
             {
-                //We try Google just in case Cloudflare is down
+                //We try Google just in case Cloudflare is down (haha good joke)
                 var googlePing = ping.Send("8.8.8.8");
 
-                if(googlePing.Status != IPStatus.Success)
+                if (googlePing.Status != IPStatus.Success)
                 {
                     return false;
                 }
@@ -235,6 +254,33 @@ namespace VacdmApp
             }
 
             return true;
+        }
+
+        private async Task GetProgressCountAsync()
+        {
+            var taskCount = _taskList.Count;
+
+            while (!_progressCancellationTokenSource.IsCancellationRequested)
+            {
+                var completedTasks = _taskList.Count(x => x.IsCompletedSuccessfully);
+
+                var progressDouble = (double)completedTasks / taskCount;
+
+                var progress = Math.Round(progressDouble * 100, 0);
+
+                if (progress == 100)
+                {
+                    LoadingLabel.Text = $"{progress}%";
+                    await Task.Delay(50);
+                    _progressCancellationTokenSource.Cancel();
+                    return;
+                }
+
+                LoadingLabel.Text = $"{progress}%";
+
+                //To make this method actually async (slightly yikes)
+                await Task.Delay(5);
+            }
         }
 
         private async void TryAgainButton_Pressed(object sender, EventArgs e)

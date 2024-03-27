@@ -17,10 +17,6 @@ namespace VacdmApp.Data
             return await JsonSerializer.DeserializeAsync<List<Airline>>(
                 new MemoryStream(Encoding.UTF8.GetBytes(data))
             );
-
-            //var client = new HttpClient();
-
-            //return await client.GetFromJsonAsync<List<Airline>>("https://api.tim-u.me/airlines");
         }
     }
 }

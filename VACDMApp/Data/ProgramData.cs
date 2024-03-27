@@ -44,8 +44,6 @@ namespace VacdmApp.Data
 
         internal static List<VacdmPilot> BookmarkedPilots = new();
 
-        internal static List<string> Waypoints = new();
-
         internal static SenderPage SenderPage;
 
         internal static LoadingView LoadingView = new();

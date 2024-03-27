@@ -1,18 +1,18 @@
-﻿using System.Net.Http.Json;
-using static VacdmApp.Data.Data;
-using static VacdmApp.Windows.Views.LoadingView;
-
-namespace VacdmApp.Data
+﻿namespace VacdmApp.Data
 {
     public class GetVatsimData
     {
         public static async Task<VatsimData> GetVatsimDataAsync()
         {
-            Data.LoadingView.SetLabelText(LoadingStatus.VatsimData);
-
+            //TODO
+#if DEBUG
+            var data = await VacdmData.Client.GetStringAsync("https://api.tim-u.me/vatsim/data");
+#else
             var data = await VacdmData.Client.GetStringAsync("https://data.vatsim.net/v3/vatsim-data.json");
+#endif
+            var dataJson = JsonSerializer.Deserialize<VatsimData>(data);
 
-            return JsonSerializer.Deserialize<VatsimData>(data);
+            return dataJson;
         }
     }
 }

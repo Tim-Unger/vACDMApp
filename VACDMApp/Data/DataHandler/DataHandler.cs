@@ -6,8 +6,17 @@ namespace VacdmApp.Data
     {
         internal static CancellationTokenSource CancellationTokenSource = new();
 
+        private static bool _isInitialized = false;
+
         internal static async Task RunAsync()
         {
+            if (_isInitialized)
+            {
+                throw new InvalidOperationException();
+            }
+
+            _isInitialized = true;
+
             while (!CancellationTokenSource.IsCancellationRequested)
             {
                 var dataTask = GetVatsimData.GetVatsimDataAsync();
@@ -42,17 +51,22 @@ namespace VacdmApp.Data
             }
         }
 
-        internal static bool Cancel()
+        internal static async Task Cancel()
         {
-            try
+            _isInitialized = false;
+            CancellationTokenSource.Cancel();
+
+            await Task.Delay(10);
+        }
+
+        internal static async Task ResumeAsync()
+        {
+            if (_isInitialized)
             {
-                CancellationTokenSource.Cancel();
-                return true;
+                throw new InvalidOperationException();
             }
-            catch
-            {
-                return false;
-            }
+
+            await RunAsync();
         }
     }
 }

@@ -4,7 +4,7 @@ namespace VacdmApp.Data
 {
     internal class VacdmData
     {
-        internal static readonly HttpClient Client = new() { Timeout = TimeSpan.FromSeconds(10) };
+        internal static readonly HttpClient Client = new() { Timeout = TimeSpan.FromSeconds(20) };
 
         internal static string VacdmApiUrl = "";
 

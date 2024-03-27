@@ -24,9 +24,9 @@
                     Margin="10">
                     <Label
                         x:Name="TimeLabel"
-                        Margin="10,5,10,5"
+                        Margin="0,5,0,5"
                         FontAttributes="None"
-                        FontSize="30"
+                        FontSize="28"
                         HorizontalOptions="Center"
                         TextColor="#FEFEFE"
                         VerticalOptions="Center" />

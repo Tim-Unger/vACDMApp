@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VacdmApp.Data;
-using static VacdmApp.Data.PushNotifications.PushNotificationHandler;
+﻿using static VacdmApp.Data.PushNotifications.PushNotificationHandler;
 
 namespace VacdmApp.Data.PushNotifications
 {

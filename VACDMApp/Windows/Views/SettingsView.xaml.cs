@@ -1,11 +1,8 @@
-using Android.Provider;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Views;
-using Javax.Security.Auth;
 using System.Net.Http.Json;
 using VacdmApp.Data;
 using VacdmApp.Data.OverridePermissions;
-using VacdmApp.Data;
 using VacdmApp.Windows.BottomSheets;
 using static VacdmApp.Data.Data;
 
@@ -237,6 +234,36 @@ namespace VacdmApp.Windows.Views
             Preferences.Set("push_bookmark_startup", isToggled);
         }
 
+        private async void UpdateAutomaticallySwitch_Toggled(object sender, ToggledEventArgs e)
+        {
+            var isToggled = ((Switch)sender).IsToggled;
+
+            Data.Data.Settings.UpdateAutomatically = isToggled;
+
+            Preferences.Set("update_automatically", isToggled);
+
+            if (!isToggled)
+            {
+                UpdateAutomaticallyActivityIndicator.IsVisible = true;
+                UpdateAutomaticallySwitch.IsVisible = false;
+
+                await DataHandler.Cancel();
+
+                UpdateAutomaticallyActivityIndicator.IsVisible = false;
+                UpdateAutomaticallySwitch.IsVisible = true;
+                return;
+            }
+
+            UpdateAutomaticallyActivityIndicator.IsVisible = true;
+            UpdateAutomaticallySwitch.IsVisible = false;
+
+            await DataHandler.ResumeAsync();
+
+            UpdateAutomaticallyActivityIndicator.IsVisible = false;
+            UpdateAutomaticallySwitch.IsVisible = true;
+        }
+
+
         private async Task SetToggleStates()
         {
             var status = await Permissions.CheckStatusAsync<SendNotifications>();
@@ -290,6 +317,8 @@ namespace VacdmApp.Windows.Views
             {
                 EditFlowFirsButton.IsVisible = true;
             }
+
+            UpdateAutomaticallySwitch.IsToggled = _settings.UpdateAutomatically;
         }
 
         private void MyFlightSlotUnconfirmedSwitch_Toggled(object sender, ToggledEventArgs e)
@@ -324,8 +353,8 @@ namespace VacdmApp.Windows.Views
 
             _pushFirModal = !_pushFirModal;
 
-            FlowMeasuresSwitch.IsVisible = false;
-            FlowMeasuresBusyIndicator.IsVisible = true;
+            //FlowMeasuresSwitch.IsVisible = false;
+            //FlowMeasuresBusyIndicator.IsVisible = true;
 
             if (!string.IsNullOrWhiteSpace(Preferences.Get("flow_measure_push_firs", "")))
             {
@@ -340,8 +369,8 @@ namespace VacdmApp.Windows.Views
 
         private void FirBottomSheet_Closed(object sender, PopupClosedEventArgs e)
         {
-            FlowMeasuresSwitch.IsVisible = true;
-            FlowMeasuresBusyIndicator.IsVisible = false;
+            //FlowMeasuresSwitch.IsVisible = true;
+            //FlowMeasuresBusyIndicator.IsVisible = false;
         }
 
         private string GetRatingString(int index) =>

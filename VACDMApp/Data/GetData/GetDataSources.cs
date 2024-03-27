@@ -1,5 +1,5 @@
-﻿using static VacdmApp.Data.Data;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
+using System.Text;
 
 namespace VacdmApp.Data
 {
@@ -17,7 +17,12 @@ namespace VacdmApp.Data
 
     public class VaccDataSources
     {
-        public static Task<List<DataSource>> GetDataSourcesAsync()
+
+#if DEBUG
+        private static readonly string _fallbackSources = """[{"name":"VATSIM Germany", "shortName":"VATGER", "url":"https://vacdm.vatsim-germany.org/api/v1/pilots/"},{ "name":"Test Data","shortName":"TEST","url":"https://vacdm.tim-u.me/api/v1/pilots"}]""";
+#endif
+
+        public static async Task<List<DataSource>> GetDataSourcesAsync()
         {
             var options = new JsonSerializerOptions() { AllowTrailingCommas = true };
 
@@ -26,7 +31,15 @@ namespace VacdmApp.Data
                 options
             );
 
-            return sources;
+#if DEBUG
+            var fallbackStream = new MemoryStream(Encoding.UTF8.GetBytes(_fallbackSources));
+
+            var fallbackSources = JsonSerializer.DeserializeAsync<List<DataSource>>(fallbackStream);
+
+            return await fallbackSources;
+#else
+            return await sources;
+#endif
         }
     }
 }

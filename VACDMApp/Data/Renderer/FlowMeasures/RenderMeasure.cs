@@ -86,7 +86,7 @@ namespace VacdmApp.Data.Renderer
 
             var flowMeasure = measure.Measure;
 
-            var measureValueString = flowMeasure.Value.ToString();
+            var measureValueString = ParseValue(flowMeasure.Value);
 
             var measureType = flowMeasure.MeasureType;
 
@@ -98,6 +98,8 @@ namespace VacdmApp.Data.Renderer
 
                 measureValueString = GetTimeString(measureValue);
             }
+
+            //TODO Ground Stop has no value, so change string accordingly
 
             var typeLabel = new Label()
             {
@@ -177,5 +179,25 @@ namespace VacdmApp.Data.Renderer
         private static string GetEndTimeString(DateTime endDateTime, int startDate) => endDateTime.Day == startDate ? endDateTime.ToString("HH:mmZ") : endDateTime.ToString("dd. HH:mmZ");
 
         private static string GetIdentString(GroupCollection groups) => $"{groups[1].Value}{groups[2].Value} - {groups[3].Value}";
+
+        private static string ParseValue(object? rawValue)
+        {
+            if(rawValue is null)
+            {
+                return "";
+            }
+
+            //Check if the value is a Json Array
+            try
+            {
+                var parsedValue = JsonSerializer.Deserialize<string[]>(rawValue.ToString());
+
+                return string.Join(" ", parsedValue);
+            }
+            catch
+            {
+                return rawValue.ToString();
+            }
+        }
     }
 }

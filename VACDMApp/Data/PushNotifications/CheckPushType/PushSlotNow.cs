@@ -1,5 +1,4 @@
 ﻿using static VacdmApp.Data.PushNotifications.PushNotificationHandler;
-using VacdmApp.Data;
 
 namespace VacdmApp.Data.PushNotifications
 {

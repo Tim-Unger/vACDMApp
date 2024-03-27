@@ -14,12 +14,6 @@ public partial class AboutPage : ContentPage
 
     private void ContentPage_Loaded(object sender, EventArgs e)
     {
-        if (_isFirstLoad)
-        {
-            Routing.RegisterRoute("WaypointlePage", typeof(WaypointlePage));
-            _isFirstLoad = false;
-        }
-
         TitleLabel.Text = "VATSIM\nAirport\nCollaborative\nDecision\nMaking";
         Data.Data.SenderPage = SenderPage.About;
         VersionLabel.Text = $"Tim Unger (1468997) -- V {AppInfo.Current.VersionString}";
