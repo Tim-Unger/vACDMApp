@@ -1,18 +1,11 @@
 ﻿using Plugin.LocalNotification;
 using static VacdmApp.Data.PushNotifications.PushNotificationHandler;
-using VacdmApp.Data;
 
 namespace VacdmApp.Data.PushNotifications
 {
-    internal class PushSender
+    internal partial class PushSender
     {
-        internal static List<(NotificationRequest request, string callsign)> SentNotifications =
-            new();
-
-        internal static async Task SendPushNotificationAsync(
-            VacdmPilot pilot,
-            NotificationType notificationType
-        )
+        private static async Task SendFlightPush(VacdmPilot pilot, NotificationType notificationType)
         {
             var notificationMessageString = notificationType switch
             {
@@ -46,10 +39,9 @@ namespace VacdmApp.Data.PushNotifications
                 Title = notificationMessageTitle,
                 Subtitle = "vACDM",
                 Description = notificationMessageString,
-                //Image = new NotificationImage() { ResourceName = "splash.svg"}
             };
 
-            SentNotifications.Add(new(request, pilot.Callsign));
+             SentNotifications.Add(new(request, pilot.Callsign));
 
             await LocalNotificationCenter.Current.Show(request);
         }

@@ -14,6 +14,12 @@ namespace VacdmApp.Data.PushNotifications
 
         internal static async Task CheckPilotAsync(VacdmPilot pilot)
         {
+            //Pilot has disconnected or been removed from the vACDM Pilots
+            if (!Data.VacdmPilots.Any(x => x.Callsign == pilot.Callsign))
+            {
+                return;
+            }
+
             var grantState = await Permissions.CheckStatusAsync<SendNotifications>();
 
             if (grantState != PermissionStatus.Granted)

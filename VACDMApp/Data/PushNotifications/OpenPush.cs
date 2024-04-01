@@ -13,13 +13,21 @@ namespace VacdmApp.Data.PushNotifications
                 x => x.request.NotificationId == id
             );
 
-            if (concernedNotification.callsign is null)
+            var callsignOrId = concernedNotification.CallsignOrId;
+
+            if (callsignOrId is null)
             {
                 return;
             }
 
+            if(!int.TryParse(callsignOrId.ToString(), out _))
+            {
+                //TODO 
+                return;
+            }
+
             var concernedPilot = Data.VacdmPilots.FirstOrDefault(
-                x => x.Callsign == concernedNotification.callsign
+                x => x.Callsign == callsignOrId.ToString()
             );
 
             if (concernedPilot is null)

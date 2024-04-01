@@ -41,5 +41,11 @@
 
             return true;
         }
+
+        public static CancellationTokenSource CancelAndReset(this CancellationTokenSource cancellationTokenSource)
+        {
+            cancellationTokenSource.Cancel();
+            return new CancellationTokenSource();
+        }
     }
 }

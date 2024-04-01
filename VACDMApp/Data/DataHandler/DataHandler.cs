@@ -51,12 +51,13 @@ namespace VacdmApp.Data
             }
         }
 
-        internal static async Task Cancel()
+        internal static void Cancel()
         {
             _isInitialized = false;
             CancellationTokenSource.Cancel();
 
-            await Task.Delay(10);
+            //Reset the token
+            CancellationTokenSource = new CancellationTokenSource();
         }
 
         internal static async Task ResumeAsync()

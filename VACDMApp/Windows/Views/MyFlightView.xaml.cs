@@ -20,7 +20,7 @@ public partial class MyFlightView : ContentView
 
     private async void ContentView_Loaded(object sender, EventArgs e)
     {
-        RenderBookmarks();
+        //RenderBookmarks();
         RenderOwnFlightView();
 
         if (_isFirstLoad)
@@ -104,7 +104,7 @@ public partial class MyFlightView : ContentView
             return;
         }
 
-        var vacdmPilot = VacdmApp.Data.Data.VacdmPilots.Find(
+        var vacdmPilot = Data.VacdmPilots.Find(
             x => x.Callsign.Equals(pilot.callsign, StringComparison.InvariantCultureIgnoreCase)
         );
 
@@ -141,7 +141,7 @@ public partial class MyFlightView : ContentView
         }
     }
 
-    private void RenderBookmarks()
+    internal void RenderBookmarks()
     {
         //TODO only works once then breaks somehow
         BookmarksStackLayout.Children.Clear();

@@ -6,7 +6,7 @@ namespace VacdmApp.Data.PushNotifications
     {
         internal static async Task PushNewMeasureAsync(FlowMeasure flowMeasure)
         {
-            if (!IsAllowedToSendPush(NotificationType.FlowMeasure))
+            if (!IsAllowedToSendPush(NotificationType.NewFlowMeasure))
             {
                 return;
             }
@@ -19,7 +19,23 @@ namespace VacdmApp.Data.PushNotifications
                 return;
             }
 
+            await PushSender.SendPushNotificationAsync(flowMeasure, NotificationType.NewFlowMeasure);
+        }
+
+        internal static async Task PushActiveMeasureAsync(FlowMeasure flowMeasure)
+        {
             //TODO
+            await PushSender.SendPushNotificationAsync(flowMeasure, NotificationType.ActiveFlowMeasure);
+        }
+
+        internal static async Task PushExpiredMeasureAsync(FlowMeasure flowMeasure)
+        {
+            await PushSender.SendPushNotificationAsync(flowMeasure, NotificationType.ExpiredFlowMeasure);
+        }
+
+        internal static async Task PushWithdrawnMeasure(FlowMeasure flowMeasure)
+        {
+            await PushSender.SendPushNotificationAsync(flowMeasure, NotificationType.WithdrawnFlowMeasure);
         }
     }
 }

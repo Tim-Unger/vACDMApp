@@ -31,7 +31,7 @@ namespace VacdmApp.Windows.Views
 
         private bool _isFirstLoad = true;
 
-        private Data.Settings _settings = new();
+        private Settings _settings = new();
 
         private bool _pushFirModal = false;
 
@@ -236,6 +236,9 @@ namespace VacdmApp.Windows.Views
 
         private async void UpdateAutomaticallySwitch_Toggled(object sender, ToggledEventArgs e)
         {
+            UpdateAutomaticallyActivityIndicator.IsVisible = true;
+            UpdateAutomaticallySwitch.IsVisible = false;
+
             var isToggled = ((Switch)sender).IsToggled;
 
             Data.Data.Settings.UpdateAutomatically = isToggled;
@@ -244,23 +247,18 @@ namespace VacdmApp.Windows.Views
 
             if (!isToggled)
             {
-                UpdateAutomaticallyActivityIndicator.IsVisible = true;
-                UpdateAutomaticallySwitch.IsVisible = false;
-
-                await DataHandler.Cancel();
+                DataHandler.Cancel();
 
                 UpdateAutomaticallyActivityIndicator.IsVisible = false;
                 UpdateAutomaticallySwitch.IsVisible = true;
+                UpdateAutomaticallySwitch.IsEnabled = true;
                 return;
             }
 
-            UpdateAutomaticallyActivityIndicator.IsVisible = true;
-            UpdateAutomaticallySwitch.IsVisible = false;
-
-            await DataHandler.ResumeAsync();
-
             UpdateAutomaticallyActivityIndicator.IsVisible = false;
             UpdateAutomaticallySwitch.IsVisible = true;
+
+            await DataHandler.ResumeAsync();
         }
 
 

@@ -17,7 +17,10 @@ namespace VacdmApp.Data.PushNotifications
             SlotChanged,
             StartupGiven,
             SlotSoonUnconfirmed,
-            FlowMeasure //TODO Flow Measure Push
+            NewFlowMeasure,
+            ActiveFlowMeasure,
+            ExpiredFlowMeasure,
+            WithdrawnFlowMeasure //TODO Flow Measure Push
         }
 
         //TODO implement
