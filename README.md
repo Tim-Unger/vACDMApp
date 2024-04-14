@@ -1,13 +1,13 @@
 # vACDM-App
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Google_Play-green?logo=googleplay&link=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dde.acdm.app"/>
-  <img src="https://img.shields.io/github/license/Tim-Unger/vACDMApp"/>
-  <img src="https://img.shields.io/github/v/release/Tim-Unger/vACDMApp"/>
-  <br/>
-  <br/>
+<div style="margin-left: auto;margin-right: auto;width: 30%">
+
+ [![Google Play Store](https://img.shields.io/badge/Google_Play-green?logo=googleplay&link=https%3A%2F%2F)](play.google.com/store/apps/details?id=de.acdm.app)
+ 
+ </div>
+
+<p align="center"> 
   <img src="https://i.imgur.com/D0k16Vc.png" width="75%" />
-  <br/>
 </p>
 
 
