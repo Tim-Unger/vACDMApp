@@ -2,7 +2,7 @@
 
 <div style="margin-left: auto;margin-right: auto;width: 30%">
 
- [![Google Play Store](https://img.shields.io/badge/Google_Play-green?logo=googleplay&link=https%3A%2F%2F)](play.google.com/store/apps/details?id=de.acdm.app)
+ [![Google Play Store](https://img.shields.io/badge/Google_Play-green?logo=googleplay&link=https%3A%2F%2F)](https://play.google.com/store/apps/details?id=de.acdm.app)
  
  </div>
 
