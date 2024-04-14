@@ -31,4 +31,4 @@
 - The49.Maui.BottomSheet ([MIT License](https://github.com/the49ltd/The49.Maui.BottomSheet/blob/main/LICENSE.md)) - [NuGet](https://www.nuget.org/packages/The49.Maui.BottomSheet) - [GitHub](https://github.com/the49ltd/The49.Maui.BottomSheet)
 - Airport Data JSON ([Public Domain](https://github.com/davidmegginson/ourairports-data/blob/main/LICENSE)) - [Website](https://ourairports.com/data/) - [GitHub](https://github.com/davidmegginson/ourairports-data)
 - Roboto ([Open Fonts License](https://github.com/googlefonts/roboto/blob/main/LICENSE)) - [Website](https://fonts.google.com/specimen/Roboto) - [GitHub](https://github.com/googlefonts/roboto)
-- AdvancedDot (Freeware Use) - [Website](https://www.dafont.com/advanced-dot-digital-7.font) - Orginal Source unavailable
+- AdvancedDot ([Freeware Use](/AdvancedDot-License.md)) - [Website](https://www.dafont.com/advanced-dot-digital-7.font) - Orginal Source unavailable
