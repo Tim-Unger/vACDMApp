@@ -5,6 +5,7 @@ namespace VacdmApp.Data.PushNotifications
 {
     internal class OpenPush
     {
+        //TODO implement
         internal static void OpenTapped(NotificationEventArgs e)
         {
             var id = e.Request.NotificationId;
@@ -20,9 +21,18 @@ namespace VacdmApp.Data.PushNotifications
                 return;
             }
 
+            //Check if Push is a flow measure push
             if(!int.TryParse(callsignOrId.ToString(), out _))
             {
                 //TODO 
+                var concernedMeasure = Data.FlowMeasures.FirstOrDefault(x => x.Ident == callsignOrId);
+
+                if(concernedMeasure is null)
+                {
+                    return;
+                }
+
+
                 return;
             }
 

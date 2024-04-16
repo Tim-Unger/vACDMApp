@@ -1,11 +1,25 @@
 ﻿using System.Drawing;
 using System.Text.RegularExpressions;
 using VacdmApp.Data;
+using Microsoft.Maui.Graphics;
 
 namespace VacdmApp.Data.Renderer
 {
     internal partial class SingleFlight
     {
+        private static readonly string[] _defaultRegs = new string[]
+        {
+            "N172SP",
+            "GFENX",
+            "PMDG737",
+            "ASXGS",
+            "PMDG73",
+            "N320SB",
+            "N321SB",
+            "N319SB",
+            "PMDG"
+        };
+
         private static Grid FlightDetailsGrid(
             VacdmPilot pilot,
             List<Airline> airlines,
@@ -58,9 +72,9 @@ namespace VacdmApp.Data.Renderer
 
             var arrivalIcao = pilot.FlightPlan.Arrival;
 
-            var arrAirportData = Data.Airports.FirstOrDefault(
-                x => x.Icao == arrivalIcao
-            ) ?? new Airport() { Iata = arrivalIcao, Icao = arrivalIcao };
+            var arrAirportData =
+                Data.Airports.FirstOrDefault(x => x.Icao == arrivalIcao)
+                ?? new Airport() { Iata = arrivalIcao, Icao = arrivalIcao };
 
             var flightData =
                 $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival} ({arrAirportData.Iata}), {flightPlan.aircraft_short}";
@@ -68,13 +82,11 @@ namespace VacdmApp.Data.Renderer
             var regRegex = new Regex(@"REG/([A-Z0-9-]{3,6})");
             var isRegFiled = regRegex.IsMatch(flightPlan.remarks);
 
-            var defaultRegs = new string[] { "N172SP", "GFENX", "PMDG737", "ASXGS", "PMDG73", "N320SB", "PMDG" };
-
             if (isRegFiled)
             {
                 var reg = regRegex.Match(flightPlan.remarks).Groups[1].Value.ToUpperInvariant();
 
-                if (!defaultRegs.Any(x => x == reg))
+                if (!_defaultRegs.Any(x => x == reg))
                 {
                     flightData += $", {regRegex.Match(flightPlan.remarks).Groups[1].Value}";
                 }
@@ -90,17 +102,19 @@ namespace VacdmApp.Data.Renderer
                 VerticalTextAlignment = TextAlignment.Center
             };
 
-            //TODO Different Background Color
             var statusLabel = new Label()
             {
                 Margin = new Thickness(0, 10, 0, 10),
-                Text = Pilots.GetFlightStatus(pilot),
                 TextColor = Colors.White,
                 Background = Colors.Transparent,
                 FontSize = 20,
+                Text = "",
                 HorizontalTextAlignment = TextAlignment.End,
-                VerticalTextAlignment = TextAlignment.Center
+                VerticalTextAlignment = TextAlignment.Center,
+                FormattedText = new FormattedString()
             };
+
+            statusLabel.FormattedText.Spans.Add(new Span() { BackgroundColor = Colors.White, TextColor = Microsoft.Maui.Graphics.Color.FromRgb(28, 40, 54), Text = $"  {Pilots.GetFlightStatus(pilot)}  " });
 
             flightDetailsGrid.Children.Add(callsignLabel);
             flightDetailsGrid.Children.Add(flightDataLabel);

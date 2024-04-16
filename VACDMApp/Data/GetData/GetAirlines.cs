@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using static VacdmApp.Windows.Views.LoadingView;
 
 namespace VacdmApp.Data
 {
@@ -7,8 +6,6 @@ namespace VacdmApp.Data
     {
         public static async Task<List<Airline>> GetAirlinesAsync()
         {
-            Data.LoadingView.SetLabelText(LoadingStatus.Airlines);
-
             var dataRaw = await FileSystem.Current.OpenAppPackageFileAsync("airlines.json");
 
             var reader = new StreamReader(dataRaw);

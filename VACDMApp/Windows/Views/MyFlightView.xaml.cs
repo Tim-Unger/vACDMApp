@@ -4,7 +4,6 @@ using Microsoft.Maui.Controls;
 using VacdmApp.Data;
 using VacdmApp.Data.Renderer;
 using VacdmApp.Windows.BottomSheets;
-using VacdmApp.Data;
 
 public partial class MyFlightView : ContentView
 {
@@ -141,21 +140,25 @@ public partial class MyFlightView : ContentView
         }
     }
 
-    internal void RenderBookmarks()
-    {
-        //TODO only works once then breaks somehow
-        BookmarksStackLayout.Children.Clear();
+    //internal void RenderBookmarks()
+    //{
+    //    //TODO only works once then breaks somehow
+    //    var random = new Random();
 
-        if(Data.BookmarkedPilots.Count == 0)
-        {
-            return;
-        }
+    //    BookmarksGrid.Children.Clear();
 
-        var bookmarks = Bookmarks.Render(Data.BookmarkedPilots);
-        bookmarks.ForEach(BookmarksStackLayout.Children.Add);
+    //    if(Data.BookmarkedPilots.Count == 0)
+    //    {
+    //        return;
+    //    }
 
-        //BookmarksScrollView.Content = BookmarksStackLayout;
-    }
+    //    var bookmarks = Bookmarks.Render(Data.BookmarkedPilots);
+    //    bookmarks.ForEach(BookmarksGrid.Children.Add);
+
+    //    BookmarksGrid.Children.Add(NoFlightLabel);
+
+    //    var children = BookmarksGrid.Children.Count();
+    //}
    
     private void RenderOwnFlightView()
     {

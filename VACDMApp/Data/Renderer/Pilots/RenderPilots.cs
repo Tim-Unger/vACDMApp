@@ -1,6 +1,4 @@
-﻿using VacdmApp.Data;
-
-namespace VacdmApp.Data.Renderer
+﻿namespace VacdmApp.Data.Renderer
 {
     internal partial class Pilots
     {
@@ -42,14 +40,14 @@ namespace VacdmApp.Data.Renderer
 
             if (filterValue is not null)
             {
-                //TODO Switch, if there are more than 2 options for the enum
                 return filterKind switch
                 {
                     FilterKind.Airport => SearchByAirport(pilotsWithFP, filterValue),
                     FilterKind.Airline => SearchByAirline(pilotsWithFP, filterValue),
                     FilterKind.Cid => SearchByCid(pilotsWithFP, filterValue),
                     FilterKind.Callsign => SearchByCallsign(pilotsWithFP, filterValue),
-                    FilterKind.Time => SearchByTime(pilotsWithFP, filterValue)
+                    FilterKind.Time => SearchByTime(pilotsWithFP, filterValue),
+                    _ => throw new ArgumentOutOfRangeException()
                 };
             }
 

@@ -90,7 +90,6 @@ namespace VacdmApp
         private void MyFlightButton_Clicked(object sender, EventArgs e)
         {
             Mainview.Content = MyFlightView;
-            MyFlightView.RenderBookmarks();
             SetButton(CurrentPage.MyFlight);
         }
 
@@ -157,18 +156,32 @@ namespace VacdmApp
                 if (DataSources.Count == 0)
                 {
                     DataSources = dataSourcesTask.Result;
-
-                    //TODO add back
-                    //#if RELEASE
-                    //                    var testDataIndex = DataSources.FindIndex(x => x.ShortName == "TEST");
-                    //                    DataSources.RemoveAt(testDataIndex);
-                    //#endif
                 }
 
                 if (Data.Data.Settings is null)
                 {
                     Data.Data.Settings = settingsTask.Result;
-                    VacdmData.SetApiUrl();
+
+#if RELEASE
+                    var testDataIndex = DataSources.FindIndex(x => x.ShortName == "TEST");
+
+                    if (testDataIndex != -1)
+                    {
+                        DataSources.RemoveAt(testDataIndex);
+                    }
+
+                    var selectedSource = Preferences.Get("data_source", "VATGER");
+
+                    if (selectedSource == "TEST")
+                    {
+                        Data.Data.Settings.DataSource = null;
+                    }
+
+                    if (Data.Data.Settings.DataSource is not null)
+                    {
+                        VacdmData.SetApiUrl();
+                    }
+#endif
                 }
             }
 
@@ -295,6 +308,11 @@ namespace VacdmApp
             AllFlightsButton.IsEnabled = isEnabled;
             FlowMeasuresButton.IsEnabled = isEnabled;
             SettingsButton.IsEnabled = isEnabled;
+        }
+
+        private void ContentPage_Unloaded(object sender, EventArgs e)
+        {
+            //DataHandler.Cancel();
         }
     }
 }

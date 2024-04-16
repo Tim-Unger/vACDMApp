@@ -46,8 +46,6 @@ namespace VacdmApp.Data
 
         internal static SenderPage SenderPage;
 
-        internal static LoadingView LoadingView = new();
-
         internal static object Sender;
     }
 }

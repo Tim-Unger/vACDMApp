@@ -7,7 +7,8 @@
     HandleColor="White"
     HasBackdrop="True"
     HasHandle="True"
-    Loaded="BottomSheet_Loaded">
+    Loaded="BottomSheet_Loaded"
+    Unloaded="BottomSheet_Unloaded">
     <VerticalStackLayout
         x:Name="VDGSStackLayout"
         Padding="0,50,0,50"

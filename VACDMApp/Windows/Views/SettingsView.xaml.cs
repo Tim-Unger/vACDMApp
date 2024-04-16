@@ -3,6 +3,7 @@ using CommunityToolkit.Maui.Views;
 using System.Net.Http.Json;
 using VacdmApp.Data;
 using VacdmApp.Data.OverridePermissions;
+using VacdmApp.Data.PushNotifications;
 using VacdmApp.Windows.BottomSheets;
 using static VacdmApp.Data.Data;
 
@@ -152,16 +153,15 @@ namespace VacdmApp.Windows.Views
 
             if (!isToggled)
             {
-                //Revokation needs to be done within the Notification Handler
-                ////TODO
-                //AllowPushBookmarkGrid.IsVisible = true;
-                //AllowPushMyFlightGrid.IsVisible = true;
-                //AllowPushFlowRect.IsVisible = true;
+                PushNotificationHandler.Stop();
+
                 Data.Data.Settings.AllowPushNotifications = false;
                 PushSettingsGrid.IsVisible = false;
                 Preferences.Set("allow_push", false);
                 return;
             }
+
+            PushNotificationHandler.Resume();
 
             var grantState = await Permissions.RequestAsync<SendNotifications>();
 

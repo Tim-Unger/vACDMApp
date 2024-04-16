@@ -1,13 +1,13 @@
-﻿using static VacdmApp.Data.Data;
-using static VacdmApp.Windows.Views.LoadingView;
-
-namespace VacdmApp.Data
+﻿namespace VacdmApp.Data
 {
     public class VACDMPilotsData
     {
         public static async Task<List<VacdmPilot>> GetVACDMPilotsAsync()
         {
-            Data.LoadingView.SetLabelText(LoadingStatus.VacdmData);
+            if(VacdmData.VacdmApiUrl is null)
+            {
+                return Enumerable.Empty<VacdmPilot>().ToList();
+            }
 
             var data = await VacdmData.Client.GetStringAsync(VacdmData.VacdmApiUrl);
 

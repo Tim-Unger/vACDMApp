@@ -59,7 +59,6 @@ public partial class FlightsView : ContentView
             var flights = Pilots.Render(null, null);
             flights.ForEach(FlightsStackLayout.Children.Add);
             GetNearestTime();
-            ScrollToCurrentTime();
 
             ButtonsStackLayout.Children.Add(_airportsButton);
             _airportsButton.Clicked += async (sender, e) => await AirportsButton_Clicked(sender, e);
@@ -90,19 +89,8 @@ public partial class FlightsView : ContentView
 
     private async void ScrollToCurrentTime()
     {
-        var now = DateTime.UtcNow;
-
-        var currentTimeSeparator = TimeValues.FirstOrDefault(x => x.DateTime.Day == now.Day && x.DateTime.Hour == now.Hour);
-
-        //TODO coordinates not working yet
-        if(currentTimeSeparator.Border is null)
-        {
-            return;
-        }
-
-        (var x, var y) = (currentTimeSeparator.Border.X, currentTimeSeparator.Border.Y);
-
-        await FlightsScrollView.ScrollToAsync(x, y, true);
+        throw new NotImplementedException();
+        //TODO
     }
 
     private async Task UpdateDataContinuously()

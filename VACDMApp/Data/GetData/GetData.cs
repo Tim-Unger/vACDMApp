@@ -6,7 +6,7 @@ namespace VacdmApp.Data
     {
         internal static readonly HttpClient Client = new() { Timeout = TimeSpan.FromSeconds(20) };
 
-        internal static string VacdmApiUrl = "";
+        internal static string? VacdmApiUrl = null;
 
         internal static void SetApiUrl()
         {

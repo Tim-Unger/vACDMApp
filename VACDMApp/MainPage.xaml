@@ -11,7 +11,8 @@
     Background="Black"
     Loaded="ContentPage_Loaded"
     NavigationPage.HasNavigationBar="False"
-    Shell.TabBarBackgroundColor="Black">
+    Shell.TabBarBackgroundColor="Black"
+    Unloaded="ContentPage_Unloaded">
 
     <ContentPage.Behaviors>
         <mct:StatusBarBehavior StatusBarColor="Black" />

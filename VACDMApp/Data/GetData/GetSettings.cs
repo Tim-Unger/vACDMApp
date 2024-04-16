@@ -10,7 +10,7 @@ namespace VacdmApp.Data
 
             var dataSources = Data.DataSources;
 
-            var dataSource = Preferences.Get("data_source", "VATGER");
+            var dataSource = Preferences.Get("data_source", null);
 
             var allowPush = Preferences.Get("allow_push", false);
 

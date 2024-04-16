@@ -10,7 +10,8 @@
             grid.RowDefinitions.Add(new RowDefinition(new GridLength(5, GridUnitType.Star)));
             grid.RowDefinitions.Add(new RowDefinition(new GridLength(7, GridUnitType.Star)));
             grid.RowDefinitions.Add(new RowDefinition(_oneStar));
-            grid.RowDefinitions.Add(new RowDefinition(new GridLength(7, GridUnitType.Star)));
+            grid.RowDefinitions.Add(new RowDefinition(new GridLength(6, GridUnitType.Star)));
+            grid.RowDefinitions.Add(new RowDefinition(_oneStar));
             grid.RowDefinitions.Add(new RowDefinition(_oneStar));
 
             var noFlightsImage = new Image()
@@ -20,10 +21,17 @@
                 WidthRequest = 100
             };
 
+            var noFlightsText = "No vACDM Flights found\nCheck back later or refresh to try again";
+
+            if(Data.Settings.DataSource is null)
+            {
+                noFlightsText = "Please select a Data-Source\nto show relevant flights";
+            }
+
             var noFlightsLabel = new Label()
             {
                 LineBreakMode = LineBreakMode.WordWrap,
-                Text = "No vACDM Flights found\nCheck back later or refresh to try again",
+                Text = noFlightsText,
                 TextColor = Colors.White,
                 Background = Colors.Black,
                 Margin = new Thickness(0, 40),
@@ -35,6 +43,8 @@
                 FontAttributes = FontAttributes.None,
                 FontSize = 30
             };
+
+            //TODO Button try again or open Settings
 
             grid.Children.Add(noFlightsLabel);
             grid.Children.Add(noFlightsImage);

@@ -24,6 +24,8 @@ public partial class VDGSBottomSheet : BottomSheet
 
     private Label _timeToGoLabel;
 
+    private static CancellationTokenSource _cancellationTokenSource = new();
+
     private async void BottomSheet_Loaded(object sender, EventArgs e)
     {
         Sender = this;
@@ -125,7 +127,7 @@ public partial class VDGSBottomSheet : BottomSheet
 
             if (timeToGo > 60 || timeToGo < -60)
             {
-                timeToGoString = ">60";
+                timeToGoString = "> 60";
             }
 
             timeToGoLabel.Text = timeToGoString;
@@ -136,8 +138,7 @@ public partial class VDGSBottomSheet : BottomSheet
 
     private async Task UpdateDataContinuously()
     {
-        //TODO Pause on lost focus/Cancellation Token
-        while (true)
+        while (!_cancellationTokenSource.IsCancellationRequested)
         {
             var vacdmPilot = VacdmPilots.First(x => x.Callsign == SelectedCallsign);
 
@@ -150,5 +151,10 @@ public partial class VDGSBottomSheet : BottomSheet
 
             await Task.Delay(TimeSpan.FromMinutes(1));
         }
+    }
+
+    private void BottomSheet_Unloaded(object sender, EventArgs e)
+    {
+        _cancellationTokenSource.Cancel();
     }
 }

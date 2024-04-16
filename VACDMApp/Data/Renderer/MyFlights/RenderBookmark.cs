@@ -10,6 +10,19 @@ namespace VacdmApp.Data.Renderer
 
         private static readonly GridLength _oneStar = new(3, GridUnitType.Star);
 
+        private static readonly string[] _defaultRegs = new string[]
+        {
+            "N172SP",
+            "GFENX",
+            "PMDG737",
+            "ASXGS",
+            "PMDG73",
+            "N320SB",
+            "N321SB",
+            "N319SB",
+            "PMDG"
+        };
+
         internal static Grid RenderBookmark(VacdmPilot pilot)
         {
             var grid = new Grid() { Background = _darkBlue, Margin = new Thickness(10) };
@@ -122,18 +135,28 @@ namespace VacdmApp.Data.Renderer
                 };
 
             var flightNumberOnly = pilot.Callsign.Remove(0, 3);
+
+            var arrivalIcao = pilot.FlightPlan.Arrival;
+
+            var arrAirportData =
+                Data.Airports.FirstOrDefault(x => x.Icao == arrivalIcao)
+                ?? new Airport() { Iata = arrivalIcao, Icao = arrivalIcao };
+
             var flightData =
-                $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival} ({airportData.Iata}), {flightPlan.aircraft_short}";
+                $"{airline.iata} {flightNumberOnly}, {pilot.FlightPlan.Arrival} ({arrAirportData.Iata}), {flightPlan.aircraft_short}";
 
-            //TODO Fix
-            //var regRegex = new Regex(@"REG/([A-Z0-9-]{3,6})");
-            //var hasRegFiled = regRegex.IsMatch(flightPlan.remarks);
+            var regRegex = new Regex(@"REG/([A-Z0-9-]{3,6})");
+            var isRegFiled = regRegex.IsMatch(flightPlan.remarks);
 
-            //if (hasRegFiled)
-            //{
-            //    var reg = regRegex.Match(flightPlan.remarks).Groups[1].Value;
-            //    flightData += $", {reg}";
-            //}
+            if (isRegFiled)
+            {
+                var reg = regRegex.Match(flightPlan.remarks).Groups[1].Value.ToUpperInvariant();
+
+                if (!_defaultRegs.Any(x => x == reg))
+                {
+                    flightData += $", {regRegex.Match(flightPlan.remarks).Groups[1].Value}";
+                }
+            }
 
             var flightDataLabel = new Label()
             {

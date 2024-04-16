@@ -99,8 +99,6 @@ namespace VacdmApp.Data.Renderer
                 measureValueString = GetTimeString(measureValue);
             }
 
-            //TODO Ground Stop has no value, so change string accordingly
-
             var typeLabel = new Label()
             {
                 Text = $"{flowMeasure.MeasureTypeString}: {measureValueString}",
@@ -108,6 +106,11 @@ namespace VacdmApp.Data.Renderer
                 FontSize = 20,
                 Margin = 5,
             };
+
+            if(measureType == MeasureType.GroundStop)
+            {
+                typeLabel.Text = "Ground Stop";
+            }
 
             contentGrid.Children.Add(typeLabel);
             contentGrid.SetRow(typeLabel, 2);

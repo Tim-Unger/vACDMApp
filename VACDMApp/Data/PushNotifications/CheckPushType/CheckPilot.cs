@@ -1,6 +1,4 @@
 ﻿using VacdmApp.Data.OverridePermissions;
-using VacdmApp.Data;
-
 namespace VacdmApp.Data.PushNotifications
 {
     internal partial class PushNotificationHandler

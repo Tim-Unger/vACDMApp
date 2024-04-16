@@ -1,5 +1,4 @@
 ﻿using System.Text.RegularExpressions;
-using VacdmApp.Data;
 
 namespace VacdmApp.Data.Renderer
 {
@@ -11,10 +10,15 @@ namespace VacdmApp.Data.Renderer
 
         private static Border RenderPilot(VacdmPilot pilot)
         {
-            //TODO Error handling here when ACDM FP not found
-            var flightPlan =
-                Data.VatsimPilots.Find(x => x.callsign == pilot.Callsign).flight_plan
-                ?? throw new InvalidDataException("");
+            var vatsimPilot =
+                Data.VatsimPilots.FirstOrDefault(x => x.callsign == pilot.Callsign);
+                
+            if(vatsimPilot is null)
+            {
+                return ErrorBorder();
+            }
+
+            var flightPlan = vatsimPilot!.flight_plan;
 
             var airlines = Data.Airlines;
 
@@ -29,9 +33,6 @@ namespace VacdmApp.Data.Renderer
             grid.ColumnDefinitions.Add(
                 new ColumnDefinition(new GridLength(0.7, GridUnitType.Star))
             );
-            //grid.ColumnDefinitions.Add(
-            //    new ColumnDefinition(new GridLength(0.3, GridUnitType.Star))
-            //);
 
             var timeGrid = new Grid() { Margin = new Thickness(20, 10, 10, 10) };
 
@@ -170,14 +171,8 @@ namespace VacdmApp.Data.Renderer
             var button = new Button() { BackgroundColor = Colors.Transparent };
             button.Clicked += Button_Clicked;
 
-            //TODO Padding is fucked up
-            //TODO Button Alignment
             var bookmarkGrid = new Grid() { Margin = new Thickness(10) };
 
-            //bookmarkGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
-            //bookmarkGrid.RowDefinitions.Add(new RowDefinition(_oneStar));
-
-            //TODO not woking
             var isPilotBookmarked =
                 Data.BookmarkedPilots.FirstOrDefault(x => x.Callsign == pilot.Callsign)
                 != null;
@@ -204,6 +199,28 @@ namespace VacdmApp.Data.Renderer
             parentGridContainer.Children.Add(grid);
 
             border.Content = parentGridContainer;
+            return border;
+        }
+
+        private static Border ErrorBorder()
+        {
+            var border = new Border() { StrokeThickness = 0, Stroke = Color.FromArgb("#454545"), Background = Colors.Transparent };
+
+            var grid = new Grid();
+
+            var errorLabel = new Label()
+            {
+                Text = "Error, Pilot could not be found, please try again",
+                TextColor = Colors.White,
+                FontAttributes = FontAttributes.None,
+                FontSize = 15,
+                HorizontalOptions = LayoutOptions.Start
+            };
+
+            grid.Children.Add(errorLabel);
+
+            border.Content = grid;
+
             return border;
         }
     }

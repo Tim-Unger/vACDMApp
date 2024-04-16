@@ -74,11 +74,9 @@
                 <Grid x:Name="OwnFlightGrid" Grid.Row="1" />
             </Grid>
 
-            <!--<Grid Grid.Row="1">
-                <ScrollView x:Name="BookmarksScrollView" VerticalOptions="FillAndExpand" />
-            </Grid>-->
-
-            <VerticalStackLayout x:Name="BookmarksStackLayout" Grid.Row="1" />
+            <ScrollView Grid.Row="1">
+                <Grid x:Name="BookmarksGrid" />
+            </ScrollView>
 
         </Grid>
     </Grid>
