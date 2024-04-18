@@ -125,7 +125,7 @@ public partial class MyFlightView : ContentView
         VDGSBottomSheet.SelectedCallsign = pilot.callsign;
         var vdgsSheet = new VDGSBottomSheet();
 
-        vdgsSheet.ShowAsync();
+        await vdgsSheet.ShowAsync();
     }
 
     private async Task GetCurrentTime()

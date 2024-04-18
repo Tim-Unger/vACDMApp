@@ -1,14 +1,12 @@
 using CommunityToolkit.Maui.Views;
 using Java.Lang;
-using Javax.Security.Auth;
 using VacdmApp.Data;
-using VacdmApp.Windows.Views;
 
-namespace VacdmApp.Windows.BottomSheets;
+namespace VacdmApp.Windows.Popups;
 
-public partial class FirBottomSheet : Popup
+public partial class FirPopup : Popup
 {
-    public FirBottomSheet()
+    public FirPopup()
     {
         InitializeComponent();
     }
@@ -28,7 +26,6 @@ public partial class FirBottomSheet : Popup
     private void Popup_Opened(object sender, CommunityToolkit.Maui.Core.PopupOpenedEventArgs e)
     {
         Data.Data.Sender = this;
-
         Data.Data.SenderPage = Data.SenderPage.FirSettings;
 
         RenderFirs();
@@ -141,6 +138,7 @@ public partial class FirBottomSheet : Popup
         var savedFirsString = JsonSerializer.Serialize(_addedFirs);
 
         Preferences.Set("flow_measure_push_firs", savedFirsString);
+        Data.Data.Settings.FlowMeasurePushFirs = savedFirsString;
 
         Close();
     }
@@ -255,6 +253,7 @@ public partial class FirBottomSheet : Popup
             "Name Z>A" => SortType.NameZA,
             "ICAO A>Z" => SortType.IdentAZ,
             "ICAO Z>A" => SortType.IdentZA,
+            _ => throw new ArgumentOutOfRangeException()
         };
 
         var count = FirStackLayout.Children.Count;

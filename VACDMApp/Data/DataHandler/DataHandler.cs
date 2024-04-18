@@ -2,11 +2,14 @@
 
 namespace VacdmApp.Data
 {
-    internal partial class DataHandler
+    //TODO Singleton?
+    internal static partial class DataHandler
     {
-        internal static CancellationTokenSource CancellationTokenSource = new();
+        private static CancellationTokenSource _cancellationTokenSource = new();
 
         private static bool _isInitialized = false;
+
+        internal static readonly bool IsStopped = _isInitialized;
 
         internal static async Task RunAsync()
         {
@@ -17,7 +20,7 @@ namespace VacdmApp.Data
 
             _isInitialized = true;
 
-            while (!CancellationTokenSource.IsCancellationRequested)
+            while (!_cancellationTokenSource.IsCancellationRequested)
             {
                 var dataTask = GetVatsimData.GetVatsimDataAsync();
                 var vacdmTask = VacdmPilotsData.GetVacdmPilotsAsync();
@@ -36,7 +39,7 @@ namespace VacdmApp.Data
 
                 if (!runTasks.IsCompletedSuccessfully)
                 {
-                    CancellationTokenSource.Cancel();
+                    _cancellationTokenSource.Cancel();
 
                     //TODO show Exception
                     throw runTasks.Exception;
@@ -54,10 +57,11 @@ namespace VacdmApp.Data
         internal static void Cancel()
         {
             _isInitialized = false;
-            CancellationTokenSource.Cancel();
+            _cancellationTokenSource.Cancel();
 
             //Reset the token
-            CancellationTokenSource = new CancellationTokenSource();
+            _cancellationTokenSource.Dispose();
+            _cancellationTokenSource = new CancellationTokenSource();
         }
 
         internal static async Task ResumeAsync()

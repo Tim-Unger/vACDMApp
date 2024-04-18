@@ -87,11 +87,10 @@ public partial class FlightsView : ContentView
         _timeButton.Text = $"{hourString}:00Z";
     }
 
-    private async void ScrollToCurrentTime()
-    {
-        throw new NotImplementedException();
-        //TODO
-    }
+    //TODO
+    //private async void ScrollToCurrentTime()
+    //{
+    //}
 
     private async Task UpdateDataContinuously()
     {
@@ -147,6 +146,7 @@ public partial class FlightsView : ContentView
         timesBottomSheet.ShowAsync();
     }
 
+    //NORELEASE
     private async Task TimeFormatButton_Clicked(object sender, EventArgs e) { }
 
     internal void GetFlightsFromSelectedAirport()
@@ -336,11 +336,6 @@ public partial class FlightsView : ContentView
         var pilots = Pilots.Render(FilterKind.Time, selectedTime.ToString());
 
         pilots.ForEach(FlightsStackLayout.Children.Add);
-    }
-
-    private void SetLoadingScreen(bool isLoading)
-    {
-        LoadingGrid.IsVisible = isLoading;
     }
 
     internal async Task HideKeyboardAsync()

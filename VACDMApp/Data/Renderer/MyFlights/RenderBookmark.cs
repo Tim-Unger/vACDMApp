@@ -213,7 +213,7 @@ namespace VacdmApp.Data.Renderer
 
             var singleFlightSheet = new SingleFlightBottomSheet();
 
-            singleFlightSheet.ShowAsync();
+            await singleFlightSheet.ShowAsync();
         }
     }
 }

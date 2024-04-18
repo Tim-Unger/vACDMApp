@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    x:Class="VacdmApp.Windows.Popups.UpdateAutomaticallyAdvancedPopup"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    CanBeDismissedByTappingOutsideOfPopup="False"
+    Opened="Popup_Opened"
+    Color="#232323">
+
+    <Grid Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Grid.Column="0"
+                Margin="20,0,0,0"
+                FontAttributes="None"
+                FontSize="25"
+                HorizontalOptions="Start"
+                Text="Update Interval (sec)"
+                VerticalOptions="Center" />
+
+            <Entry
+                x:Name="UpdateIntervalEntry"
+                Grid.Column="1"
+                Margin="0,0,0,0"
+                BackgroundColor="#232323"
+                FontAttributes="None"
+                FontSize="20"
+                Keyboard="Numeric"
+                VerticalOptions="Center" />
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Grid.Column="0"
+                Margin="20,0,0,0"
+                FontAttributes="None"
+                FontSize="25"
+                HorizontalOptions="Start"
+                Text="Update Vatsim-Data"
+                VerticalOptions="Center" />
+
+            <Switch
+                x:Name="UpdateVatsimSwitch"
+                Grid.Column="1"
+                HorizontalOptions="End"
+                IsEnabled="True"
+                IsToggled="False" />
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Grid.Column="0"
+                Margin="20,0,0,0"
+                FontAttributes="None"
+                FontSize="25"
+                HorizontalOptions="Start"
+                Text="Update vACDM-Data"
+                VerticalOptions="Center" />
+
+            <Switch
+                x:Name="UpdateVacdmSwitch"
+                Grid.Column="1"
+                HorizontalOptions="End"
+                IsEnabled="True"
+                IsToggled="False" />
+        </Grid>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Grid.Column="0"
+                Margin="20,0,0,0"
+                FontAttributes="None"
+                FontSize="25"
+                HorizontalOptions="Start"
+                Text="Update ECFMP-Data"
+                VerticalOptions="Center" />
+
+            <Switch
+                x:Name="UpdateEcfmpSwitch"
+                Grid.Column="1"
+                HorizontalOptions="End"
+                IsEnabled="True"
+                IsToggled="False"/>
+        </Grid>
+
+        <Button
+            x:Name="SaveButton"
+            Grid.Row="4"
+            Clicked="SaveButton_Clicked"
+            FontSize="15"
+            HorizontalOptions="Center"
+            Text="Save"
+            VerticalOptions="Center" />
+    </Grid>
+</toolkit:Popup>

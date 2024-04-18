@@ -27,5 +27,13 @@
         public string FlowMeasurePushFirs { get; set; } = "";
 
         public bool UpdateAutomatically { get; set; } = true;
+
+        public int UpdateInterval { get; set; } = 60;
+
+        public bool UpdateVatsimDataAutomatically { get; set; } = true;
+
+        public bool UpdateVacdmDataAutomatically { get; set; } = true;
+
+        public bool UpdateEcfmpDataAutomatically { get; set; } = true;
     }
 }

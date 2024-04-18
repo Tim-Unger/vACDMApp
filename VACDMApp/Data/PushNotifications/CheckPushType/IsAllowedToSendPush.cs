@@ -2,7 +2,7 @@
 
 namespace VacdmApp.Data.PushNotifications
 {
-    internal partial class PushNotificationHandler
+    internal static partial class PushNotificationHandler
     {
         internal static bool IsAllowedToSendPush(
             NotificationType notificationType,

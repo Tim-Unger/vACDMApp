@@ -4,11 +4,14 @@ using System.Net.Http.Json;
 using VacdmApp.Data;
 using VacdmApp.Data.OverridePermissions;
 using VacdmApp.Data.PushNotifications;
-using VacdmApp.Windows.BottomSheets;
+using VacdmApp.Windows.Popups;
 using static VacdmApp.Data.Data;
 
 namespace VacdmApp.Windows.Views
 {
+    //NORELEASE proper variable names
+    //Naming rule violation
+#pragma warning disable IDE1006 
     internal class Rating
     {
         public string id { get; set; }
@@ -22,6 +25,7 @@ namespace VacdmApp.Windows.Views
         public string subdivision { get; set; }
         public DateTime lastratingchange { get; set; }
     }
+#pragma warning restore
 
     public partial class SettingsView : ContentView
     {
@@ -98,6 +102,7 @@ namespace VacdmApp.Windows.Views
             _cancellationTokenSource.Cancel();
 
             //Reset the token once it has been fired
+            _cancellationTokenSource.Dispose();
             _cancellationTokenSource = new CancellationTokenSource();
 
             if (string.IsNullOrWhiteSpace(CidEntry.Text))
@@ -108,9 +113,9 @@ namespace VacdmApp.Windows.Views
                 return;
             }
 
-            var cid = int.Parse(CidEntry.Text);
+            var isCidInt = int.TryParse(CidEntry.Text, out var cid);
 
-            if (!cid.IsValidCid())
+            if (!isCidInt || !cid.IsValidCid())
             {
                 ValidCidLabel.TextColor = Colors.Red;
                 ValidCidLabel.Text = "CID is invalid";
@@ -138,12 +143,13 @@ namespace VacdmApp.Windows.Views
 
                 CidData.Text = rating;
 
+                //TODO implement subdivision
                 var subdivision = cidData.subdivision;
             }
+            //TODO proper catch when Vatsim Api is weird
             catch
             {
-                ValidCidLabel.TextColor = Colors.Red;
-                ValidCidLabel.Text = "CID is invalid";
+                CidData.Text = "Error";
             }
         }
 
@@ -245,13 +251,16 @@ namespace VacdmApp.Windows.Views
 
             Preferences.Set("update_automatically", isToggled);
 
+            //TODO fix not showing when starting with not toggled
+            UpdateAutomaticallyAdvancedButton.IsVisible = isToggled;
+
             if (!isToggled)
             {
                 DataHandler.Cancel();
 
+                UpdateAutomaticallyAdvancedButton.IsVisible = false;
                 UpdateAutomaticallyActivityIndicator.IsVisible = false;
                 UpdateAutomaticallySwitch.IsVisible = true;
-                UpdateAutomaticallySwitch.IsEnabled = true;
                 return;
             }
 
@@ -317,6 +326,8 @@ namespace VacdmApp.Windows.Views
             }
 
             UpdateAutomaticallySwitch.IsToggled = _settings.UpdateAutomatically;
+
+            UpdateAutomaticallyAdvancedButton.IsVisible = UpdateAutomaticallySwitch.IsToggled;
         }
 
         private void MyFlightSlotUnconfirmedSwitch_Toggled(object sender, ToggledEventArgs e)
@@ -357,7 +368,7 @@ namespace VacdmApp.Windows.Views
             if (!string.IsNullOrWhiteSpace(Preferences.Get("flow_measure_push_firs", "")))
             {
                 _cancellationTokenSource.Cancel();
-                var firBottomSheet = new FirBottomSheet();
+                var firBottomSheet = new FirPopup();
 
                 firBottomSheet.Closed += FirBottomSheet_Closed;
 
@@ -371,7 +382,7 @@ namespace VacdmApp.Windows.Views
             //FlowMeasuresBusyIndicator.IsVisible = false;
         }
 
-        private string GetRatingString(int index) =>
+        private static string GetRatingString(int index) =>
             index switch
             {
                 -1 => "INA",
@@ -387,18 +398,29 @@ namespace VacdmApp.Windows.Views
                 9 => "I2",
                 10 => "I3",
                 11 => "SUP",
-                12 => "ADM"
+                12 => "ADM",
+                _ => throw new ArgumentOutOfRangeException()
             };
 
         private async void EditFlowFirsButton_Clicked(object sender, EventArgs e)
         {
             _cancellationTokenSource.Cancel();
 
-            var firBottomSheet = new FirBottomSheet();
+            var firPopup = new FirPopup();
 
-            firBottomSheet.Closed += FirBottomSheet_Closed;
+            //TODO
+            //firBottomSheet.Closed += FirBottomSheet_Closed;
 
-            await AppShell.Current.CurrentPage.ShowPopupAsync(firBottomSheet);
+            await AppShell.Current.CurrentPage.ShowPopupAsync(firPopup);
+        }
+
+        private async void UpdateAutomaticallyAdvancedButton_Clicked(object sender, EventArgs e)
+        {
+            _cancellationTokenSource.Cancel();
+
+            var updateAutomaticallyAdvancedPopup = new UpdateAutomaticallyAdvancedPopup();
+
+            await AppShell.Current.CurrentPage.ShowPopupAsync(updateAutomaticallyAdvancedPopup);
         }
     }
 }

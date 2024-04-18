@@ -4,9 +4,6 @@ namespace VacdmApp;
 
 public partial class AboutPage : ContentPage
 {
-    private bool _isFirstLoad = true;
-
-
     public AboutPage()
     {
         InitializeComponent();

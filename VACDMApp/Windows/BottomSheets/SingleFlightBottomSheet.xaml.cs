@@ -6,6 +6,7 @@ namespace VacdmApp.Windows.BottomSheets;
 
 public partial class SingleFlightBottomSheet : BottomSheet
 {
+    //TODO fix
     public static string SelectedCallsign = "";
 
     private bool _isFirstLoad = true;

@@ -1,18 +1,15 @@
-﻿using Plugin.LocalNotification;
-
-namespace VacdmApp.Data.PushNotifications
+﻿namespace VacdmApp.Data.PushNotifications
 {
-    internal class ClearPush
+    internal static partial class PushNotificationHandler
     {
-        internal static void ClearAll(string callsign)
+        internal static void ClearAllSentNotifications(string callsign)
         {
-            return;
-            //TOD implement correctly
-            var pushsFromCallsign = PushSender.SentNotifications.Where(x => x.CallsignOrId == callsign);
+            //TODO implement correctly
+            //var pushsFromCallsign = PushSender.SentNotifications.Where(x => x.CallsignOrId == callsign);
 
-            _ = pushsFromCallsign.Select(
-                x => LocalNotificationCenter.Current.Clear(x.request.NotificationId)
-            );
+            //_ = pushsFromCallsign.Select(
+            //    x => LocalNotificationCenter.Current.Clear(x.request.NotificationId)
+            //);
         }
     }
 }

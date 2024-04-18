@@ -1,4 +1,5 @@
 ﻿using Plugin.LocalNotification;
+using System.Diagnostics;
 using System.Net.NetworkInformation;
 using VacdmApp.Data;
 using VacdmApp.Data.GetData;
@@ -22,6 +23,7 @@ namespace VacdmApp
 
         private MainPage _mainPage;
 
+        //TODO maybe ConcurrentBag instead?
         private List<Task> _taskList = new();
 
         private CancellationTokenSource _progressCancellationTokenSource = new();
@@ -36,6 +38,7 @@ namespace VacdmApp
         private async void ContentPage_Loaded(object sender, EventArgs e)
         {
             _mainPage = this;
+
             await OnLoad();
         }
 
@@ -76,11 +79,13 @@ namespace VacdmApp
                 return;
             }
 
-            await Task.Run(async () => 
-            { 
-                await DataHandler.RunAsync(); 
-                await PushNotificationHandler.StartGlobalHandler(); 
-            });
+            await Task.Run(
+                async () =>
+                {
+                    await DataHandler.RunAsync();
+                    await PushNotificationHandler.StartGlobalHandler();
+                }
+            );
 
             await PushNotificationHandler.InitializeNotificationEvents(
                 LocalNotificationCenter.Current
@@ -142,14 +147,8 @@ namespace VacdmApp
                 }
                 catch (Exception ex)
                 {
-#if DEBUG
-                    _mainPage.DebugErrorLabel.IsVisible = true;
-                    _mainPage.DebugErrorLabel.Text = ex.Message;
-#endif
-                    _mainPage.ErrorGrid.IsVisible = true;
-                    _mainPage.Mainview.IsVisible = false;
+                    HandleException(ex);
 
-                    _isLoadSuccessfull = false;
                     return;
                 }
 
@@ -219,14 +218,7 @@ namespace VacdmApp
             }
             catch (Exception ex)
             {
-#if DEBUG
-                _mainPage.DebugErrorLabel.IsVisible = true;
-                _mainPage.DebugErrorLabel.Text = ex.Message;
-#endif
-                _mainPage.ErrorGrid.IsVisible = true;
-                _mainPage.Mainview.IsVisible = false;
-
-                _isLoadSuccessfull = false;
+                HandleException(ex);
 
                 return;
             }
@@ -275,8 +267,21 @@ namespace VacdmApp
         {
             var taskCount = _taskList.Count;
 
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             while (!_progressCancellationTokenSource.IsCancellationRequested)
             {
+                if (stopwatch.Elapsed.TotalSeconds > 20)
+                {
+                    _progressCancellationTokenSource.Cancel();
+                    stopwatch.Stop();
+
+                    throw new TimeoutException(
+                        "Request timed out, check your internet connection and try again"
+                    );
+                }
+
                 var completedTasks = _taskList.Count(x => x.IsCompletedSuccessfully);
 
                 var progressDouble = (double)completedTasks / taskCount;
@@ -300,6 +305,11 @@ namespace VacdmApp
 
         private async void TryAgainButton_Pressed(object sender, EventArgs e)
         {
+            if (DataHandler.IsStopped)
+            {
+                await DataHandler.ResumeAsync();
+            }
+
             await OnLoad();
         }
 
@@ -314,6 +324,19 @@ namespace VacdmApp
         private void ContentPage_Unloaded(object sender, EventArgs e)
         {
             //DataHandler.Cancel();
+        }
+
+        private void HandleException(Exception ex)
+        {
+            DataHandler.Cancel();
+#if DEBUG
+            _mainPage.DebugErrorLabel.IsVisible = true;
+            _mainPage.DebugErrorLabel.Text = ex.Message;
+#endif
+            _mainPage.ErrorGrid.IsVisible = true;
+            _mainPage.Mainview.IsVisible = false;
+
+            _isLoadSuccessfull = false;
         }
     }
 }

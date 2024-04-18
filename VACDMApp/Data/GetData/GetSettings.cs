@@ -4,10 +4,14 @@ namespace VacdmApp.Data
 {
     public partial class SettingsData
     {
-        public static async Task<Settings> ReadSettingsAsync()
+        //Make async
+        public static async Task<Settings> ReadSettingsAsync() => await Task.Run(ReadSettings);
+
+        private static Settings ReadSettings()
         {
             var cid = Preferences.Get("cid", 0);
 
+            //TODO, reimplement? Or remove and keep current implementation
             var dataSources = Data.DataSources;
 
             var dataSource = Preferences.Get("data_source", null);
@@ -34,6 +38,14 @@ namespace VacdmApp.Data
 
             var updateAutomatically = Preferences.Get("update_automatically", true);
 
+            var updateInterval = Preferences.Get("update_interval", 60);
+
+            var updateVatsimDataAutomatically = Preferences.Get("update_vatsim", true);
+
+            var updateVacdmDataAutomatically = Preferences.Get("update_vacdm", true);
+
+            var updateEcfmpDataAutomatically = Preferences.Get("update_ecfmp", true);
+
             return new Settings()
             {
                 Cid = cid != 0 ? cid : null,
@@ -48,7 +60,11 @@ namespace VacdmApp.Data
                 SendPushMyFlightSlotUnconfirmed = pushMyFlightSlotUnconfirmed,
                 SendPushFlowMeasures = pushFlowMeasures,
                 FlowMeasurePushFirs = flowMesurePushFirs,
-                UpdateAutomatically = updateAutomatically
+                UpdateAutomatically = updateAutomatically,
+                UpdateInterval = updateInterval,
+                UpdateVatsimDataAutomatically = updateVatsimDataAutomatically,
+                UpdateVacdmDataAutomatically = updateVacdmDataAutomatically,
+                UpdateEcfmpDataAutomatically = updateEcfmpDataAutomatically
             };
         }
     }

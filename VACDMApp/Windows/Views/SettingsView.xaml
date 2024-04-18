@@ -96,7 +96,8 @@
 
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
 
@@ -109,9 +110,20 @@
                 Text="Update Data Automatically"
                 VerticalOptions="Center" />
 
+            <Button
+                x:Name="UpdateAutomaticallyAdvancedButton"
+                Grid.Column="1"
+                Margin="0,10,0,10"
+                Clicked="UpdateAutomaticallyAdvancedButton_Clicked"
+                FontSize="15"
+                HorizontalOptions="Center"
+                IsVisible="False"
+                Text="Advanced"
+                VerticalOptions="Center" />
+
             <ActivityIndicator
                 x:Name="UpdateAutomaticallyActivityIndicator"
-                Grid.Column="1"
+                Grid.Column="2"
                 Margin="5,5,0,5"
                 HorizontalOptions="End"
                 IsRunning="True"
@@ -120,7 +132,7 @@
 
             <Switch
                 x:Name="UpdateAutomaticallySwitch"
-                Grid.Column="1"
+                Grid.Column="2"
                 HorizontalOptions="End"
                 IsEnabled="True"
                 IsToggled="True"

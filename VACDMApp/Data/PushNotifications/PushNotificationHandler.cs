@@ -3,7 +3,7 @@ using Plugin.LocalNotification.EventArgs;
 
 namespace VacdmApp.Data.PushNotifications
 {
-    internal partial class PushNotificationHandler
+    internal static partial class PushNotificationHandler
     {
         private static readonly List<VacdmPilot> _subscribedPilots = new();
 
@@ -23,7 +23,7 @@ namespace VacdmApp.Data.PushNotifications
             WithdrawnFlowMeasure //TODO Flow Measure Push
         }
 
-        
+
         internal static async Task InitializeNotificationEvents(
             INotificationService notificationService
         )
@@ -39,7 +39,7 @@ namespace VacdmApp.Data.PushNotifications
             while (!_cancellationTokenSource.IsCancellationRequested)
             {
                 var tasks = _subscribedPilots.Select(CheckPilotAsync).ToList();
-                tasks.Add(CheckFlowMeasuresAsyc());
+                tasks.Add(CheckFlowMeasuresAsync());
 
                 await Task.WhenAll(tasks);
 
@@ -48,7 +48,7 @@ namespace VacdmApp.Data.PushNotifications
         }
 
         //TODO
-        private static async Task CheckFlowMeasuresAsyc()
+        private static async Task CheckFlowMeasuresAsync()
         {
             var measures = Data.FlowMeasures;
 
@@ -97,7 +97,7 @@ namespace VacdmApp.Data.PushNotifications
 
             _subscribedPilots.RemoveAt(index);
 
-            ClearPush.ClearAll(pilot.Callsign);
+            ClearAllSentNotifications(pilot.Callsign);
 
             return true;
         }

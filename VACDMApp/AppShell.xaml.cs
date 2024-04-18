@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using VacdmApp.Data;
 using VacdmApp.Windows.BottomSheets;
+using VacdmApp.Windows.Popups;
 
 namespace VacdmApp
 {
@@ -59,7 +60,7 @@ namespace VacdmApp
 
             if(sender == SenderPage.FirSettings)
             {
-                ((FirBottomSheet)Data.Data.Sender).CloseAsync();
+                ((FirPopup)Data.Data.Sender).CloseAsync();
                 Data.Data.Sender = Data.Data.FlightsView;
                 Data.Data.SenderPage = SenderPage.Default;
                 return true;

@@ -1,7 +1,7 @@
 ﻿using VacdmApp.Data.OverridePermissions;
 namespace VacdmApp.Data.PushNotifications
 {
-    internal partial class PushNotificationHandler
+    internal static partial class PushNotificationHandler
     {
         internal static List<(string callsign, NotificationType notificationType, TimeOnly pushTime, DateTime? pushedTsat)> PushedNotifications =
             new();
