@@ -193,7 +193,8 @@ namespace VacdmApp
             var dataTask = GetVatsimData.GetVatsimDataAsync();
             _taskList.Add(dataTask);
 
-            var vacdmTask = VACDMPilotsData.GetVACDMPilotsAsync();
+            VacdmData.SetApiUrl();
+            var vacdmTask = VacdmPilotsData.GetVacdmPilotsAsync();
             _taskList.Add(vacdmTask);
 
             var measuresTask = FlowMeasuresData.GetFlowMeasuresAsync();

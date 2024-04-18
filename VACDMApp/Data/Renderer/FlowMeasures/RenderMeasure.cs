@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Java.Nio.FileNio;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace VacdmApp.Data.Renderer
@@ -115,17 +116,28 @@ namespace VacdmApp.Data.Renderer
             contentGrid.Children.Add(typeLabel);
             contentGrid.SetRow(typeLabel, 2);
 
-            var depAirportsFilter = measure.Filters.FirstOrDefault(x => x.Type == "ADEP") ?? throw new InvalidDataException();
+            var depAirportsFilter = measure.Filters.FirstOrDefault(x => x.Type == "ADEP");
 
-            var depValuesRaw = depAirportsFilter.Value.ToString();
+            var depAirportsString = "";
+            if(depAirportsFilter is not null)
+            {
+                var depValuesRaw = depAirportsFilter.Value.ToString();
 
-            var depValues = JsonSerializer.Deserialize<List<string>>(depValuesRaw);
+                try
+                {
+                    var depValues = JsonSerializer.Deserialize<List<string>>(depValuesRaw);
 
-            var depAirportsString = ConcatAirports(depValues.Select(x => x.ToString()).ToArray());
+                    depAirportsString = ConcatAirports(depValues.Select(x => x.ToString()).ToArray(), true);
+                }
+                catch
+                {
+                    depAirportsString = ConcatAirports(new[] { depValuesRaw }, true);
+                }
+            }
 
             var depAirportsLabel = new Label()
             {
-                Text = $"DEP: {depAirportsString}",
+                Text = depAirportsString,
                 TextColor = Colors.White,
                 FontSize = 20,
                 Margin = 5,
@@ -134,17 +146,27 @@ namespace VacdmApp.Data.Renderer
             contentGrid.Children.Add(depAirportsLabel);
             contentGrid.SetRow(depAirportsLabel, 3);
 
-            var arrAirportsFilter = measure.Filters.FirstOrDefault(x => x.Type == "ADES") ?? throw new InvalidDataException();
+            var arrAirportsFilter = measure.Filters.FirstOrDefault(x => x.Type == "ADES");
 
-            var arrValuesRaw = arrAirportsFilter.Value.ToString();
+            var arrAirportsString = "";
+            if(arrAirportsFilter is not null)
+            {
+                var arrValuesRaw = arrAirportsFilter.Value.ToString();
 
-            var arrValues = JsonSerializer.Deserialize<List<string>>(arrValuesRaw);
-
-            var arrAirportsString = ConcatAirports(arrValues.Select(x => x.ToString()).ToArray());
+                try
+                {
+                    var arrValues = JsonSerializer.Deserialize<List<string>>(arrValuesRaw);
+                    arrAirportsString = ConcatAirports(arrValues.Select(x => x.ToString()).ToArray(), false);
+                }
+                catch
+                {
+                    arrAirportsString = ConcatAirports(new[] { arrValuesRaw }, false);
+                }
+            }
 
             var arrAirportsLabel = new Label()
             {
-                Text = $"ARR: {arrAirportsString}",
+                Text = arrAirportsString,
                 TextColor = Colors.White,
                 FontSize = 20,
                 Margin = 5,
@@ -165,9 +187,11 @@ namespace VacdmApp.Data.Renderer
 
         private static string GetTimeString(int seconds) => seconds > 60 ? $"{seconds / 60} min." : $"{seconds} sec.";
 
-        private static string ConcatAirports(string[] airports)
+        private static string ConcatAirports(string[] airports, bool isDep)
         {
             var stringBuilder = new StringBuilder();
+
+            stringBuilder.Append(isDep ? "DEP: " : "ARR: ");
 
             foreach (var airport in airports.Take(airports.Length - 1))
             {

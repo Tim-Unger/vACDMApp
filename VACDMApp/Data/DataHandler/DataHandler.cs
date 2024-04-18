@@ -20,7 +20,7 @@ namespace VacdmApp.Data
             while (!CancellationTokenSource.IsCancellationRequested)
             {
                 var dataTask = GetVatsimData.GetVatsimDataAsync();
-                var vacdmTask = VACDMPilotsData.GetVACDMPilotsAsync();
+                var vacdmTask = VacdmPilotsData.GetVacdmPilotsAsync();
                 var measuresTask = FlowMeasuresData.GetFlowMeasuresAsync();
 
                 var taskList = new List<Task>()

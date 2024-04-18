@@ -1,8 +1,8 @@
 ﻿namespace VacdmApp.Data
 {
-    public class VACDMPilotsData
+    public class VacdmPilotsData
     {
-        public static async Task<List<VacdmPilot>> GetVACDMPilotsAsync()
+        public static async Task<List<VacdmPilot>> GetVacdmPilotsAsync()
         {
             if(VacdmData.VacdmApiUrl is null)
             {

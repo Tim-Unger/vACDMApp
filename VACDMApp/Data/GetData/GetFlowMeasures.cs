@@ -8,14 +8,21 @@ namespace VacdmApp.Data
         {
             var firs = await GetFirsAsync();
 
+#if RELEASE
+            var measuresLink = "https://ecfmp.vatsim.net/api/v1/flow-measure";
+#else
+            var measuresLink = "https://ecfmp.tim-u.me/data";
+#endif
+
             var measures = await VacdmData.Client.GetFromJsonAsync<List<FlowMeasure>>(
-                "https://ecfmp.vatsim.net/api/v1/flow-measure"
+                measuresLink
             );
 
-            measures.ForEach(
-                x =>
-                    x.NotifiedFirs = x.notifiedFirs.Select(y => firs.First(z => z.Id == y)).ToList()
-            );
+            //TODO improve performance
+            //measures.ForEach(
+            //    x =>
+            //        x.NotifiedFirs = x.notifiedFirs.Select(y => firs.First(z => z.Id == y)).ToList()
+            //);
 
             measures.ForEach(
                 x =>

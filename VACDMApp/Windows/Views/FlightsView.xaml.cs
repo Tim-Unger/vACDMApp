@@ -200,7 +200,7 @@ public partial class FlightsView : ContentView
         FlightsStackLayout.Children.Clear();
 
         var dataTask = GetVatsimData.GetVatsimDataAsync();
-        var vacdmTask = VACDMPilotsData.GetVACDMPilotsAsync();
+        var vacdmTask = VacdmPilotsData.GetVacdmPilotsAsync();
 
         await Task.WhenAll(dataTask, vacdmTask);
 

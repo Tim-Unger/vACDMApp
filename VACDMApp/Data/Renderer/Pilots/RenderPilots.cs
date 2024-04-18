@@ -26,12 +26,6 @@
                         Data.VatsimPilots.First(y => y.callsign == x.Callsign).flight_plan
                         != null
                 );
-            //Only pilots whose Eobt and TSAT lie within the future or max 5 minutes ago
-            //.Where(
-            //    x =>
-            //        x.Vacdm.Eobt.Hour >= DateTime.UtcNow.AddHours(-1).Hour
-            //&& x.Vacdm.Tsat >= DateTime.UtcNow.AddMinutes(-6)
-            //);
 
             if (!pilotsWithFP.Any())
             {

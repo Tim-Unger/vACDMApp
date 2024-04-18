@@ -78,11 +78,11 @@ namespace VacdmApp.Windows.Views
 
             Data.Data.Settings.DataSource = shortName;
 
-            var pilotTask = await VACDMPilotsData.GetVACDMPilotsAsync();
+            var pilotTask = await VacdmPilotsData.GetVacdmPilotsAsync();
 
             VacdmPilots = pilotTask;
 
-           Data.VacdmData.SetApiUrl();
+            VacdmData.SetApiUrl();
 
             var settings = Data.Data.Settings;
 
