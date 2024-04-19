@@ -26,15 +26,26 @@ namespace VacdmApp.Data
                 var vacdmTask = VacdmPilotsData.GetVacdmPilotsAsync();
                 var measuresTask = FlowMeasuresData.GetFlowMeasuresAsync();
 
-                var taskList = new List<Task>()
+                var taskList = new List<Task>();
+
+                var settings = Data.Settings!;
+
+                if (settings.UpdateVatsimDataAutomatically)
                 {
-                    dataTask,
-                    vacdmTask,
-                    measuresTask
-                };
+                    taskList.Add(dataTask);
+                }
+
+                if (settings.UpdateVacdmDataAutomatically)
+                {
+                    taskList.Add(vacdmTask);
+                }
+
+                if (settings.UpdateEcfmpDataAutomatically)
+                {
+                    taskList.Add(measuresTask);
+                }
 
                 var runTasks = Task.WhenAll(taskList);
-
                 await runTasks;
 
                 if (!runTasks.IsCompletedSuccessfully)
@@ -50,7 +61,8 @@ namespace VacdmApp.Data
                 FlowMeasures = measuresTask.Result.FlowMeasures;
                 FlowMeasureFirs = measuresTask.Result.Firs;
 
-                await Task.Delay(TimeSpan.FromSeconds(60));
+                var interval = settings.UpdateInterval;
+                await Task.Delay(TimeSpan.FromSeconds(interval));
             }
         }
 

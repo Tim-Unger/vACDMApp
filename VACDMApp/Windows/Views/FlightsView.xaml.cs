@@ -146,7 +146,7 @@ public partial class FlightsView : ContentView
         timesBottomSheet.ShowAsync();
     }
 
-    //NORELEASE
+    //NORELEASE add
     private async Task TimeFormatButton_Clicked(object sender, EventArgs e) { }
 
     internal void GetFlightsFromSelectedAirport()

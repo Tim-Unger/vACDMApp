@@ -26,6 +26,8 @@ public partial class UpdateAutomaticallyAdvancedPopup : Popup
         {
             UpdateIntervalEntry.TextColor = Colors.Red;
         }
+
+        UpdateIntervalEntry.TextColor = Colors.White;
     }
 
     private void SaveButton_Clicked(object sender, EventArgs e)
@@ -47,6 +49,8 @@ public partial class UpdateAutomaticallyAdvancedPopup : Popup
             UpdateIntervalEntry.TextColor = Colors.Red;
             return;
         }
+
+        UpdateIntervalEntry.TextColor = Colors.White;
 
         Data.Data.Settings.UpdateInterval = interval;
         Preferences.Set("update_interval", interval);

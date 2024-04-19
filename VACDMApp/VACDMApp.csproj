@@ -48,7 +48,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" ForegroundScale="0.56" Color="#1c2836" BaseSize="128,128" />
+		<MauiIcon Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != 'android'" Include="Resources\AppIcon\appicon.svg" Color="White" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#232323" BaseSize="100,100" />
@@ -64,6 +64,33 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Remove="Platforms\Android\Resources\mipmap-anydpi-v26\appicon.xml" />
+		
+		<None Remove="Platforms\Android\Resources\mipmap-hdpi\appicon.png" />
+		<None Remove="Platforms\Android\Resources\mipmap-hdpi\appicon_background.png" />
+		<None Remove="Platforms\Android\Resources\mipmap-hdpi\appicon_foreground.png" />
+		<None Remove="Platforms\Android\Resources\mipmap-hdpi\appicon_monochrome.png" />
+		
+		<None Remove="Platforms\Android\Resources\mipmap-mdpi\appicon.png" />
+		<None Remove="Platforms\Android\Resources\mipmap-mdpi\appicon_background.png" />
+		<None Remove="Platforms\Android\Resources\mipmap-mdpi\appicon_foreground.png" />
+		<None Remove="Platforms\Android\Resources\mipmap-mdpi\appicon_monochrome.png" />
+		
+		<None Remove="Platforms\Android\Resources\mipmap-xhdpi\appicon.png" />
+		<None Remove="Platforms\Android\Resources\mipmap-xhdpi\appicon_background.png" />
+		<None Remove="Platforms\Android\Resources\mipmap-xhdpi\appicon_foreground.png" />
+		<None Remove="Platforms\Android\Resources\mipmap-xhdpi\appicon_monochrome.png" />
+		
+		<None Remove="Platforms\Android\Resources\mipmap-xxhdpi\appicon.png" />
+		<None Remove="Platforms\Android\Resources\mipmap-xxhdpi\appicon_background.png" />
+		<None Remove="Platforms\Android\Resources\mipmap-xxhdpi\appicon_foreground.png" />
+		<None Remove="Platforms\Android\Resources\mipmap-xxhdpi\appicon_monochrome.png" />
+		
+		<None Remove="Platforms\Android\Resources\mipmap-xxxhdpi\appicon.png" />
+		<None Remove="Platforms\Android\Resources\mipmap-xxxhdpi\appicon_background.png" />
+		<None Remove="Platforms\Android\Resources\mipmap-xxxhdpi\appicon_foreground.png" />
+		<None Remove="Platforms\Android\Resources\mipmap-xxxhdpi\appicon_monochrome.png" />
+		
 		<None Remove="Resources\Fonts\AdvancedDot-Regular.ttf" />
 		<None Remove="Resources\Fonts\Roboto-Bold.ttf" />
 		<None Remove="Resources\Fonts\Roboto-Medium.ttf" />
@@ -160,7 +187,30 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <AndroidResource Include="Platforms\Android\Resources\drawable\maui_splash.xml.dis" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-mdpi\appicon.png" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-mdpi\appicon_background.png" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-mdpi\appicon_foreground.png" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-mdpi\appicon_monochrome.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-anydpi-v26\appicon.xml" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-hdpi\appicon.png" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-hdpi\appicon_background.png" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-hdpi\appicon_foreground.png" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-hdpi\appicon_monochrome.png" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-xhdpi\appicon.png" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-xhdpi\appicon_background.png" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-xhdpi\appicon_foreground.png" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-xhdpi\appicon_monochrome.png" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-xxhdpi\appicon.png" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-xxhdpi\appicon_background.png" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-xxhdpi\appicon_foreground.png" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-xxhdpi\appicon_monochrome.png" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-xxxhdpi\appicon.png" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-xxxhdpi\appicon_background.png" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-xxxhdpi\appicon_foreground.png" />
+	  <EmbeddedResource Include="Platforms\Android\Resources\mipmap-xxxhdpi\appicon_monochrome.png" />
 	</ItemGroup>
 
 	<ProjectExtensions>

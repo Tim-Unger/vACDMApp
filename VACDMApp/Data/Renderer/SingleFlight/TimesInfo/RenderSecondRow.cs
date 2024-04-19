@@ -1,6 +1,4 @@
-﻿using VacdmApp.Data;
-
-namespace VacdmApp.Data.Renderer
+﻿namespace VacdmApp.Data.Renderer
 {
     internal partial class SingleFlight
     {

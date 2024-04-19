@@ -23,15 +23,10 @@ public partial class TimesBottomSheet : BottomSheet
     private void GetTimes()
     {
         var pilotsWithFP = VacdmPilots
-            //Only Pilots that have are in the Vatsim Datafeed
-            .Where(x => VatsimPilots.Exists(y => y.callsign == x.Callsign))
-            //Only Pilots that have filed a flight plan
-            .Where(x => VatsimPilots.First(y => y.callsign == x.Callsign).flight_plan != null);
+            .Where(x => VatsimPilots.Exists(y => y.callsign == x.Callsign)) //Only Pilots that have are in the Vatsim Datafeed
+            .Where(x => VatsimPilots.First(y => y.callsign == x.Callsign).flight_plan != null); //Only Pilots that have filed a flight plan
 
         var possibleTimes = pilotsWithFP
-            //.Where(x => VatsimPilots.Exists(y => y.callsign == x.Callsign)) //Only Pilots that are connected to Vatsim
-            //.Where(x => VatsimPilots.First(y => y.callsign == x.Callsign).flight_plan != null) //Only Pilots that have a flight plan
-            //.Where(x => x.Vacdm.Eobt.Hour >= DateTime.UtcNow.AddHours(-1).Hour) //Only Pilots whose EOBT is earliest 1 hour in the past (removes weird filed EOBTs)
             .Select(x => x.Vacdm.Eobt) //Only get the EOBT
             .DistinctBy(x => x.Hour) //Only get each value once
             .Select(x => x.Hour) //Only get the hour
@@ -102,7 +97,7 @@ public partial class TimesBottomSheet : BottomSheet
             Background = Colors.Transparent,
             FontSize = 15,
             FontAttributes = FontAttributes.None,
-            HorizontalOptions = LayoutOptions.Center,
+            HorizontalOptions = LayoutOptions.Start,
             VerticalOptions = LayoutOptions.Center
         };
 
@@ -114,24 +109,37 @@ public partial class TimesBottomSheet : BottomSheet
         return grid;
     }
 
-    private void TimeButton_Clicked(object sender, EventArgs e)
+    private async void TimeButton_Clicked(object sender, EventArgs e)
     {
         var selectedAirport = (Button)sender;
-        var selectedParent = selectedAirport.Parent;
-        var childLabel = ((Grid)selectedParent).Children[0];
+        var selectedParent = (Grid)selectedAirport.Parent;
 
+        var loadingIndicator = new ActivityIndicator()
+        {
+            Color = Colors.White,
+            IsRunning = true,
+            HorizontalOptions = LayoutOptions.End,
+            VerticalOptions = LayoutOptions.Center,
+            Background = Colors.Transparent,
+            Scale = 0.75
+        };
+
+        selectedParent.Children.Add(loadingIndicator);
+        
+        var childLabel = selectedParent.Children[0];
         var childText = ((Label)childLabel).Text;
 
         if (childText == "ALL TIMES")
         {
             FlightsView.SetTimeText(childText);
-            DismissAsync();
+            await DismissAsync();
             return;
         }
 
+        //Whether the time is greater 10 or smaller 10;
         var timeValue = childText.Length == 5 ? childText[..1] : childText[..2];
 
         FlightsView.SetTimeText(timeValue);
-        DismissAsync();
+        await DismissAsync();
     }
 }

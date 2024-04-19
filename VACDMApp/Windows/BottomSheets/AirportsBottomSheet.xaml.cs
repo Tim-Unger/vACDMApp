@@ -95,17 +95,30 @@ public partial class AirportsBottomSheet : BottomSheet
         return grid;
     }
 
-    private void Airport_Clicked(object sender, EventArgs e)
+    private async void Airport_Clicked(object sender, EventArgs e)
     {
         var selectedAirport = (Button)sender;
-        var selectedParent = selectedAirport.Parent;
-        var childLabel = ((Grid)selectedParent).Children[1];
+        var selectedParent = (Grid)selectedAirport.Parent;
+
+        var loadingIndicator = new ActivityIndicator()
+        {
+            Color = Colors.White,
+            IsRunning = true,
+            HorizontalOptions = LayoutOptions.End,
+            VerticalOptions = LayoutOptions.Center,
+            Background = Colors.Transparent,
+            Scale = 0.75
+        };
+
+        selectedParent.Children.Add(loadingIndicator);
+
+        var childLabel = selectedParent.Children[1];
 
         var childText = ((Label)childLabel).Text;
 
         SelectedAirport = childText.ToUpper();
 
-        DismissAsync();
+        await DismissAsync();
         FlightsView.SetAirportText(SelectedAirport);
         FlightsView.GetFlightsFromSelectedAirport();
     }

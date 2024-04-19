@@ -21,7 +21,8 @@
                 WidthRequest = 100
             };
 
-            var noFlightsText = "No vACDM Flights found\nCheck back later or refresh to try again";
+            var now = DateTime.UtcNow;
+            var noFlightsText = $"No vACDM Flights found\nCheck back later or refresh to try again\nUpdated: {now:HH:mm}Z";
 
             if(Data.Settings.DataSource is null)
             {

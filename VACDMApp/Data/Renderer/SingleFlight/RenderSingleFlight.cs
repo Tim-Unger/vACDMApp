@@ -1,4 +1,6 @@
-﻿using Microsoft.Maui.Controls.Shapes;
+﻿using CommunityToolkit.Maui.ImageSources;
+using Microsoft.Maui.Controls.Shapes;
+using static Android.Print.PrintAttributes;
 
 namespace VacdmApp.Data.Renderer
 {
@@ -61,8 +63,21 @@ namespace VacdmApp.Data.Renderer
                 Text = "Times",
                 TextColor = Colors.White,
                 FontSize = 20,
-                Margin = new Thickness(10, 0, 0, 0)
+                Margin = new Thickness(10, 0, 0, 0),
+                VerticalOptions = LayoutOptions.Center
             };
+
+            var moreTimesButton = new Button()
+            {
+                Text = "More Times",
+                TextColor = _darkBlue,
+                FontSize = 12,
+                HorizontalOptions = LayoutOptions.End,
+                VerticalOptions = LayoutOptions.Center,
+                Margin = new Thickness(0, 0, 10, 0),
+            };
+
+            moreTimesButton.Clicked += MoreTimesButton_Clicked;
 
             var resourcesLabel = new Label()
             {
@@ -96,6 +111,8 @@ namespace VacdmApp.Data.Renderer
 
             grid.Children.Add(timesLabel);
             grid.SetRow(timesLabel, 4);
+            grid.Children.Add(moreTimesButton);
+            grid.SetRow(moreTimesButton, 4);
             grid.Children.Add(timesInfoGrid);
             grid.SetRow(timesInfoGrid, 5);
 
@@ -105,6 +122,12 @@ namespace VacdmApp.Data.Renderer
             grid.SetRow(flightPositionGrid, 7);
 
             return grid;
+        }
+
+        //TODO implement button click
+        private static void MoreTimesButton_Clicked(object? sender, EventArgs e)
+        {
+
         }
     }
 }
