@@ -7,6 +7,8 @@
 
 *.idea/
 
+*.vscode/
+
 google-services.json
 commands.txt
 log.txt
